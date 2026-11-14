@@ -11,7 +11,11 @@ cd /workspace/MGMT-3400-Team-9
 npm start
 ```
 
-Open the served application on port 3000 using your development environment's supported browser access. JavaScript modules require HTTP; opening `index.html` directly as a file is unsupported. To run without npm, use `python3 -m http.server 3000 --bind 0.0.0.0`.
+Open the served application on port 3000 using your development environment's supported browser access. Alternatively, open `index.html` directly in a browser or HTML preview: its styles and calculator code are bundled into the file, so no neighboring assets or JavaScript module loading are needed. To serve without npm, use `python3 -m http.server 3000 --bind 0.0.0.0`.
+
+### Editing
+
+Edit the markup in `scripts/index.template.html`, the styles in `style.css`, the interface logic in `app.js`, and the calculation model in `energy.js`. Run `npm run build` to regenerate the committed self-contained `index.html`. `npm start` also rebuilds automatically. Commit both source edits and the regenerated page.
 
 ```sh
 npm test

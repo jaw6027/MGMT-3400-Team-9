@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#173f35">
   <title>Helio Home · Energy & Solar Advisor</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+:root{--ink:#183f35;--muted:#69766e;--paper:#f7f8f2;--line:#dfe5da;--gold:#eecb66;--green:#608f6c}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.5}button,input{font:inherit}button,a,input,summary{touch-action:manipulation}button{cursor:pointer}a{color:inherit;text-decoration:none}.topbar{max-width:1280px;margin:auto;height:90px;padding:0 44px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{font-size:27px;font-weight:800;letter-spacing:-1.5px;display:flex;align-items:center;gap:5px}.brand>span:not(.brand-icon){font-weight:400}.brand-icon{font-size:37px;margin-right:7px}.badge{font-size:10px;letter-spacing:2px;color:var(--muted)}button{border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--ink);padding:10px 15px;font-size:12px;font-weight:600}button:hover{background:#e9eedf}button span{margin-left:12px}main{max-width:1192px;margin:auto;padding:0 32px}.intro{display:grid;grid-template-columns:1.3fr 1fr;align-items:center;gap:40px;padding:54px 0 46px}.eyebrow{font-size:10px;font-weight:700;letter-spacing:2px;margin:0 0 14px;color:var(--muted)}h1{font-size:clamp(38px,4.5vw,58px);line-height:1.08;letter-spacing:-2.8px;margin:0 0 20px;font-weight:500}p{margin:0}.lede{max-width:440px;color:var(--muted);font-size:15px;line-height:1.7}.sun-scene{height:235px;position:relative;overflow:hidden;border-radius:120px 120px 16px 16px;background:#e9eedf}.sun{height:90px;width:90px;background:var(--gold);border-radius:50%;position:absolute;left:62%;top:20px}.orbit{position:absolute;border:1px solid #d4ddc6;width:340px;height:340px;left:20px;top:25px;border-radius:50%}.house{position:absolute;width:160px;height:94px;background:#f9faf3;bottom:44px;left:calc(50% - 80px);box-shadow:15px 10px 0 #cad6bc}.roof{position:absolute;top:-42px;left:-20px;width:197px;height:55px;background:#45634c;clip-path:polygon(23% 0,78% 0,100% 100%,0 100%)}.panels{position:absolute;top:-29px;left:37px;width:94px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;transform:skewX(17deg)}.panels i{display:block;height:13px;background:#acc7c5;border:1px solid #cddcce}.window{width:27px;height:31px;position:absolute;left:29px;top:29px;background:#eaca75;border:5px solid #dce3d2}.door{height:48px;width:28px;position:absolute;right:26px;bottom:0;background:#bdcbb0}.scene-label{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:2px;color:#64785d}.workspace{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:12px}.inputs{padding:28px}.section-heading{display:flex;justify-content:space-between;align-items:start;gap:10px}h2{font-size:21px;letter-spacing:-.6px;line-height:1.3;margin:0}.section-heading .eyebrow{margin-bottom:7px}.text-button{padding:3px 0;border:0;color:var(--muted);font-weight:400;text-decoration:underline;font-size:12px}.customer{margin-top:25px}label{display:block;color:#4c5f54;font-size:12px;font-weight:500}input:not([type=range]){width:100%;min-width:0;background:#fafbf7;border:1px solid #dce3d7;border-radius:6px;padding:11px;color:var(--ink);outline:none;margin-top:7px}input:focus{border-color:#588468;box-shadow:0 0 0 3px #608f6c20}input:invalid{border-color:#b8563a}.input-wrap{position:relative}.input-wrap input{padding-right:67px}.input-wrap>span{position:absolute;right:12px;top:19px;font-size:11px;color:var(--muted);pointer-events:none}fieldset{border:0;border-top:1px solid var(--line);margin:25px 0 0;padding:23px 0 0;min-width:0}legend{float:left;width:100%;padding:0;margin-bottom:18px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px}legend>span{width:25px;height:25px;display:inline-flex;align-items:center;justify-content:center;background:#eef3e8;border-radius:50%;font-size:10px;color:#6d8266}.field-grid{clear:both;display:grid;grid-template-columns:1fr 1fr;gap:15px}.hint{font-size:11px;color:var(--muted);line-height:1.65;margin-top:12px}fieldset>label{clear:both}label strong{float:right;font-size:16px;color:var(--ink)}input[type=range]{width:100%;margin:17px 0 7px;accent-color:var(--ink);cursor:pointer}.range-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:10px}details{border-top:1px solid var(--line);margin-top:24px;padding-top:20px}summary{font-size:13px;font-weight:600;cursor:pointer}summary>span{float:right}.cost-fields{margin-top:20px}.results-heading{padding:4px 0 20px}.results-heading .eyebrow{margin-bottom:7px}#report-name{margin-top:8px;font-size:14px;overflow-wrap:anywhere}.savings-card{background:var(--ink);border-radius:12px;padding:27px 29px 0;color:#fff}.pill{font-size:9px;letter-spacing:1.4px;color:#d1e2c7;background:#ffffff15;border:1px solid #ffffff25;border-radius:20px;padding:5px 10px;display:inline-block;margin-bottom:20px}.savings-card>p{font-size:13px;color:#d1ddd3}.big-number{font-size:60px;letter-spacing:-3px;line-height:1.25;margin:6px 0;color:#f5d984;font-weight:500}.savings-card .monthly{font-size:12px;margin-bottom:24px}.savings-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #ffffff25;padding:15px 0;font-size:11px;color:#cfddd1}.savings-footer strong{font-size:20px;color:#fff}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:15px 0}.metric{padding:18px}.metric span,.metric small{display:block;font-size:11px;color:var(--muted)}.metric strong{display:block;font-size:25px;font-weight:500;letter-spacing:-.8px;margin:7px 0}.metric small{font-size:10px}.breakdown,.flow{padding:23px;margin-bottom:15px}h3{font-size:14px;margin:0 0 17px;font-weight:600}.bar-legend{display:flex;flex-wrap:wrap;gap:15px;font-size:10px;color:var(--muted);margin-bottom:12px}.dot{width:7px;height:7px;display:inline-block;border-radius:50%;margin-right:4px}.green{background:var(--green)}.gold{background:var(--gold)}.savings-bar{height:11px;display:flex;background:#edf1e8;border-radius:4px;overflow:hidden;margin-bottom:18px}#efficiency-bar{background:var(--green)}#solar-bar{background:var(--gold)}dl{margin:0}dl>div{display:flex;justify-content:space-between;gap:20px;font-size:12px;margin:11px 0}dt{color:var(--muted)}dd{margin:0;text-align:right;font-weight:600;white-space:nowrap}.total{padding-top:12px;border-top:1px solid var(--line)}.total dt{color:var(--ink);font-weight:600}.flow dl>div{font-size:11px}.next-step{display:flex;gap:15px;background:#eaf0df;padding:20px;border-radius:10px}.step-icon{font-size:26px}.next-step h3{margin-bottom:5px}.next-step p{font-size:12px;color:#63765e}.method{border-top:1px solid var(--line);padding:28px 0;margin-top:35px}.method h3{font-size:13px;margin-bottom:10px}.method p{font-size:11px;color:var(--muted);line-height:1.8;margin:8px 0}footer{border-top:1px solid var(--line);max-width:1192px;margin:auto;padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;color:var(--muted);font-size:10px}footer .brand{font-size:21px;color:var(--ink)}#error{margin-top:14px;padding:12px;color:#953f29;background:#fff0e8;font-size:13px;border-radius:6px}#estimate-results.stale{opacity:.4}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:4px}@media(min-width:1000px){.results{position:sticky;top:20px}}@media(max-width:760px){.topbar{height:75px;padding:0 20px}.badge{display:none}main{padding:0 20px}.intro{padding:34px 0;gap:15px;grid-template-columns:1fr}.sun-scene{display:none}h1{font-size:43px}.workspace{grid-template-columns:1fr;gap:27px}.inputs{padding:22px}.results-heading{padding:0 0 18px}footer{padding:24px 20px;flex-wrap:wrap}footer>span:last-child{width:100%}}@media print{body{background:white;font-size:10px}.topbar{height:50px;padding:0}.topbar button,.badge,.sun-scene,.text-button{display:none}main{max-width:none;padding:0}.intro{display:block;padding:20px 0}h1{font-size:28px;line-height:1.1;margin:0 0 10px}h1 br{display:none}.lede{font-size:11px;max-width:none}.workspace{grid-template-columns:1fr 1fr;gap:18px}.inputs{padding:15px}fieldset{margin-top:14px;padding-top:12px}.customer{margin-top:14px}legend{font-size:12px;margin-bottom:10px}.field-grid{gap:8px}.hint,.method p{font-size:9px}input:not([type=range]){padding:5px;font-size:10px}.input-wrap input{padding-right:48px}.input-wrap>span{top:12px;font-size:9px}.savings-card{color:var(--ink);background:#f1f4eb;border:1px solid var(--line);padding:15px 18px 0}.savings-card>p,.savings-card .monthly,.savings-footer,.savings-footer strong{color:var(--ink)}.big-number{font-size:38px;color:var(--ink)}.pill{color:var(--ink);padding:0;margin-bottom:10px}.savings-footer{border-color:var(--line)}.metric{padding:12px}.metric strong{font-size:20px}.breakdown,.flow{padding:14px}dl>div{font-size:10px}.flow dl>div{font-size:9px}.next-step{display:none}.results{position:static}.card,.savings-card{break-inside:avoid}.method{margin-top:15px;padding:15px 0}footer{padding:15px 0}.eyebrow{font-size:8px}h2{font-size:17px}details>summary{font-size:11px}.cost-fields{margin-top:10px}}
+
+</style>
 </head>
 <body>
   <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></header>
@@ -51,6 +54,89 @@
     <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. Results exclude fixed utility charges, batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
   </main>
   <footer><a class="brand" href="./">helio<span>home</span></a><span>Connected homes. Thoughtful energy.</span><span>Class project · Concept tool</span></footer>
-  <script type="module" src="app.js"></script>
+  <script>
+(() => {
+const defaults = {
+  monthlyKwh: 1000, rate: 0.18, efficiency: 15, solarKw: 6,
+  sunHours: 4.5, performance: 80, selfUse: 70, exportRate: 0.05,
+  solarCost: 18000, upgradeCost: 1200, incentive: 0, annualCost: 180,
+  monthlyFee: 0,
+};
+
+function estimate(input) {
+  const v = { ...defaults, ...input };
+  for (const [key, value] of Object.entries(v)) {
+    if (!Number.isFinite(value) || value < 0) throw new Error(`${key} must be a nonnegative number.`);
+  }
+  for (const key of ['efficiency', 'performance', 'selfUse']) {
+    if (v[key] > 100) throw new Error(`${key} cannot exceed 100%.`);
+  }
+  const annualUsage = v.monthlyKwh * 12;
+  const baseline = annualUsage * v.rate;
+  const reducedUsage = annualUsage * (1 - v.efficiency / 100);
+  const efficiencySavings = (annualUsage - reducedUsage) * v.rate;
+  const production = v.solarKw * v.sunHours * 365 * v.performance / 100;
+  const solarUsed = Math.min(production * v.selfUse / 100, reducedUsage);
+  const exports = production - solarUsed;
+  const gridKwh = reducedUsage - solarUsed;
+  const importCost = gridKwh * v.rate;
+  const exportCredit = exports * v.exportRate;
+  const solarSavings = solarUsed * v.rate + exportCredit;
+  const operatingCost = v.annualCost + v.monthlyFee * 12;
+  const annualSavings = efficiencySavings + solarSavings - operatingCost;
+  const annualAfter = importCost - exportCredit + operatingCost;
+  const grossCost = v.solarCost + v.upgradeCost;
+  const appliedIncentive = Math.min(v.incentive, grossCost);
+  const netCost = grossCost - appliedIncentive;
+  const payback = netCost === 0 ? 0 : annualSavings > 0 ? netCost / annualSavings : null;
+  return { annualUsage, baseline, reducedUsage, efficiencySavings, production, solarUsed,
+    exports, gridKwh, importCost, exportCredit, solarSavings, operatingCost, annualSavings,
+    annualAfter, grossCost, appliedIncentive, netCost, payback,
+    gridReduction: annualUsage ? (annualUsage - gridKwh) / annualUsage * 100 : 0 };
+}
+
+
+const form = document.querySelector('#calculator');
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+const set = (id, value) => { document.getElementById(id).textContent = value; };
+
+function render() {
+  set('efficiency-value', `${form.elements.efficiency.value}%`);
+  const valid = form.checkValidity();
+  document.querySelector('#error').hidden = valid;
+  document.querySelector('#estimate-results').hidden = !valid;
+  const name = form.elements.customer.value.trim();
+  set('report-name', name);
+  document.querySelector('#report-name').hidden = !name;
+  if (!valid) return;
+  const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
+  const r = estimate(values);
+  for (const [id, key] of Object.entries({ 'annual-savings': 'annualSavings', 'net-cost': 'netCost', 'efficiency-savings': 'efficiencySavings', 'solar-savings': 'solarSavings', 'operating-cost': 'operatingCost', 'total-savings': 'annualSavings', baseline: 'baseline', 'annual-after': 'annualAfter' })) set(id, money.format(r[key]));
+  set('monthly-savings', `${money.format(r.annualSavings / 12)} per month, averaged over a year`);
+  set('grid-reduction', `${Math.round(r.gridReduction)}%`);
+  set('payback', r.payback === null ? 'No payback' : r.payback === 0 ? 'No upfront cost' : `${r.payback.toFixed(1)} years`);
+  for (const [id, key] of Object.entries({ 'annual-usage': 'annualUsage', 'reduced-usage': 'reducedUsage', production: 'production', 'solar-used': 'solarUsed', exports: 'exports', 'grid-kwh': 'gridKwh' })) set(id, `${number.format(r[key])} kWh`);
+  const total = r.efficiencySavings + r.solarSavings;
+  document.querySelector('#efficiency-bar').style.width = `${total ? r.efficiencySavings / total * 100 : 0}%`;
+  document.querySelector('#solar-bar').style.width = `${total ? r.solarSavings / total * 100 : 0}%`;
+}
+
+function reset() {
+  form.reset();
+  for (const [key, value] of Object.entries(defaults)) form.elements[key].value = value;
+  render();
+}
+form.addEventListener('input', render);
+document.querySelector('#reset').addEventListener('click', reset);
+document.querySelector('#print').addEventListener('click', () => {
+  document.querySelector('details').open = true;
+  if (!form.reportValidity()) return;
+  window.print();
+});
+reset();
+
+})();
+</script>
 </body>
 </html>
