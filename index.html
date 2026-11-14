@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173f35">
+  <title>Helio Home · Energy & Solar Advisor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
+    <div class="workspace">
+      <section class="inputs card" aria-labelledby="plan-title">
+        <div class="section-heading"><div><p class="eyebrow">BUILD YOUR PLAN</p><h2 id="plan-title">A little about your home</h2></div><button type="button" id="reset" class="text-button">Reset</button></div>
+        <form id="calculator">
+          <label class="customer">Customer / project name <input id="customer" type="text" maxlength="100" placeholder="e.g. The Johnson home" autocomplete="off"></label>
+          <fieldset><legend><span>01</span> Current electricity use</legend><div class="field-grid">
+            <label>Monthly electricity use <div class="input-wrap"><input id="monthlyKwh" type="number" min="0" max="100000" step="any" required><span>kWh</span></div></label>
+            <label>Electricity price <div class="input-wrap"><input id="rate" type="number" min="0" max="10" step="any" required><span>$/kWh</span></div></label>
+          </div><p class="hint">Use the last 12 months of bills to find your average. Fixed utility charges are excluded.</p></fieldset>
+          <fieldset><legend><span>02</span> Smart home improvements</legend><label for="efficiency">Estimated energy reduction <strong id="efficiency-value">15%</strong></label><input id="efficiency" type="range" min="0" max="50" step="1"><div class="range-labels"><span>0% · no upgrades</span><span>50%</span></div><p class="hint">Potential savings from smart thermostats, efficient appliances, lighting, and insulation. This is a scenario assumption, not a measured result.</p></fieldset>
+          <fieldset><legend><span>03</span> Your solar setup</legend><div class="field-grid">
+            <label>Solar system size <div class="input-wrap"><input id="solarKw" type="number" min="0" max="1000" step="any" required><span>kW</span></div></label>
+            <label>Peak sun hours / day <div class="input-wrap"><input id="sunHours" type="number" min="0" max="24" step="any" required><span>hours</span></div></label>
+            <label>System performance <div class="input-wrap"><input id="performance" type="number" min="0" max="100" step="any" required><span>%</span></div></label>
+            <label>Solar used at home <div class="input-wrap"><input id="selfUse" type="number" min="0" max="100" step="any" required><span>%</span></div></label>
+            <label>Export credit rate <div class="input-wrap"><input id="exportRate" type="number" min="0" max="10" step="any" required><span>$/kWh</span></div></label>
+          </div><p class="hint">Peak sun hours are not daylight hours. Performance accounts for system losses; self-use depends on when you consume power. Export rules vary by utility.</p></fieldset>
+          <details><summary>Project costs & incentives <span aria-hidden="true">+</span></summary><div class="field-grid cost-fields">
+            <label>Solar installation <div class="input-wrap"><input id="solarCost" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
+            <label>Smart home upgrades <div class="input-wrap"><input id="upgradeCost" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
+            <label>Verified incentives <div class="input-wrap"><input id="incentive" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
+            <label>Annual maintenance <div class="input-wrap"><input id="annualCost" type="number" min="0" max="1000000" step="any" required><span>$/yr</span></div></label>
+            <label>Monitoring subscription <div class="input-wrap"><input id="monthlyFee" type="number" min="0" max="100000" step="any" required><span>$/mo</span></div></label>
+          </div><p class="hint">Enter incentives only after confirming eligibility. No tax credit is assumed. Financing is excluded.</p></details>
+        </form>
+      </section>
+      <section class="results" aria-labelledby="results-title">
+        <div class="results-heading"><p class="eyebrow">YOUR HOME, REIMAGINED</p><h2 id="results-title">Your energy outlook</h2><p id="report-name" hidden></p><p id="error" role="alert" hidden>Enter valid values in the highlighted fields to update your estimate.</p></div>
+        <div id="estimate-results" aria-live="polite" aria-atomic="true">
+          <div class="savings-card"><span class="pill">ILLUSTRATIVE ESTIMATE</span><p>Potential annual savings</p><div class="big-number" id="annual-savings"></div><p class="monthly" id="monthly-savings"></p><div class="savings-footer"><span>Reduction in grid electricity</span><strong id="grid-reduction"></strong></div></div>
+          <div class="metric-grid"><div class="card metric"><span>Net upfront investment</span><strong id="net-cost"></strong><small>After entered incentives</small></div><div class="card metric"><span>Simple payback</span><strong id="payback"></strong><small>No financing or rate inflation</small></div></div>
+          <div class="card breakdown"><h3>Where your savings come from</h3><div class="bar-legend"><span><i class="dot green"></i> Smart upgrades</span><span><i class="dot gold"></i> Solar + export credit</span></div><div class="savings-bar" aria-hidden="true"><span id="efficiency-bar"></span><span id="solar-bar"></span></div><dl><div><dt>Energy efficiency savings</dt><dd id="efficiency-savings"></dd></div><div><dt>Solar use + export credit</dt><dd id="solar-savings"></dd></div><div><dt>Maintenance + subscription</dt><dd id="operating-cost"></dd></div><div class="total"><dt>Net annual savings</dt><dd id="total-savings"></dd></div></dl></div>
+          <div class="card flow"><h3>Your annual energy picture</h3><dl><div><dt>Electricity use today</dt><dd id="annual-usage"></dd></div><div><dt>Use after smart upgrades</dt><dd id="reduced-usage"></dd></div><div><dt>Solar generation</dt><dd id="production"></dd></div><div><dt>Solar used at home</dt><dd id="solar-used"></dd></div><div><dt>Solar exported to grid</dt><dd id="exports"></dd></div><div><dt>Electricity bought from grid</dt><dd id="grid-kwh"></dd></div><div class="total"><dt>Annual cost today</dt><dd id="baseline"></dd></div><div><dt>Annual cost with your plan</dt><dd id="annual-after"></dd></div></dl><p class="hint">Plan cost includes electricity imports, export credits, maintenance, and subscriptions. A negative cost means modeled credits exceed operating costs; utilities may limit payouts.</p></div>
+        </div>
+        <div class="next-step"><span class="step-icon" aria-hidden="true">&rarr;</span><div><h3>Turn a possibility into a plan.</h3><p>Confirm your utility rates, roof condition, shading, and local installer quote before making an investment.</p></div></div>
+      </section>
+    </div>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. Results exclude fixed utility charges, batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
+  </main>
+  <footer><a class="brand" href="./">helio<span>home</span></a><span>Connected homes. Thoughtful energy.</span><span>Class project · Concept tool</span></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
