@@ -33,14 +33,18 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 /* Private, local bill-photo import. */
 .bill-upload{padding:20px;background:#f2f5eb;border:1px solid var(--line);border-radius:9px;margin:18px 0 24px}.bill-upload .eyebrow{font-size:8px;margin-bottom:8px}.bill-upload h3{font-size:16px;margin-bottom:9px}.bill-upload>p:not(.eyebrow){font-size:11px;color:#53665a;line-height:1.8}.bill-upload button{background:#fff;margin-top:14px}.bill-upload #bill-added-status:empty{display:none}#bill-import-dialog{width:calc(100% - 32px);max-width:560px;max-height:90vh;overflow-y:auto;border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--paper);color:var(--ink)}#bill-import-dialog::backdrop{background:#143b31a8}.bill-import-status{font-size:13px;line-height:1.8;padding:14px;border:1px solid var(--line);background:#edf2e5;border-radius:7px;margin-top:18px}#bill-import-form{margin-top:18px}#bill-import-form>label{margin-top:16px}#bill-import-form select{font:inherit;width:100%;border:1px solid var(--line);border-radius:6px;background:white;color:var(--ink);padding:10px;margin-top:7px}.field-note{font-size:11px;line-height:1.6;color:#53665a;margin-top:5px}.field-note.uncertain{color:#8c441c;background:#fff1d8;padding:8px;border-radius:5px;font-weight:600}#bill-import-form .check-label{display:flex;align-items:start;gap:10px;line-height:1.8;font-size:12px}#bill-import-form .check-label[hidden]{display:none}#bill-import-form input[type=checkbox]{width:auto;flex:0 0 auto;margin-top:5px;accent-color:var(--ink)}#bill-import-form input:invalid{border-color:#dce3d7}#bill-import-form input:user-invalid{border-color:#b8563a}#bill-import-form select:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 @media print{.bill-upload,#bill-import-dialog{display:none!important}}
+/* Customer help with honest contact availability. */
+.header-actions{display:flex;gap:8px;align-items:center}.topbar{gap:15px}.header-actions button{white-space:nowrap}#open-help{background:#eaf0df;border-color:#d6e0cb}#help-dialog{width:calc(100% - 32px);max-width:620px;max-height:90vh;overflow-y:auto;border:1px solid var(--line);border-radius:14px;padding:28px;background:var(--paper);color:var(--ink)}#help-dialog::backdrop{background:#143b31a8}#help-intro{font-size:13px;color:#53665a;margin-top:18px}.help-contact-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0 24px}.help-contact-options>div{border:1px solid var(--line);border-radius:9px;padding:18px;background:#fff}.help-contact-options h3{margin-bottom:8px}.help-contact-options p{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8}.help-status{display:inline-block;font-size:10px;background:#edf1e4;color:#52684b;padding:4px 8px;border-radius:20px}.help-faq-heading{margin-bottom:12px}#help-dialog details{margin-top:0;padding:14px 0;border-top:1px solid var(--line)}#help-dialog details p{font-size:12px;color:#53665a;line-height:1.9;margin-top:12px}.help-review-link{display:inline-block;font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-top:18px}#help-heading{font-size:22px}
+@media(max-width:900px){.topbar .badge{display:none}}@media(max-width:600px){.topbar{min-height:75px;height:auto;padding-top:14px;padding-bottom:14px;gap:10px;flex-wrap:wrap}.topbar .brand{font-size:23px}.topbar .brand-icon{font-size:30px;margin-right:3px}.header-actions button{font-size:11px;padding:8px 10px}.header-actions button span{margin-left:4px}.help-contact-options{grid-template-columns:1fr;gap:10px}#help-dialog{padding:22px}}
+@media print{.header-actions,#help-dialog{display:none!important}}
 
 </style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></header>
+  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><div class="header-actions"><button type="button" id="open-help" aria-haspopup="dialog" aria-controls="help-dialog">Need help?</button><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></div></header>
   <main>
     <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
-    <section class="energy-review card" aria-labelledby="review-title">
+    <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
       <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
       <div class="review-layout">
         <div class="review-entry">
@@ -139,6 +143,19 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
     </section>
     <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
   </main>
+  <dialog id="help-dialog" aria-labelledby="help-heading" aria-describedby="help-intro">
+    <div class="section-heading"><div><p class="eyebrow">WE'RE HERE TO HELP YOU GET STARTED</p><h2 id="help-heading">How can we help?</h2></div><button type="button" id="close-help" aria-label="Close help">Close</button></div>
+    <p id="help-intro">Find quick answers about your energy review and solar estimates.</p>
+    <div class="help-contact-options"><div><h3>Call our team</h3><span class="help-status">Coming soon</span><p>A business phone number has not been added yet.</p></div><div><h3>Live chat</h3><span class="help-status">Coming soon</span><p>Live chat is not connected yet. No agent is currently available through this app.</p></div></div>
+    <h3 class="help-faq-heading">Quick answers</h3>
+    <details><summary>How do I review my electricity bills?</summary><p>Enter January–December usage in kWh and bill costs in USD. All 12 months are needed for your energy review. Zero is allowed. Use bills from the same calendar year.</p></details>
+    <details><summary>Can I use a photo of my bill?</summary><p>Choose a PNG, JPG, or WebP bill photo in Homeowner Energy Review. The full app reads it locally in your browser. Review and correct all three fields before adding them. Unreadable values are flagged, and existing months require replacement confirmation.</p></details>
+    <details><summary>Are the solar savings guaranteed?</summary><p>No. Results depend on the rates, solar output, fees, and other assumptions shown in Current costs vs. solar. Confirm these with your utility and installer before investing.</p></details>
+    <details><summary>How do I request a home assessment?</summary><p>Complete your bill review and use Request a Home Assessment in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
+    <details><summary>Is my information saved?</summary><p>Monthly entries stay in this page until you reload. Bill photos and full recognized text are not saved or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
+    <a id="help-review-link" href="#homeowner-review" class="help-review-link">Go to Homeowner Energy Review &rarr;</a>
+    <p class="hint">These are general answers about using the app. This panel is not a live or AI chat service.</p>
+  </dialog>
   <dialog id="bill-import-dialog" aria-labelledby="bill-import-heading" aria-describedby="bill-import-privacy">
     <div class="section-heading"><div><p class="eyebrow">REVIEW BEFORE ADDING</p><h2 id="bill-import-heading">Check your bill details</h2></div><button type="button" id="bill-import-cancel">Cancel</button></div>
     <p id="bill-import-privacy" class="hint">The image is processed locally and discarded after reading. Only the month, kWh, and cost you confirm will enter your table. Check that this bill belongs to the same calendar year as your other entries.</p>
@@ -861,6 +878,13 @@ assessmentForm.addEventListener('submit', event => {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   set('assessment-status', 'Your request file is ready to share with a provider. Nothing was sent and no appointment was booked.');
+});
+const helpDialog = document.querySelector('#help-dialog');
+document.querySelector('#open-help').addEventListener('click', () => helpDialog.showModal());
+document.querySelector('#close-help').addEventListener('click', () => helpDialog.close());
+document.querySelector('#help-review-link').addEventListener('click', () => {
+  helpDialog.close();
+  document.getElementById('bill-kwh-0').focus({ preventScroll: true });
 });
 setupBillImport((month, kwh, cost) => {
   document.getElementById(`bill-kwh-${month}`).value = kwh;

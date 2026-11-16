@@ -313,6 +313,13 @@ assessmentForm.addEventListener('submit', event => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   set('assessment-status', 'Your request file is ready to share with a provider. Nothing was sent and no appointment was booked.');
 });
+const helpDialog = document.querySelector('#help-dialog');
+document.querySelector('#open-help').addEventListener('click', () => helpDialog.showModal());
+document.querySelector('#close-help').addEventListener('click', () => helpDialog.close());
+document.querySelector('#help-review-link').addEventListener('click', () => {
+  helpDialog.close();
+  document.getElementById('bill-kwh-0').focus({ preventScroll: true });
+});
 setupBillImport((month, kwh, cost) => {
   document.getElementById(`bill-kwh-${month}`).value = kwh;
   document.getElementById(`bill-cost-${month}`).value = cost;
