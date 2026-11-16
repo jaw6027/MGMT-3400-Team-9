@@ -16,6 +16,12 @@
       <div class="review-layout">
         <div class="review-entry">
           <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Your entries stay in this page only and are cleared when it reloads.</p>
+          <div class="bill-upload">
+            <p class="eyebrow">LESS TYPING, MORE CLARITY</p><h3>Add a month from a bill photo</h3><p>Choose a clear, upright screenshot or photo of an English-language electricity bill. Review and correct the month, kWh, and bill total before adding them.</p>
+            <input id="bill-image" hidden type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose electricity bill photo" tabindex="-1">
+            <button type="button" id="choose-bill">Choose bill photo &rarr;</button><p class="hint">PNG, JPG, or WebP · up to 10 MB. Images are read on your device, not uploaded. We do not save the image, full bill text, name, address, or account number.</p>
+            <p id="bill-added-status" class="hint" role="status"></p>
+          </div>
           <form id="review-form" aria-describedby="review-help" novalidate>
             <table class="bills-table"><caption class="sr-only">Monthly electricity usage and bill costs</caption><thead><tr><th scope="col">Month</th><th scope="col">Usage (kWh)</th><th scope="col">Bill cost ($)</th></tr></thead><tbody id="bill-rows"></tbody></table>
           </form>
@@ -104,6 +110,21 @@
     </section>
     <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
   </main>
+  <dialog id="bill-import-dialog" aria-labelledby="bill-import-heading" aria-describedby="bill-import-privacy">
+    <div class="section-heading"><div><p class="eyebrow">REVIEW BEFORE ADDING</p><h2 id="bill-import-heading">Check your bill details</h2></div><button type="button" id="bill-import-cancel">Cancel</button></div>
+    <p id="bill-import-privacy" class="hint">The image is processed locally and discarded after reading. Only the month, kWh, and cost you confirm will enter your table. Check that this bill belongs to the same calendar year as your other entries.</p>
+    <p id="bill-import-status" class="bill-import-status" role="status"></p><p id="bill-reading" class="hint">Please keep this window open while reading. You can cancel at any time.</p>
+    <form id="bill-import-form" hidden>
+      <label for="import-month">Billing month</label><select id="import-month" required aria-describedby="import-month-note"><option value="">Select month</option></select><p id="import-month-note" class="field-note"></p>
+      <label for="import-kwh">Electricity usage (kWh)</label><input id="import-kwh" type="number" min="0" max="100000" step="any" required aria-describedby="import-kwh-note"><p id="import-kwh-note" class="field-note"></p>
+      <label for="import-cost">Total bill cost (USD)</label><input id="import-cost" type="number" min="0" max="10000000" step="any" required aria-describedby="import-cost-note"><p id="import-cost-note" class="field-note"></p>
+      <p class="hint">Check total cost against current bill charges; “amount due” can include past balances. Verify decimal points and commas. No values are guaranteed correct, even when detected.</p>
+      <p id="bill-destination" class="hint"></p>
+      <label id="bill-replace-label" class="check-label" hidden><input id="bill-replace" type="checkbox"> I want to replace this month's existing usage and cost.</label>
+      <label class="check-label"><input id="bill-reviewed" type="checkbox" required> I checked all three values against the original bill and corrected them where needed.</label>
+      <button type="submit" id="bill-import-confirm" class="primary-button" disabled>Add reviewed month to table</button>
+    </form>
+  </dialog>
   <dialog id="assessment-dialog" aria-labelledby="assessment-heading" aria-describedby="assessment-explanation">
     <div class="section-heading"><div><p class="eyebrow">TAKE THE NEXT STEP</p><h2 id="assessment-heading">Request a Home Assessment</h2></div><button type="button" id="assessment-close" aria-label="Close assessment request">Close</button></div>
     <p id="assessment-explanation">Prepare a downloadable request to share with your chosen provider. This demo does not send requests or book appointments.</p>

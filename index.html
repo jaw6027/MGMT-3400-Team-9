@@ -30,6 +30,9 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 #assessment-dialog{max-width:560px;width:calc(100% - 32px);max-height:90vh;border:1px solid var(--line);border-radius:14px;padding:28px;color:var(--ink);background:var(--paper);overflow-y:auto}#assessment-dialog::backdrop{background:#143b31a8}#assessment-explanation{font-size:13px;color:#53665a;line-height:1.8;margin-top:20px}.assessment-selected{font-size:12px;background:#eaf0df;padding:12px;border-radius:6px;margin-top:16px}#assessment-form{margin-top:18px}#assessment-form label{margin-top:14px}#assessment-form textarea{width:100%;border:1px solid var(--line);background:#fafbf7;border-radius:6px;padding:10px;font:inherit;color:var(--ink);margin-top:7px;resize:vertical}#assessment-form textarea:focus{outline:2px solid var(--green);outline-offset:2px}#assessment-form input:invalid{border-color:#dce3d7}#assessment-form input:user-invalid{border-color:#b8563a}
 @media(max-width:760px){.personalized-recommendation{padding:20px}.recommendation-layout{grid-template-columns:1fr;gap:10px}.recommendation-layout h3{font-size:22px}.assessment-cta{display:block}.assessment-cta button{margin-top:18px}.recommended-package{padding:20px}#assessment-dialog{padding:22px}}
 @media print{.personalized-recommendation{break-before:page;break-inside:auto;margin-top:0;padding:15px}.recommendation-layout{grid-template-columns:1fr 1fr;gap:20px}.recommendation-layout p,.recommendation-layout li{font-size:10px;line-height:1.7}.recommendation-layout h3{font-size:18px}.recommendation-label{font-size:8px}.recommendation-layout .recommendation-evidence{font-size:10px}.recommended-package{padding:15px}.recommendation-solar-note{font-size:10px}.assessment-cta,.assessment-demo-note,.recommendation-jump,#assessment-dialog{display:none!important}}
+/* Private, local bill-photo import. */
+.bill-upload{padding:20px;background:#f2f5eb;border:1px solid var(--line);border-radius:9px;margin:18px 0 24px}.bill-upload .eyebrow{font-size:8px;margin-bottom:8px}.bill-upload h3{font-size:16px;margin-bottom:9px}.bill-upload>p:not(.eyebrow){font-size:11px;color:#53665a;line-height:1.8}.bill-upload button{background:#fff;margin-top:14px}.bill-upload #bill-added-status:empty{display:none}#bill-import-dialog{width:calc(100% - 32px);max-width:560px;max-height:90vh;overflow-y:auto;border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--paper);color:var(--ink)}#bill-import-dialog::backdrop{background:#143b31a8}.bill-import-status{font-size:13px;line-height:1.8;padding:14px;border:1px solid var(--line);background:#edf2e5;border-radius:7px;margin-top:18px}#bill-import-form{margin-top:18px}#bill-import-form>label{margin-top:16px}#bill-import-form select{font:inherit;width:100%;border:1px solid var(--line);border-radius:6px;background:white;color:var(--ink);padding:10px;margin-top:7px}.field-note{font-size:11px;line-height:1.6;color:#53665a;margin-top:5px}.field-note.uncertain{color:#8c441c;background:#fff1d8;padding:8px;border-radius:5px;font-weight:600}#bill-import-form .check-label{display:flex;align-items:start;gap:10px;line-height:1.8;font-size:12px}#bill-import-form .check-label[hidden]{display:none}#bill-import-form input[type=checkbox]{width:auto;flex:0 0 auto;margin-top:5px;accent-color:var(--ink)}#bill-import-form input:invalid{border-color:#dce3d7}#bill-import-form input:user-invalid{border-color:#b8563a}#bill-import-form select:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+@media print{.bill-upload,#bill-import-dialog{display:none!important}}
 
 </style>
 </head>
@@ -42,6 +45,12 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
       <div class="review-layout">
         <div class="review-entry">
           <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Your entries stay in this page only and are cleared when it reloads.</p>
+          <div class="bill-upload">
+            <p class="eyebrow">LESS TYPING, MORE CLARITY</p><h3>Add a month from a bill photo</h3><p>Choose a clear, upright screenshot or photo of an English-language electricity bill. Review and correct the month, kWh, and bill total before adding them.</p>
+            <input id="bill-image" hidden type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose electricity bill photo" tabindex="-1">
+            <button type="button" id="choose-bill">Choose bill photo &rarr;</button><p class="hint">PNG, JPG, or WebP · up to 10 MB. Images are read on your device, not uploaded. We do not save the image, full bill text, name, address, or account number.</p>
+            <p id="bill-added-status" class="hint" role="status"></p>
+          </div>
           <form id="review-form" aria-describedby="review-help" novalidate>
             <table class="bills-table"><caption class="sr-only">Monthly electricity usage and bill costs</caption><thead><tr><th scope="col">Month</th><th scope="col">Usage (kWh)</th><th scope="col">Bill cost ($)</th></tr></thead><tbody id="bill-rows"></tbody></table>
           </form>
@@ -130,6 +139,21 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
     </section>
     <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
   </main>
+  <dialog id="bill-import-dialog" aria-labelledby="bill-import-heading" aria-describedby="bill-import-privacy">
+    <div class="section-heading"><div><p class="eyebrow">REVIEW BEFORE ADDING</p><h2 id="bill-import-heading">Check your bill details</h2></div><button type="button" id="bill-import-cancel">Cancel</button></div>
+    <p id="bill-import-privacy" class="hint">The image is processed locally and discarded after reading. Only the month, kWh, and cost you confirm will enter your table. Check that this bill belongs to the same calendar year as your other entries.</p>
+    <p id="bill-import-status" class="bill-import-status" role="status"></p><p id="bill-reading" class="hint">Please keep this window open while reading. You can cancel at any time.</p>
+    <form id="bill-import-form" hidden>
+      <label for="import-month">Billing month</label><select id="import-month" required aria-describedby="import-month-note"><option value="">Select month</option></select><p id="import-month-note" class="field-note"></p>
+      <label for="import-kwh">Electricity usage (kWh)</label><input id="import-kwh" type="number" min="0" max="100000" step="any" required aria-describedby="import-kwh-note"><p id="import-kwh-note" class="field-note"></p>
+      <label for="import-cost">Total bill cost (USD)</label><input id="import-cost" type="number" min="0" max="10000000" step="any" required aria-describedby="import-cost-note"><p id="import-cost-note" class="field-note"></p>
+      <p class="hint">Check total cost against current bill charges; “amount due” can include past balances. Verify decimal points and commas. No values are guaranteed correct, even when detected.</p>
+      <p id="bill-destination" class="hint"></p>
+      <label id="bill-replace-label" class="check-label" hidden><input id="bill-replace" type="checkbox"> I want to replace this month's existing usage and cost.</label>
+      <label class="check-label"><input id="bill-reviewed" type="checkbox" required> I checked all three values against the original bill and corrected them where needed.</label>
+      <button type="submit" id="bill-import-confirm" class="primary-button" disabled>Add reviewed month to table</button>
+    </form>
+  </dialog>
   <dialog id="assessment-dialog" aria-labelledby="assessment-heading" aria-describedby="assessment-explanation">
     <div class="section-heading"><div><p class="eyebrow">TAKE THE NEXT STEP</p><h2 id="assessment-heading">Request a Home Assessment</h2></div><button type="button" id="assessment-close" aria-label="Close assessment request">Close</button></div>
     <p id="assessment-explanation">Prepare a downloadable request to share with your chosen provider. This demo does not send requests or book appointments.</p>
@@ -280,6 +304,253 @@ function recommendEnergy(review, comparison = null) {
 }
 
 
+// Return only the three requested fields, never OCR text or account details.
+function parseBillText(text, confidence = 100) {
+  const missing = label => ({ value: null, status: `Unreadable or not found — enter ${label}.` });
+  const result = { month: missing('the billing month'), kwh: missing('usage in kWh'), cost: missing('the bill total') };
+  if (typeof text !== 'string' || !text.trim() || !Number.isFinite(confidence) || confidence < 60) {
+    if (confidence < 60) for (const field of Object.values(result)) field.status = 'Low reading confidence — check the original bill and enter this value.';
+    return result;
+  }
+  const lines = text.replace(/\r/g, '').split('\n').map(line => line.trim()).filter(Boolean);
+  const found = { month: new Set(), kwh: new Set(), cost: new Set() };
+  const numeric = '(?:\\d{1,3}(?:,\\d{3})+|\\d+)(?:\\.\\d{1,2})?';
+  const usageLabel = /\b(?:(?:total|electric|electricity|energy)\s+)*(?:usage|consumption|used)\b|\btotal\s+kwh\b|\bkwh\s+used\b/i;
+  const totalLabel = /\b(?:total\s+amount\s+due|total\s+due|amount\s+due|total\s+bill|bill\s+total|total\s+cost|(?:total\s+)?current\s+charges)\b/i;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const excluded = /\b(?:previous|prior|last\s+(?:month|year)|history|meter\s+reading|account|export|generation|credit)\b/i.test(line);
+    if (!excluded) {
+      if (usageLabel.test(line)) {
+        const quantities = [...line.matchAll(new RegExp(`(?:^|[^\\d.,-])(${numeric})\\s*kwh\\b`, 'gi'))];
+        if (quantities.length > 1) for (const quantity of quantities) found.kwh.add(Number(quantity[1].replaceAll(',', '')));
+        const tail = line.slice(line.search(usageLabel)).replace(usageLabel, '').replace(/^\s*\(kwh\)/i, '');
+        const match = tail.match(new RegExp(`^\\s*[:=]?\\s*(?:kwh\\s*[:=]?\\s*)?(${numeric})\\s*(?:kwh\\b|$)`, 'i'));
+        if (match) found.kwh.add(Number(match[1].replaceAll(',', '')));
+        else if (!tail.replace(/[:\s]/g, '') && lines[i + 1]) {
+          const next = lines[i + 1].match(new RegExp(`^(${numeric})\\s*kwh$`, 'i'));
+          if (next) found.kwh.add(Number(next[1].replaceAll(',', '')));
+        }
+      } else if (!/\b(?:rate|charge|demand|per)\b|\//i.test(line)) {
+        const match = line.match(new RegExp(`^(${numeric})\\s*kwh$`, 'i'));
+        if (match) found.kwh.add(Number(match[1].replaceAll(',', '')));
+      }
+      if (totalLabel.test(line)) {
+        const tail = line.slice(line.search(totalLabel)).replace(totalLabel, '');
+        const valueLine = tail.replace(/[:\s]/g, '') ? tail : (lines[i + 1] || '');
+        const match = valueLine.match(new RegExp(`^\\s*:?\\s*\\$?\\s*(${numeric})\\s*(?:USD)?\\s*$`, 'i'));
+        if (match) found.cost.add(Number(match[1].replaceAll(',', '')));
+      }
+    }
+    // Use explicitly labeled billing months or bill/statement dates, not due dates or service-period ranges.
+    const date = line.match(/\b(?:billing\s+month|bill(?:ing)?\s+date|statement\s+date|statement\s+for)\s*:?\s*(.+)$/i);
+    if (date && !excluded) {
+      const value = date[1];
+      const name = value.match(/^([a-z]+)\b/i);
+      const monthIndex = name ? months.findIndex(month => month.toLowerCase().startsWith(name[1].toLowerCase()) && name[1].length >= 3) : -1;
+      if (monthIndex >= 0) found.month.add(monthIndex);
+      else {
+        const iso = value.match(/^\d{4}-(\d{2})-\d{2}\b/);
+        const monthYear = value.match(/^(\d{1,2})\/(\d{4})\b/);
+        const us = value.match(/^(\d{1,2})\/(\d{1,2})\/\d{4}\b/);
+        // Ambiguous numeric day/month ordering is deliberately left for the homeowner.
+        const month = iso ? Number(iso[1]) : monthYear ? Number(monthYear[1]) : us && Number(us[2]) > 12 ? Number(us[1]) : null;
+        if (month >= 1 && month <= 12) found.month.add(month - 1);
+      }
+    }
+  }
+  for (const key of ['month', 'kwh', 'cost']) {
+    const candidates = [...found[key]];
+    const max = key === 'kwh' ? 100000 : key === 'cost' ? 10000000 : 11;
+    if (candidates.length > 1) result[key].status = 'Multiple possible values — check the bill and select or enter the correct value.';
+    else if (candidates.length === 1 && candidates[0] <= max) result[key] = { value: candidates[0], status: 'Detected — verify against the original bill.' };
+    else if (candidates.length === 1) result[key].status = 'Value is outside the supported range — check the original bill.';
+  }
+  return result;
+}
+
+
+async function readBillImage(file, { signal, onProgress = () => {} } = {}) {
+  if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('Choose a PNG, JPG, or WebP image. PDFs and HEIC photos are not supported.');
+  if (!file.size || file.size > 10 * 1024 * 1024) throw new Error('Choose a nonempty image smaller than 10 MB.');
+  if (!/^https?:$/.test(location.protocol)) throw new Error('Image reading is unavailable in this preview. Open the full served app, or enter the values manually.');
+  let bitmap;
+  let worker;
+  let canvas;
+  let abortHandler;
+  const stopped = () => new DOMException('Reading cancelled', 'AbortError');
+  const abortPromise = new Promise((_, reject) => {
+    abortHandler = () => { worker?.terminate(); reject(stopped()); };
+    signal?.addEventListener('abort', abortHandler, { once: true });
+    if (signal?.aborted) abortHandler();
+  });
+  const work = async () => {
+    bitmap = await createImageBitmap(file);
+    if (signal?.aborted) { bitmap.close(); bitmap = null; throw stopped(); }
+    if (bitmap.width * bitmap.height > 25000000) throw new Error('This image is too large to read safely. Crop the bill to the usage and total sections, then try again.');
+    canvas = document.createElement('canvas');
+    const scale = Math.min(1, 2400 / Math.max(bitmap.width, bitmap.height));
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const context = canvas.getContext('2d');
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    bitmap = null;
+    let engine;
+    try {
+      const module = await import(new URL('vendor/ocr/tesseract.esm.min.js', document.baseURI).href);
+      engine = module.default;
+    } catch {
+      throw new Error('Image reading could not load in this preview. Open the full app or enter the values manually.');
+    }
+    if (signal?.aborted) throw stopped();
+    const base = new URL('vendor/ocr/', document.baseURI).href;
+    worker = await engine.createWorker('eng', 1, {
+      workerPath: `${base}worker.min.js`, corePath: base, langPath: base,
+      workerBlobURL: false, cacheMethod: 'none', logging: false,
+      errorHandler: () => {},
+      logger: info => {
+        if (!signal?.aborted) onProgress(info.status === 'recognizing text' ? Math.round(info.progress * 100) : null);
+      },
+    }).then(created => {
+      if (signal?.aborted) { created.terminate(); throw stopped(); }
+      return created;
+    });
+    if (signal?.aborted) throw stopped();
+    const output = await worker.recognize(canvas, {}, { text: true, blocks: false, hocr: false, tsv: false });
+    const extracted = parseBillText(output.data.text, output.data.confidence);
+    output.data.text = '';
+    return extracted;
+  };
+  try {
+    return await Promise.race([work(), abortPromise]);
+  } catch (error) {
+    if (error.name === 'AbortError') throw error;
+    if (/Choose |too large|preview/.test(error.message || '')) throw error;
+    throw new Error('This image could not be read. Try a clear, upright photo or screenshot, or enter all three values manually.');
+  } finally {
+    signal?.removeEventListener('abort', abortHandler);
+    await worker?.terminate();
+    bitmap?.close();
+    if (canvas) { canvas.width = 0; canvas.height = 0; }
+  }
+}
+
+
+function setupBillImport(onApply) {
+  const picker = document.querySelector('#bill-image');
+  const dialog = document.querySelector('#bill-import-dialog');
+  const editForm = document.querySelector('#bill-import-form');
+  const reading = document.querySelector('#bill-reading');
+  const status = document.querySelector('#bill-import-status');
+  const destination = document.querySelector('#bill-destination');
+  const confirm = document.querySelector('#bill-import-confirm');
+  const replace = document.querySelector('#bill-replace');
+  const replaceLabel = document.querySelector('#bill-replace-label');
+  const monthSelect = document.querySelector('#import-month');
+  months.forEach((month, index) => monthSelect.add(new Option(month, String(index))));
+  let controller = null;
+  let task = 0;
+
+  function updateDestination() {
+    const month = monthSelect.value;
+    const kwh = month === '' ? null : document.getElementById(`bill-kwh-${month}`);
+    const cost = month === '' ? null : document.getElementById(`bill-cost-${month}`);
+    const occupied = kwh && (kwh.value !== '' || cost.value !== '');
+    replaceLabel.hidden = !occupied;
+    replace.required = Boolean(occupied);
+    confirm.disabled = month === '' || !editForm.checkValidity();
+    destination.textContent = month === '' ? 'Select the month to add to your table.' : occupied
+      ? `${months[Number(month)]} already has usage ${kwh.value || '(blank)'} kWh and cost $${cost.value || '(blank)'}. Confirm replacement below; other months will stay unchanged.`
+      : `Only ${months[Number(month)]} will be added to your table.`;
+  }
+  function fillDraft(draft) {
+    for (const [key, id] of [['month', 'import-month'], ['kwh', 'import-kwh'], ['cost', 'import-cost']]) {
+      document.getElementById(id).value = draft[key].value ?? '';
+      const note = document.getElementById(`import-${key}-note`);
+      note.textContent = draft[key].status;
+      note.classList.toggle('uncertain', draft[key].value === null);
+    }
+    reading.hidden = true;
+    editForm.hidden = false;
+    updateDestination();
+  }
+  document.querySelector('#choose-bill').addEventListener('click', () => picker.click());
+  picker.addEventListener('change', async () => {
+    const file = picker.files?.[0];
+    picker.value = '';
+    if (!file) return;
+    task += 1;
+    const currentTask = task;
+    controller?.abort();
+    const activeController = new AbortController();
+    controller = activeController;
+    const signal = activeController.signal;
+    editForm.reset();
+    editForm.hidden = true;
+    reading.hidden = false;
+    status.textContent = 'Preparing private image reading on your device…';
+    if (!dialog.open) dialog.showModal();
+    const timer = setTimeout(() => activeController.abort(), 90000);
+    try {
+      const draft = await readBillImage(file, { signal, onProgress: percent => {
+        if (currentTask === task) status.textContent = percent === null ? 'Loading local image reader…' : `Reading bill on your device… ${percent}%`;
+      } });
+      if (currentTask !== task || !dialog.open) return;
+      status.textContent = 'Reading finished. Check every field against your bill; nothing has been added yet.';
+      fillDraft(draft);
+    } catch (error) {
+      if (currentTask !== task || !dialog.open) return;
+      status.textContent = signal.aborted ? 'Reading stopped or timed out. You can enter the three values manually, or cancel and try another image.' : error.message;
+      fillDraft(parseBillText(''));
+    } finally {
+      clearTimeout(timer);
+      if (currentTask === task) controller = null;
+    }
+  });
+  function clearBillDraft() {
+    task += 1;
+    controller?.abort();
+    controller = null;
+    editForm.reset();
+    status.textContent = '';
+    for (const key of ['month', 'kwh', 'cost']) document.getElementById(`import-${key}-note`).textContent = '';
+    destination.textContent = '';
+  }
+  function dismissBillDraft() {
+    clearBillDraft();
+    dialog.close();
+  }
+  document.querySelector('#bill-import-cancel').addEventListener('click', dismissBillDraft);
+  dialog.addEventListener('cancel', event => { event.preventDefault(); dismissBillDraft(); });
+  // A queued close event from a previous upload must not erase a newly opened draft.
+  dialog.addEventListener('close', () => { if (!dialog.open) clearBillDraft(); });
+  editForm.addEventListener('input', event => {
+    if (['import-month', 'import-kwh', 'import-cost'].includes(event.target.id)) {
+      document.querySelector('#bill-reviewed').checked = false;
+      const note = document.getElementById(`${event.target.id}-note`);
+      note.textContent = 'Edited — verify against your original bill.';
+      note.classList.remove('uncertain');
+    }
+    if (event.target === monthSelect) replace.checked = false;
+    updateDestination();
+  });
+  editForm.addEventListener('submit', event => {
+    event.preventDefault();
+    updateDestination();
+    if (confirm.disabled || !editForm.reportValidity()) return;
+    const month = Number(monthSelect.value);
+    onApply(month, Number(document.querySelector('#import-kwh').value), Number(document.querySelector('#import-cost').value));
+    dismissBillDraft();
+    const message = document.querySelector('#bill-added-status');
+    message.textContent = `${months[month]} added from your reviewed values. The bill image and extracted text were discarded; other months were unchanged.`;
+    document.getElementById(`bill-kwh-${month}`).focus();
+  });
+}
+
+
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -414,12 +685,14 @@ reviewForm.addEventListener('input', event => {
   renderReview();
 });
 document.querySelector('#review-clear').addEventListener('click', () => {
+  set('bill-added-status', '');
   reviewForm.reset();
   exampleFields.clear();
   renderReview();
   set('review-progress', '0 of 12 months complete. Bills cleared; your solar plan has not been changed.');
 });
 document.querySelector('#review-example').addEventListener('click', () => {
+  set('bill-added-status', '');
   const sampleKwh = [1200, 1100, 900, 750, 800, 1050, 1400, 1350, 1000, 800, 950, 1150];
   sampleKwh.forEach((kwh, i) => {
     document.getElementById(`bill-kwh-${i}`).value = kwh;
@@ -588,6 +861,13 @@ assessmentForm.addEventListener('submit', event => {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   set('assessment-status', 'Your request file is ready to share with a provider. Nothing was sent and no appointment was booked.');
+});
+setupBillImport((month, kwh, cost) => {
+  document.getElementById(`bill-kwh-${month}`).value = kwh;
+  document.getElementById(`bill-cost-${month}`).value = cost;
+  exampleFields.delete(`bill-kwh-${month}`);
+  exampleFields.delete(`bill-cost-${month}`);
+  renderReview();
 });
 reset();
 renderReview();

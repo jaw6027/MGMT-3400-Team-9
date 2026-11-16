@@ -1,5 +1,6 @@
 import { defaults, estimate, compareCosts } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
+import { setupBillImport } from './bill-ui.js';
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -135,12 +136,14 @@ reviewForm.addEventListener('input', event => {
   renderReview();
 });
 document.querySelector('#review-clear').addEventListener('click', () => {
+  set('bill-added-status', '');
   reviewForm.reset();
   exampleFields.clear();
   renderReview();
   set('review-progress', '0 of 12 months complete. Bills cleared; your solar plan has not been changed.');
 });
 document.querySelector('#review-example').addEventListener('click', () => {
+  set('bill-added-status', '');
   const sampleKwh = [1200, 1100, 900, 750, 800, 1050, 1400, 1350, 1000, 800, 950, 1150];
   sampleKwh.forEach((kwh, i) => {
     document.getElementById(`bill-kwh-${i}`).value = kwh;
@@ -309,6 +312,13 @@ assessmentForm.addEventListener('submit', event => {
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   set('assessment-status', 'Your request file is ready to share with a provider. Nothing was sent and no appointment was booked.');
+});
+setupBillImport((month, kwh, cost) => {
+  document.getElementById(`bill-kwh-${month}`).value = kwh;
+  document.getElementById(`bill-cost-${month}`).value = cost;
+  exampleFields.delete(`bill-kwh-${month}`);
+  exampleFields.delete(`bill-cost-${month}`);
+  renderReview();
 });
 reset();
 renderReview();

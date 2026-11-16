@@ -4,18 +4,19 @@ A class-project prototype for a connected-home and solar business. Compare a hou
 
 ## Run
 
-Requires Python 3 to serve the application and Node.js 18+ to build and test it; there are no package dependencies to install. The committed standalone page can also be opened without building.
+Requires Python 3 to serve the application and Node.js 20+ to install, build, and test it. Pinned development dependencies supply the local OCR engine, English language data, and browser test runner. The committed standalone page supports manual entry without building; photo reading requires the full served app and generated OCR assets.
 
 ```sh
 cd /workspace/MGMT-3400-Team-9
+npm ci --include=dev --cache /tmp/helio-npm-cache
 npm start
 ```
 
-Open the served application on port 3000 using your development environment's supported browser access. Alternatively, open `index.html` directly in a browser or HTML preview: its styles and calculator code are bundled into the file, so no neighboring assets or JavaScript module loading are needed. To serve without npm, use `python3 -m http.server 3000 --bind 0.0.0.0`.
+Open the served application on port 3000 using your development environment's supported browser access. Alternatively, open `index.html` directly in a browser or HTML preview: its styles and manual calculator code are bundled into the file. Photo reading additionally loads same-origin OCR modules, workers, WebAssembly, and language data from `vendor/ocr/`; a standalone file or restricted preview may not allow these. The UI then explains the limitation and permits manual correction. To serve without npm, use `python3 -m http.server 3000 --bind 0.0.0.0`.
 
 ### Editing
 
-Edit the markup in `scripts/index.template.html`, the styles in `style.css`, the interface logic in `app.js`, the solar calculation model in `energy.js`, and the bill review model in `review.js`. Run `npm run build` to regenerate the committed self-contained `index.html`. `npm start` also rebuilds automatically. Commit both source edits and the regenerated page.
+Edit the markup in `scripts/index.template.html`, the styles in `style.css`, the interface logic in `app.js`, the solar calculation model in `energy.js`, and the bill review model in `review.js`. The photo reader uses `bill-ocr.js`, its conservative text extraction rules live in `bill-parser.js`, and the confirmation dialog is managed by `bill-ui.js`. Run `npm run build` to regenerate the committed self-contained `index.html`. `npm start` also rebuilds automatically. The build copies integrity-verified npm assets into ignored `vendor/ocr/`; deploy that folder alongside `index.html` to enable photo reading. No public CDN or external OCR API is used at runtime. Commit both source edits and the regenerated page.
 
 ```sh
 npm test
@@ -29,7 +30,25 @@ Enter usage (kWh) and bill costs (USD) for January–December of one year. All 2
 
 The review shows annual totals, average monthly usage and bills, total billed cost divided by total usage, a monthly usage chart, all tied highest-use and highest-cost months, and months more than 20% above average usage. Recommendations suggest things to investigate; monthly bills alone cannot diagnose appliance loads or establish causes. Billing-period length and weather can affect comparisons. Zero annual usage has no per-kWh rate and cannot be applied to solar sizing.
 
-**Use average usage in solar plan** copies only average monthly kWh into the existing calculator. It preserves the variable electricity rate and all other assumptions: billed costs can include fixed fees and taxes, so their blended rate must not automatically become a solar savings rate. Editing or clearing bills does not silently overwrite the solar plan. **Print report** includes entered bills and the completed review along with the solar scenario. No utility connection, upload, or customer data storage is implemented.
+**Use average usage in solar plan** copies only average monthly kWh into the existing calculator. It preserves the variable electricity rate and all other assumptions: billed costs can include fixed fees and taxes, so their blended rate must not automatically become a solar savings rate. Editing or clearing bills does not silently overwrite the solar plan. **Print report** includes entered bills and the completed review along with the solar scenario. There is no utility-account connection, server upload, or customer data storage; bill photos are selected and read locally.
+
+### Importing a bill photo
+
+Choose **Choose bill photo** in Homeowner Energy Review. PNG, JPG, and WebP images up to 10 MB and 25 megapixels are supported; use a clear, upright English-language bill with US-style decimal amounts in USD. PDF and HEIC files are rejected. Reading happens locally in a web worker. There is a 90-second timeout and cancellation stops the job.
+
+The reader proposes only a billing month, kWh usage, and total cost. Labeled bill/statement dates and explicit billing months are considered; due dates and service-period ranges are not guessed as billing months. Ambiguous numeric dates, multiple candidate values, missing labels, low reading confidence, and unreadable images leave fields blank with warnings. Global OCR confidence is not a field-level guarantee. Bills vary widely, so every value needs human review; total amount due may include prior balances rather than only current charges.
+
+Correct the draft and check the review confirmation before adding it. Existing data in the selected month requires a separate replacement checkbox. Changing any extracted field resets the review confirmation; changing the destination resets replacement approval. Only that month's reviewed numeric values are copied into the table, and the existing reviews and recommendations update normally. Cancel or Escape discards the draft without changing the table. If OCR cannot run in a restricted preview, the dialog explicitly explains the problem and supports manual entry.
+
+**Privacy:** no image, filename, OCR transcript, address, account number, or name is sent to a server, added to the DOM, placed in browser storage, or written to app logs. The file picker is cleared immediately, decoding to a canvas removes file metadata, OCR text is reduced to three fields and discarded, and the worker is terminated after each read. OCR language caching in IndexedDB is disabled. The browser may cache nonpersonal app assets. Closing the dialog clears the draft; the confirmed month, usage, and cost remain only in the existing in-memory table until reload. Printed reports and explicitly downloaded assessment drafts can contain those confirmed numbers, but never the original image or its other text. Contact fields in the separate assessment request are manually provided, not copied from bills.
+
+Run the repeatable real-image browser test with:
+
+```sh
+npm run test:ocr
+```
+
+It generates synthetic bills in memory, starts an ephemeral local test server, and verifies actual OCR, corrections, overwrite approval, unreadable images, unsupported/corrupt files, cancellation, mobile layout, and absence of uploads or browser storage. It uses `/usr/bin/chromium` if available, otherwise a Playwright-installed Chromium; set `CHROMIUM_PATH` to use another installation. All test data is fictional. No real bills are committed.
 
 ### Personalized recommendation and home assessment request
 
@@ -53,4 +72,4 @@ Solar-only assumes no efficiency improvement; the combined case uses the selecte
 4. Expand **Project costs & incentives** to enter actual quotes and verified incentives.
 5. Review annual energy flows, savings, and simple payback; use **Print report** to print or save as PDF. **Reset** restores the sample household.
 
-All values are illustrative, in USD, and editable. No incentives are assumed by default. Annual production uses size × peak sun hours × 365 × performance. Solar consumed at home is capped at post-upgrade annual demand; surplus receives the entered export rate. This annual model does not simulate hourly or seasonal matching, credit caps, batteries, equipment degradation, financing, fixed utility fees, or future rate changes. It is a planning aid, not a quote, engineering design, or guaranteed savings prediction. The app has no live device integrations and does not store or transmit form data. No external libraries, fonts, APIs, or accounts are required.
+All values are illustrative, in USD, and editable. No incentives are assumed by default. Annual production uses size × peak sun hours × 365 × performance. Solar consumed at home is capped at post-upgrade annual demand; surplus receives the entered export rate. This annual model does not simulate hourly or seasonal matching, credit caps, batteries, equipment degradation, financing, fixed utility fees, or future rate changes. It is a planning aid, not a quote, engineering design, or guaranteed savings prediction. The app has no live device integrations and does not store or transmit form data. Tesseract.js supplies local browser OCR. No external fonts, OCR APIs, or accounts are required; OCR code and language assets are served from the app itself.
