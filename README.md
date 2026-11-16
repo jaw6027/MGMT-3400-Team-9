@@ -4,7 +4,7 @@ A class-project prototype for a connected-home and solar business. Compare a hou
 
 ## Run
 
-Requires Python 3 to serve the application. Node.js 18+ is used only for tests; there are no package dependencies to install.
+Requires Python 3 to serve the application and Node.js 18+ to build and test it; there are no package dependencies to install. The committed standalone page can also be opened without building.
 
 ```sh
 cd /workspace/MGMT-3400-Team-9
@@ -15,13 +15,23 @@ Open the served application on port 3000 using your development environment's su
 
 ### Editing
 
-Edit the markup in `scripts/index.template.html`, the styles in `style.css`, the interface logic in `app.js`, and the calculation model in `energy.js`. Run `npm run build` to regenerate the committed self-contained `index.html`. `npm start` also rebuilds automatically. Commit both source edits and the regenerated page.
+Edit the markup in `scripts/index.template.html`, the styles in `style.css`, the interface logic in `app.js`, the solar calculation model in `energy.js`, and the bill review model in `review.js`. Run `npm run build` to regenerate the committed self-contained `index.html`. `npm start` also rebuilds automatically. Commit both source edits and the regenerated page.
 
 ```sh
 npm test
 ```
 
 ## Use
+
+### Homeowner Energy Review
+
+Enter usage (kWh) and bill costs (USD) for January–December of one year. All 24 values are needed before the review appears; zero is valid, but missing, negative, or invalid values do not count as complete. Entries exist only in memory and are lost on reload. **Try example data** replaces the entries with a labeled sample; **Clear bills** clears the review without changing the solar plan.
+
+The review shows annual totals, average monthly usage and bills, total billed cost divided by total usage, a monthly usage chart, all tied highest-use and highest-cost months, and months more than 20% above average usage. Recommendations suggest things to investigate; monthly bills alone cannot diagnose appliance loads or establish causes. Billing-period length and weather can affect comparisons. Zero annual usage has no per-kWh rate and cannot be applied to solar sizing.
+
+**Use average usage in solar plan** copies only average monthly kWh into the existing calculator. It preserves the variable electricity rate and all other assumptions: billed costs can include fixed fees and taxes, so their blended rate must not automatically become a solar savings rate. Editing or clearing bills does not silently overwrite the solar plan. **Print report** includes entered bills and the completed review along with the solar scenario. No utility connection, upload, or customer data storage is implemented.
+
+### Solar savings scenario
 
 1. Enter average monthly consumption and the variable electricity rate from customer bills.
 2. Choose an assumed reduction from efficiency upgrades.

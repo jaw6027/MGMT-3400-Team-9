@@ -11,7 +11,29 @@
   <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></header>
   <main>
     <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
-    <div class="workspace">
+    <section class="energy-review card" aria-labelledby="review-title">
+      <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
+      <div class="review-layout">
+        <div class="review-entry">
+          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Your entries stay in this page only and are cleared when it reloads.</p>
+          <form id="review-form" aria-describedby="review-help" novalidate>
+            <table class="bills-table"><caption class="sr-only">Monthly electricity usage and bill costs</caption><thead><tr><th scope="col">Month</th><th scope="col">Usage (kWh)</th><th scope="col">Bill cost ($)</th></tr></thead><tbody id="bill-rows"></tbody></table>
+          </form>
+          <div class="review-actions"><button type="button" id="review-example">Try example data</button><button type="button" id="review-clear" class="text-button">Clear bills</button></div>
+          <p id="review-progress" role="status" class="hint">0 of 12 months complete. Enter both values for every month to see your review.</p>
+        </div>
+        <div class="review-insights">
+          <div id="review-empty" class="review-empty"><span class="eyebrow">YOUR YEAR AT A GLANCE</span><h3>A clearer picture starts here.</h3><p>Complete all 12 months to see annual totals, your highest-use months, and practical next steps.</p></div>
+          <div id="review-results" hidden>
+            <div class="review-summary"><p class="eyebrow">YOUR YEAR AT A GLANCE</p><div class="review-totals"><div><span>Annual electricity use</span><strong id="review-kwh"></strong></div><div><span>Annual bill cost</span><strong id="review-cost"></strong></div></div><dl><div><dt>Average monthly use</dt><dd id="review-average-kwh"></dd></div><div><dt>Average monthly bill</dt><dd id="review-average-cost"></dd></div><div><dt>Average billed cost / kWh</dt><dd id="review-rate"></dd></div></dl><p class="hint">Billed cost per kWh includes any fixed fees and taxes in your entries. It is not necessarily your utility's variable electricity rate.</p></div>
+            <figure class="usage-figure"><figcaption>Monthly electricity use <span>kWh</span></figcaption><div id="review-chart" class="review-chart"></div></figure>
+            <div class="review-findings"><h3>What your bills tell us</h3><ul id="review-findings"></ul><h3>Recommended next steps</h3><ul id="review-recommendations"></ul><p class="hint">Monthly totals reveal patterns, but cannot identify individual appliances or prove why usage changed. Billing periods can differ in length.</p></div>
+            <button type="button" id="review-apply" class="primary-button">Use average usage in solar plan &rarr;</button><p id="review-applied" class="hint" role="status"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="workspace" id="solar-plan">
       <section class="inputs card" aria-labelledby="plan-title">
         <div class="section-heading"><div><p class="eyebrow">BUILD YOUR PLAN</p><h2 id="plan-title">A little about your home</h2></div><button type="button" id="reset" class="text-button">Reset</button></div>
         <form id="calculator">
