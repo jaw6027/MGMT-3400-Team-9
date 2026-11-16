@@ -36,3 +36,25 @@ export function estimate(input) {
     annualAfter, grossCost, appliedIncentive, netCost, payback,
     gridReduction: annualUsage ? (annualUsage - gridKwh) / annualUsage * 100 : 0 };
 }
+
+export function compareCosts(review, input = {}) {
+  if (!review || !Number.isFinite(review.annualKwh) || !Number.isFinite(review.annualCost) ||
+      review.annualKwh < 0 || review.annualCost < 0) {
+    throw new Error('A complete nonnegative annual bill review is required.');
+  }
+  const assumptions = { ...defaults, ...input, monthlyKwh: review.annualKwh / 12 };
+  const solar = estimate({ ...assumptions, efficiency: 0 });
+  const combined = estimate(assumptions);
+  if (review.annualKwh === 0) return { available: false, reason: 'zero-usage' };
+  const remainder = review.annualCost - solar.baseline;
+  // A negative remainder would invent negative retained utility charges.
+  if (remainder < -1e-8) return { available: false, reason: 'rate-exceeds-bills' };
+  const retainedCharges = Math.max(0, remainder);
+  const result = scenario => ({ ...scenario,
+    projectedAnnualCost: review.annualCost - scenario.annualSavings,
+    projectedMonthlyCost: (review.annualCost - scenario.annualSavings) / 12,
+    savingsPercent: review.annualCost > 0 ? scenario.annualSavings / review.annualCost * 100 : null,
+  });
+  return { available: true, annualCost: review.annualCost, monthlyCost: review.annualCost / 12,
+    retainedCharges, assumptions, solar: result(solar), combined: result(combined) };
+}

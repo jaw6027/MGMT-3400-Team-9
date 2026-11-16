@@ -33,6 +33,12 @@ The review shows annual totals, average monthly usage and bills, total billed co
 
 ### Solar savings scenario
 
+The existing scenario uses its manually entered monthly usage. The **Current costs vs. solar** section instead uses annual kWh and actual bill totals directly from the completed Homeowner Energy Review, without requiring the usage-transfer button. It shows current annual/monthly costs, solar-only ongoing costs, and solar plus smart-upgrade ongoing costs. All assumptions and the cost breakdown are visible and included when printing.
+
+The comparison assumes the entered bills are for a home without solar. It models current variable electricity charges as entered annual kWh × the solar plan's variable electricity rate, then holds the remaining bill charges constant in both solar cases. Estimated cost = grid imports × variable rate + retained charges − export credits + maintenance + monitoring. It does not assume every dollar on the current bill is avoidable. If the variable rate implies usage charges above the entire bill total, the comparison is hidden with a correction message. Zero annual usage also requires correction before comparing.
+
+Solar-only assumes no efficiency improvement; the combined case uses the selected reduction. One-time installation costs, upgrades, incentives, and financing are not included in recurring annual costs. Inferred remaining charges are not a verified breakdown of fixed fees, taxes, minimum charges, or demand charges. Utility rules may change after installing solar. There is no hourly matching or export credit cap; negative estimates represent modeled net credits, not guaranteed cash payments. Inputs remain editable and the comparison updates automatically; incomplete bills or invalid solar inputs hide previous results.
+
 1. Enter average monthly consumption and the variable electricity rate from customer bills.
 2. Choose an assumed reduction from efficiency upgrades.
 3. Enter solar size, local peak sun hours, system performance, self-consumption, and the utility's export rate.

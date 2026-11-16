@@ -20,6 +20,11 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 @media(max-width:760px){.energy-review{padding:20px}.review-layout{grid-template-columns:1fr;gap:24px}.review-heading{display:block}.skip-link{display:inline-block;margin-top:15px}.review-totals{gap:12px}.review-totals strong{font-size:22px}.review-chart{gap:4px}.chart-column span{font-size:8px}.bills-table th,.bills-table td{padding:7px 4px}.bills-table input:not([type=range]){padding:8px 5px;font-size:12px}.review-actions{gap:16px}.review-summary{padding:18px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media print{.energy-review{padding:15px;break-inside:auto;margin-bottom:20px}.review-heading{padding-bottom:12px}.review-layout{grid-template-columns:1fr 1fr;gap:20px;margin-top:12px}.review-actions,.skip-link,.primary-button,#review-applied{display:none}.review-description{font-size:10px}.review-summary{padding:12px}.review-totals{gap:10px;margin:10px 0}.review-totals strong{font-size:18px}.review-totals span{font-size:9px}.review-summary dl>div{font-size:9px}.review-summary .hint{font-size:8px}.review-findings ul{font-size:9px;line-height:1.6}.review-findings h3{font-size:11px;margin:12px 0 6px}.bills-table th,.bills-table td{padding:4px;font-size:9px}.bills-table input:not([type=range]){padding:5px;font-size:9px}.usage-figure{margin:15px 0}.chart-track{height:65px}.chart-column span{font-size:7px}.review-chart{gap:3px}.review-empty{min-height:100px}.review-entry tr,.review-summary,.usage-figure{break-inside:avoid}.review-layout .hint{font-size:8px}.review-empty p{font-size:10px}}
+/* Bill-based current-versus-solar comparison */
+.cost-comparison{padding:28px;margin-top:35px;scroll-margin-top:20px}.comparison-notice{margin-top:22px;padding:20px;background:#f3f6ed;border-radius:8px;font-size:13px;line-height:1.8;color:#53665a}.comparison-source{margin-top:22px;line-height:1.8}.comparison-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:20px 0 26px}.comparison-option{padding:22px;background:#f1f4eb;border:1px solid var(--line);border-radius:10px}.comparison-option h3{font-size:13px;margin-bottom:16px}.comparison-option strong{display:block;font-size:30px;font-weight:500;letter-spacing:-1px;overflow-wrap:anywhere}.comparison-option>span{font-size:10px;color:var(--muted);display:block;margin:3px 0 12px}.comparison-option p{font-size:11px;color:#53665a}.comparison-option .comparison-savings{border-top:1px solid #d3ddc9;padding-top:12px;margin-top:12px;font-weight:600;color:var(--ink)}.comparison-subheading{margin:24px 0 8px}.comparison-table-scroll{overflow-x:auto;margin:15px 0 26px}.comparison-table{border-collapse:collapse;width:100%;min-width:540px;font-size:12px}.comparison-table th,.comparison-table td{padding:12px;border-bottom:1px solid var(--line);text-align:right}.comparison-table th:first-child{text-align:left;width:40%}.comparison-table tbody th{font-weight:400;color:#53665a}.comparison-table thead th{font-size:11px}.comparison-table tr:last-child>*{font-weight:600;color:var(--ink);background:#f5f7f1}.comparison-assumptions{padding:22px;background:#fafbf7;border-radius:9px;border:1px solid var(--line)}.comparison-assumptions dl>div{display:grid;grid-template-columns:210px 1fr;gap:25px;padding:10px 0;border-bottom:1px solid #e9ede2;margin:0;font-size:12px}.comparison-assumptions dl>div:last-child{border:0}.comparison-assumptions dd{text-align:left;white-space:normal;font-weight:400;line-height:1.7}.comparison-assumptions dt{font-weight:600;color:#53665a}.comparison-table-scroll:focus-visible{outline:3px solid var(--gold);outline-offset:3px}#results-title+.hint a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px){.cost-comparison{padding:20px}.comparison-cards{grid-template-columns:1fr}.comparison-option{padding:20px}.comparison-assumptions{padding:16px}.comparison-assumptions dl>div{grid-template-columns:1fr;gap:4px}.comparison-source{font-size:9px}.comparison-table{font-size:11px}.comparison-table th,.comparison-table td{padding:10px}}
+@media print{.cost-comparison{padding:15px;break-before:page;break-inside:auto}.comparison-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.comparison-option{padding:12px;break-inside:avoid}.comparison-option strong{font-size:23px}.comparison-option h3{font-size:11px}.comparison-option p{font-size:9px}.comparison-table{min-width:0;font-size:9px}.comparison-table th,.comparison-table td{padding:8px}.comparison-table thead th{font-size:9px}.comparison-table-scroll{overflow:visible}.comparison-assumptions{padding:14px;break-inside:avoid}.comparison-assumptions dl>div{grid-template-columns:150px 1fr;font-size:9px;gap:16px;padding:6px 0}.comparison-source{font-size:8px}.comparison-option>span{font-size:8px}.comparison-subheading{font-size:12px}}
+@media print{.cost-comparison{margin-top:0}.comparison-cards{margin:12px 0 16px}.comparison-table-scroll{margin:10px 0 16px}.comparison-assumptions h3{margin-bottom:10px}}
 
 </style>
 </head>
@@ -76,17 +81,34 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
         </form>
       </section>
       <section class="results" aria-labelledby="results-title">
-        <div class="results-heading"><p class="eyebrow">YOUR HOME, REIMAGINED</p><h2 id="results-title">Your energy outlook</h2><p id="report-name" hidden></p><p id="error" role="alert" hidden>Enter valid values in the highlighted fields to update your estimate.</p></div>
+        <div class="results-heading"><p class="eyebrow">YOUR HOME, REIMAGINED</p><h2 id="results-title">Your energy outlook</h2><p class="hint">This scenario uses the monthly usage entered in the solar plan. <a href="#cost-comparison">Compare against your actual bills below &darr;</a></p><p id="report-name" hidden></p><p id="error" role="alert" hidden>Enter valid values in the highlighted fields to update your estimate.</p></div>
         <div id="estimate-results" aria-live="polite" aria-atomic="true">
           <div class="savings-card"><span class="pill">ILLUSTRATIVE ESTIMATE</span><p>Potential annual savings</p><div class="big-number" id="annual-savings"></div><p class="monthly" id="monthly-savings"></p><div class="savings-footer"><span>Reduction in grid electricity</span><strong id="grid-reduction"></strong></div></div>
           <div class="metric-grid"><div class="card metric"><span>Net upfront investment</span><strong id="net-cost"></strong><small>After entered incentives</small></div><div class="card metric"><span>Simple payback</span><strong id="payback"></strong><small>No financing or rate inflation</small></div></div>
           <div class="card breakdown"><h3>Where your savings come from</h3><div class="bar-legend"><span><i class="dot green"></i> Smart upgrades</span><span><i class="dot gold"></i> Solar + export credit</span></div><div class="savings-bar" aria-hidden="true"><span id="efficiency-bar"></span><span id="solar-bar"></span></div><dl><div><dt>Energy efficiency savings</dt><dd id="efficiency-savings"></dd></div><div><dt>Solar use + export credit</dt><dd id="solar-savings"></dd></div><div><dt>Maintenance + subscription</dt><dd id="operating-cost"></dd></div><div class="total"><dt>Net annual savings</dt><dd id="total-savings"></dd></div></dl></div>
-          <div class="card flow"><h3>Your annual energy picture</h3><dl><div><dt>Electricity use today</dt><dd id="annual-usage"></dd></div><div><dt>Use after smart upgrades</dt><dd id="reduced-usage"></dd></div><div><dt>Solar generation</dt><dd id="production"></dd></div><div><dt>Solar used at home</dt><dd id="solar-used"></dd></div><div><dt>Solar exported to grid</dt><dd id="exports"></dd></div><div><dt>Electricity bought from grid</dt><dd id="grid-kwh"></dd></div><div class="total"><dt>Annual cost today</dt><dd id="baseline"></dd></div><div><dt>Annual cost with your plan</dt><dd id="annual-after"></dd></div></dl><p class="hint">Plan cost includes electricity imports, export credits, maintenance, and subscriptions. A negative cost means modeled credits exceed operating costs; utilities may limit payouts.</p></div>
+          <div class="card flow"><h3>Your annual energy picture</h3><dl><div><dt>Electricity use today</dt><dd id="annual-usage"></dd></div><div><dt>Use after smart upgrades</dt><dd id="reduced-usage"></dd></div><div><dt>Solar generation</dt><dd id="production"></dd></div><div><dt>Solar used at home</dt><dd id="solar-used"></dd></div><div><dt>Solar exported to grid</dt><dd id="exports"></dd></div><div><dt>Electricity bought from grid</dt><dd id="grid-kwh"></dd></div><div class="total"><dt>Modeled annual cost today</dt><dd id="baseline"></dd></div><div><dt>Modeled annual cost with plan</dt><dd id="annual-after"></dd></div></dl><p class="hint">Plan cost includes electricity imports, export credits, maintenance, and subscriptions. A negative cost means modeled credits exceed operating costs; utilities may limit payouts.</p></div>
         </div>
         <div class="next-step"><span class="step-icon" aria-hidden="true">&rarr;</span><div><h3>Turn a possibility into a plan.</h3><p>Confirm your utility rates, roof condition, shading, and local installer quote before making an investment.</p></div></div>
       </section>
     </div>
-    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. Results exclude fixed utility charges, batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
+    <section class="cost-comparison card" id="cost-comparison" aria-labelledby="comparison-title">
+      <div class="review-heading"><div><p class="eyebrow">FROM YOUR BILLS TO YOUR POSSIBILITIES</p><h2 id="comparison-title">Current costs vs. solar</h2><p class="review-description">Compare your entered electricity bills with estimated ongoing costs using the solar plan assumptions above.</p></div><a href="#solar-plan" class="skip-link">Edit solar assumptions &uarr;</a></div>
+      <p id="comparison-notice" class="comparison-notice" role="status"></p>
+      <div id="comparison-results" hidden>
+        <p id="comparison-source" class="eyebrow comparison-source"></p>
+        <div class="comparison-cards">
+          <div class="comparison-option"><h3>Current electricity bills</h3><strong id="compare-current-annual"></strong><span>per year · entered costs</span><p id="compare-current-monthly"></p></div>
+          <div class="comparison-option"><h3>With solar only</h3><strong id="compare-solar-annual"></strong><span>per year · estimated</span><p id="compare-solar-monthly"></p><p class="comparison-savings" id="compare-solar-savings"></p></div>
+          <div class="comparison-option"><h3>Solar + smart upgrades</h3><strong id="compare-combined-annual"></strong><span>per year · estimated</span><p id="compare-combined-monthly"></p><p class="comparison-savings" id="compare-combined-savings"></p></div>
+        </div>
+        <h3 class="comparison-subheading">How the annual costs add up</h3><p class="hint">All amounts are USD. Monthly figures are annual totals ÷ 12, not forecasts for individual months.</p>
+        <div class="comparison-table-scroll" role="region" aria-label="Annual cost breakdown, scroll horizontally on small screens" tabindex="0"><table class="comparison-table"><caption class="sr-only">Current electricity costs and estimated costs for both solar options</caption><thead><tr><th scope="col">Annual cost component</th><th scope="col">Current</th><th scope="col">Solar only</th><th scope="col">Solar + upgrades</th></tr></thead><tbody id="comparison-breakdown"></tbody></table></div>
+        <div class="comparison-assumptions"><h3>Assumptions used</h3><dl id="comparison-assumptions"></dl></div>
+        <p class="hint">Estimated annual cost = grid electricity + remaining bill charges − export credits + maintenance + monitoring. Remaining charges are inferred from your bills, not a verified utility fee breakdown, and are held constant. Confirm taxes, minimum bills, demand charges, and export rules with your utility.</p>
+        <p class="hint">Assumes your entered bills describe a home without solar and that consumption and rates stay the same. This annual model does not match production to hourly or seasonal use. Upfront installation, financing, batteries, equipment replacement, degradation, and future rate changes are excluded. Negative estimated costs represent net credits; actual utilities may limit payouts. Estimates are not a quote or guaranteed savings.</p>
+      </div>
+    </section>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
   </main>
   <footer><a class="brand" href="./">helio<span>home</span></a><span>Connected homes. Thoughtful energy.</span><span>Class project · Concept tool</span></footer>
   <script>
@@ -130,6 +152,28 @@ function estimate(input) {
     gridReduction: annualUsage ? (annualUsage - gridKwh) / annualUsage * 100 : 0 };
 }
 
+function compareCosts(review, input = {}) {
+  if (!review || !Number.isFinite(review.annualKwh) || !Number.isFinite(review.annualCost) ||
+      review.annualKwh < 0 || review.annualCost < 0) {
+    throw new Error('A complete nonnegative annual bill review is required.');
+  }
+  const assumptions = { ...defaults, ...input, monthlyKwh: review.annualKwh / 12 };
+  const solar = estimate({ ...assumptions, efficiency: 0 });
+  const combined = estimate(assumptions);
+  if (review.annualKwh === 0) return { available: false, reason: 'zero-usage' };
+  const remainder = review.annualCost - solar.baseline;
+  // A negative remainder would invent negative retained utility charges.
+  if (remainder < -1e-8) return { available: false, reason: 'rate-exceeds-bills' };
+  const retainedCharges = Math.max(0, remainder);
+  const result = scenario => ({ ...scenario,
+    projectedAnnualCost: review.annualCost - scenario.annualSavings,
+    projectedMonthlyCost: (review.annualCost - scenario.annualSavings) / 12,
+    savingsPercent: review.annualCost > 0 ? scenario.annualSavings / review.annualCost * 100 : null,
+  });
+  return { available: true, annualCost: review.annualCost, monthlyCost: review.annualCost / 12,
+    retainedCharges, assumptions, solar: result(solar), combined: result(combined) };
+}
+
 const months = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -170,6 +214,7 @@ function render() {
   const name = form.elements.customer.value.trim();
   set('report-name', name);
   document.querySelector('#report-name').hidden = !name;
+  renderComparison();
   if (!valid) return;
   const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
   const r = estimate(values);
@@ -195,7 +240,6 @@ document.querySelector('#print').addEventListener('click', () => {
   if (!form.reportValidity()) return;
   window.print();
 });
-reset();
 
 // Monthly bill review is separate from the illustrative solar scenario.
 const reviewForm = document.querySelector('#review-form');
@@ -233,9 +277,13 @@ function renderReview() {
   document.querySelector('#review-empty').hidden = complete;
   set('review-applied', '');
   currentReview = null;
-  if (!complete) return;
+  if (!complete) {
+    renderComparison();
+    return;
+  }
   const r = reviewEnergy(entries);
   currentReview = r;
+  renderComparison();
   set('review-kwh', `${number.format(r.annualKwh)} kWh`);
   set('review-cost', billMoney.format(r.annualCost));
   set('review-average-kwh', `${number.format(r.averageKwh)} kWh`);
@@ -312,6 +360,86 @@ document.querySelector('#reset').addEventListener('click', () => {
   lastAppliedUsage = null;
   set('review-applied', currentReview ? 'Solar plan reset. Your bills are unchanged; apply your average usage again when ready.' : '');
 });
+
+function renderComparison() {
+  const results = document.querySelector('#comparison-results');
+  const notice = document.querySelector('#comparison-notice');
+  results.hidden = true;
+  notice.hidden = false;
+  if (!currentReview) {
+    notice.textContent = 'Complete all 12 months in Homeowner Energy Review to compare your entered bill costs with solar estimates.';
+    return;
+  }
+  if (!form.checkValidity()) {
+    notice.textContent = 'Correct the invalid solar plan inputs to update this comparison. Previous estimates are hidden.';
+    return;
+  }
+  const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
+  const c = compareCosts(currentReview, values);
+  if (!c.available) {
+    notice.textContent = c.reason === 'zero-usage'
+      ? 'Your entered bills show no electricity use. Confirm your kWh values before estimating solar costs.'
+      : 'Your electricity price × entered annual kWh exceeds your total entered bills. Confirm the variable electricity price (excluding fixed fees), kWh values, and bill costs. A comparison is not shown because these assumptions would imply negative remaining utility charges.';
+    return;
+  }
+  results.hidden = false;
+  notice.hidden = true;
+  set('comparison-source', exampleFields.size ? 'EXAMPLE BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE' : 'ENTERED BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE');
+  set('compare-current-annual', billMoney.format(c.annualCost));
+  set('compare-current-monthly', `${billMoney.format(c.monthlyCost)} / month on average`);
+  for (const [prefix, scenario] of [['solar', c.solar], ['combined', c.combined]]) {
+    set(`compare-${prefix}-annual`, billMoney.format(scenario.projectedAnnualCost));
+    set(`compare-${prefix}-monthly`, `${billMoney.format(scenario.projectedMonthlyCost)} / month on average`);
+    const percent = scenario.savingsPercent === null ? '' : ` (${Math.abs(scenario.savingsPercent).toFixed(1)}%)`;
+    set(`compare-${prefix}-savings`, `${billMoney.format(Math.abs(scenario.annualSavings))}${percent} ${scenario.annualSavings >= 0 ? 'lower' : 'higher'} per year`);
+  }
+  const table = document.querySelector('#comparison-breakdown');
+  table.replaceChildren();
+  const costs = [
+    ['Grid electricity', c.solar.baseline, c.solar.importCost, c.combined.importCost],
+    ['Remaining bill charges (held constant)', c.retainedCharges, c.retainedCharges, c.retainedCharges],
+    ['Export credits (subtracted)', 0, -c.solar.exportCredit, -c.combined.exportCredit],
+    ['Annual maintenance', 0, values.annualCost, values.annualCost],
+    ['Monitoring subscription', 0, values.monthlyFee * 12, values.monthlyFee * 12],
+    ['Total annual cost', c.annualCost, c.solar.projectedAnnualCost, c.combined.projectedAnnualCost],
+  ];
+  for (const [label, ...amounts] of costs) {
+    const row = document.createElement('tr');
+    const heading = document.createElement('th');
+    heading.scope = 'row';
+    heading.textContent = label;
+    row.append(heading);
+    for (const amount of amounts) {
+      const cell = document.createElement('td');
+      cell.textContent = billMoney.format(amount);
+      row.append(cell);
+    }
+    table.append(row);
+  }
+  const decimal = value => new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 }).format(value);
+  const assumptions = [
+    ['Consumption source', `${number.format(currentReview.annualKwh)} kWh/year from your 12 entered months; independent of the solar plan’s monthly usage field.`],
+    ['Variable electricity price', `${billedRate.format(values.rate)} / kWh; confirm this excludes fixed fees and reflects your bill year.`],
+    ['Remaining charges', `${billMoney.format(c.retainedCharges)} / year = entered bill total minus kWh × variable price; assumed unchanged after solar.`],
+    ['Solar production', `${decimal(values.solarKw)} kW × ${decimal(values.sunHours)} peak sun hours/day × 365 × ${decimal(values.performance)}% performance = ${number.format(c.solar.production)} kWh/year.`],
+    ['Solar used at home', `${decimal(values.selfUse)}% of generation, capped at annual demand: ${number.format(c.solar.solarUsed)} kWh with solar only; ${number.format(c.combined.solarUsed)} kWh with upgrades.`],
+    ['Exports and credit rate', `${number.format(c.solar.exports)} kWh with solar only; ${number.format(c.combined.exports)} kWh with upgrades. Credited at ${billedRate.format(values.exportRate)} / kWh with no credit cap assumed.`],
+    ['Efficiency improvements', `0% reduction for solar only; ${decimal(values.efficiency)}% for solar + smart upgrades.`],
+    ['Ongoing costs', `${billMoney.format(values.annualCost)} / year maintenance + ${billMoney.format(values.monthlyFee)} / month monitoring, applied to both solar options.`],
+    ['Upfront costs excluded from annual totals', `${billMoney.format(values.solarCost)} solar installation; ${billMoney.format(values.upgradeCost)} additional smart upgrades; ${billMoney.format(values.incentive)} entered incentives. These are separate one-time amounts, not annual bill savings.`],
+  ];
+  const list = document.querySelector('#comparison-assumptions');
+  list.replaceChildren(...assumptions.map(([label, text]) => {
+    const pair = document.createElement('div');
+    const dt = document.createElement('dt');
+    const dd = document.createElement('dd');
+    dt.textContent = label;
+    dd.textContent = text;
+    pair.append(dt, dd);
+    return pair;
+  }));
+}
+reset();
 renderReview();
 
 })();

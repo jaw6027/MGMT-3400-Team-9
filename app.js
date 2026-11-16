@@ -1,4 +1,4 @@
-import { defaults, estimate } from './energy.js';
+import { defaults, estimate, compareCosts } from './energy.js';
 import { months, reviewEnergy } from './review.js';
 
 const form = document.querySelector('#calculator');
@@ -14,6 +14,7 @@ function render() {
   const name = form.elements.customer.value.trim();
   set('report-name', name);
   document.querySelector('#report-name').hidden = !name;
+  renderComparison();
   if (!valid) return;
   const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
   const r = estimate(values);
@@ -39,7 +40,6 @@ document.querySelector('#print').addEventListener('click', () => {
   if (!form.reportValidity()) return;
   window.print();
 });
-reset();
 
 // Monthly bill review is separate from the illustrative solar scenario.
 const reviewForm = document.querySelector('#review-form');
@@ -77,9 +77,13 @@ function renderReview() {
   document.querySelector('#review-empty').hidden = complete;
   set('review-applied', '');
   currentReview = null;
-  if (!complete) return;
+  if (!complete) {
+    renderComparison();
+    return;
+  }
   const r = reviewEnergy(entries);
   currentReview = r;
+  renderComparison();
   set('review-kwh', `${number.format(r.annualKwh)} kWh`);
   set('review-cost', billMoney.format(r.annualCost));
   set('review-average-kwh', `${number.format(r.averageKwh)} kWh`);
@@ -156,4 +160,84 @@ document.querySelector('#reset').addEventListener('click', () => {
   lastAppliedUsage = null;
   set('review-applied', currentReview ? 'Solar plan reset. Your bills are unchanged; apply your average usage again when ready.' : '');
 });
+
+function renderComparison() {
+  const results = document.querySelector('#comparison-results');
+  const notice = document.querySelector('#comparison-notice');
+  results.hidden = true;
+  notice.hidden = false;
+  if (!currentReview) {
+    notice.textContent = 'Complete all 12 months in Homeowner Energy Review to compare your entered bill costs with solar estimates.';
+    return;
+  }
+  if (!form.checkValidity()) {
+    notice.textContent = 'Correct the invalid solar plan inputs to update this comparison. Previous estimates are hidden.';
+    return;
+  }
+  const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
+  const c = compareCosts(currentReview, values);
+  if (!c.available) {
+    notice.textContent = c.reason === 'zero-usage'
+      ? 'Your entered bills show no electricity use. Confirm your kWh values before estimating solar costs.'
+      : 'Your electricity price × entered annual kWh exceeds your total entered bills. Confirm the variable electricity price (excluding fixed fees), kWh values, and bill costs. A comparison is not shown because these assumptions would imply negative remaining utility charges.';
+    return;
+  }
+  results.hidden = false;
+  notice.hidden = true;
+  set('comparison-source', exampleFields.size ? 'EXAMPLE BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE' : 'ENTERED BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE');
+  set('compare-current-annual', billMoney.format(c.annualCost));
+  set('compare-current-monthly', `${billMoney.format(c.monthlyCost)} / month on average`);
+  for (const [prefix, scenario] of [['solar', c.solar], ['combined', c.combined]]) {
+    set(`compare-${prefix}-annual`, billMoney.format(scenario.projectedAnnualCost));
+    set(`compare-${prefix}-monthly`, `${billMoney.format(scenario.projectedMonthlyCost)} / month on average`);
+    const percent = scenario.savingsPercent === null ? '' : ` (${Math.abs(scenario.savingsPercent).toFixed(1)}%)`;
+    set(`compare-${prefix}-savings`, `${billMoney.format(Math.abs(scenario.annualSavings))}${percent} ${scenario.annualSavings >= 0 ? 'lower' : 'higher'} per year`);
+  }
+  const table = document.querySelector('#comparison-breakdown');
+  table.replaceChildren();
+  const costs = [
+    ['Grid electricity', c.solar.baseline, c.solar.importCost, c.combined.importCost],
+    ['Remaining bill charges (held constant)', c.retainedCharges, c.retainedCharges, c.retainedCharges],
+    ['Export credits (subtracted)', 0, -c.solar.exportCredit, -c.combined.exportCredit],
+    ['Annual maintenance', 0, values.annualCost, values.annualCost],
+    ['Monitoring subscription', 0, values.monthlyFee * 12, values.monthlyFee * 12],
+    ['Total annual cost', c.annualCost, c.solar.projectedAnnualCost, c.combined.projectedAnnualCost],
+  ];
+  for (const [label, ...amounts] of costs) {
+    const row = document.createElement('tr');
+    const heading = document.createElement('th');
+    heading.scope = 'row';
+    heading.textContent = label;
+    row.append(heading);
+    for (const amount of amounts) {
+      const cell = document.createElement('td');
+      cell.textContent = billMoney.format(amount);
+      row.append(cell);
+    }
+    table.append(row);
+  }
+  const decimal = value => new Intl.NumberFormat('en-US', { maximumFractionDigits: 3 }).format(value);
+  const assumptions = [
+    ['Consumption source', `${number.format(currentReview.annualKwh)} kWh/year from your 12 entered months; independent of the solar plan’s monthly usage field.`],
+    ['Variable electricity price', `${billedRate.format(values.rate)} / kWh; confirm this excludes fixed fees and reflects your bill year.`],
+    ['Remaining charges', `${billMoney.format(c.retainedCharges)} / year = entered bill total minus kWh × variable price; assumed unchanged after solar.`],
+    ['Solar production', `${decimal(values.solarKw)} kW × ${decimal(values.sunHours)} peak sun hours/day × 365 × ${decimal(values.performance)}% performance = ${number.format(c.solar.production)} kWh/year.`],
+    ['Solar used at home', `${decimal(values.selfUse)}% of generation, capped at annual demand: ${number.format(c.solar.solarUsed)} kWh with solar only; ${number.format(c.combined.solarUsed)} kWh with upgrades.`],
+    ['Exports and credit rate', `${number.format(c.solar.exports)} kWh with solar only; ${number.format(c.combined.exports)} kWh with upgrades. Credited at ${billedRate.format(values.exportRate)} / kWh with no credit cap assumed.`],
+    ['Efficiency improvements', `0% reduction for solar only; ${decimal(values.efficiency)}% for solar + smart upgrades.`],
+    ['Ongoing costs', `${billMoney.format(values.annualCost)} / year maintenance + ${billMoney.format(values.monthlyFee)} / month monitoring, applied to both solar options.`],
+    ['Upfront costs excluded from annual totals', `${billMoney.format(values.solarCost)} solar installation; ${billMoney.format(values.upgradeCost)} additional smart upgrades; ${billMoney.format(values.incentive)} entered incentives. These are separate one-time amounts, not annual bill savings.`],
+  ];
+  const list = document.querySelector('#comparison-assumptions');
+  list.replaceChildren(...assumptions.map(([label, text]) => {
+    const pair = document.createElement('div');
+    const dt = document.createElement('dt');
+    const dd = document.createElement('dd');
+    dt.textContent = label;
+    dd.textContent = text;
+    pair.append(dt, dd);
+    return pair;
+  }));
+}
+reset();
 renderReview();
