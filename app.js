@@ -1,5 +1,5 @@
 import { defaults, estimate, compareCosts } from './energy.js';
-import { months, reviewEnergy } from './review.js';
+import { months, reviewEnergy, recommendEnergy } from './review.js';
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -51,6 +51,7 @@ for (const [i, month] of months.entries()) {
 }
 
 let currentReview = null;
+let currentRecommendation = null;
 let lastAppliedUsage = null;
 const exampleFields = new Set();
 const billedRate = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 3, maximumFractionDigits: 3 });
@@ -167,22 +168,26 @@ function renderComparison() {
   results.hidden = true;
   notice.hidden = false;
   if (!currentReview) {
+    renderRecommendation();
     notice.textContent = 'Complete all 12 months in Homeowner Energy Review to compare your entered bill costs with solar estimates.';
     return;
   }
   if (!form.checkValidity()) {
+    renderRecommendation(null, 'The solar plan contains invalid inputs. This recommendation uses your bill patterns only.');
     notice.textContent = 'Correct the invalid solar plan inputs to update this comparison. Previous estimates are hidden.';
     return;
   }
   const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
   const c = compareCosts(currentReview, values);
   if (!c.available) {
+    renderRecommendation(null, 'The solar comparison is unavailable. Check the comparison message before considering solar.');
     notice.textContent = c.reason === 'zero-usage'
       ? 'Your entered bills show no electricity use. Confirm your kWh values before estimating solar costs.'
       : 'Your electricity price × entered annual kWh exceeds your total entered bills. Confirm the variable electricity price (excluding fixed fees), kWh values, and bill costs. A comparison is not shown because these assumptions would imply negative remaining utility charges.';
     return;
   }
   results.hidden = false;
+  renderRecommendation(c);
   notice.hidden = true;
   set('comparison-source', exampleFields.size ? 'EXAMPLE BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE' : 'ENTERED BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE');
   set('compare-current-annual', billMoney.format(c.annualCost));
@@ -239,5 +244,71 @@ function renderComparison() {
     return pair;
   }));
 }
+
+function renderRecommendation(comparison = null, solarStatus = '') {
+  const complete = currentReview !== null;
+  document.querySelector('#recommendation-results').hidden = !complete;
+  document.querySelector('#recommendation-empty').hidden = complete;
+  currentRecommendation = complete ? recommendEnergy(currentReview, comparison) : null;
+  if (!complete) return;
+  const r = currentRecommendation;
+  set('recommendation-source', exampleFields.size ? 'EXAMPLE DATA · SUGGESTED NEXT STEP' : 'BASED ON YOUR 12 ENTERED MONTHS');
+  set('recommendation-title', r.title);
+  set('recommendation-opportunity', r.opportunity);
+  set('recommendation-evidence', r.evidence);
+  set('recommendation-package', r.packageName);
+  set('recommendation-why', r.why);
+  fillList('recommendation-services', r.services);
+  set('recommendation-solar-note', solarStatus ? `${solarStatus} ${r.solarNote}` : r.solarNote);
+}
+
+const assessmentDialog = document.querySelector('#assessment-dialog');
+const assessmentForm = document.querySelector('#assessment-form');
+document.querySelector('#request-assessment').addEventListener('click', () => {
+  if (!currentRecommendation) return;
+  set('assessment-package', currentRecommendation.packageName);
+  set('assessment-status', '');
+  assessmentDialog.showModal();
+});
+document.querySelector('#assessment-close').addEventListener('click', () => assessmentDialog.close());
+assessmentDialog.addEventListener('close', () => {
+  assessmentForm.reset();
+  set('assessment-status', '');
+});
+assessmentForm.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!assessmentForm.reportValidity() || !currentRecommendation || !currentReview) return;
+  const r = currentRecommendation;
+  const fields = new FormData(assessmentForm);
+  const contact = name => String(fields.get(name) || '').trim();
+  const billLines = months.map((month, i) => `${month}: ${document.getElementById(`bill-kwh-${i}`).value} kWh; $${document.getElementById(`bill-cost-${i}`).value}`);
+  const comparisonVisible = !document.querySelector('#comparison-results').hidden;
+  const text = [
+    'HELIO HOME — HOME ASSESSMENT REQUEST DRAFT',
+    'Prepared locally. Nothing has been sent and no appointment has been booked.',
+    exampleFields.size ? 'CONTAINS EXAMPLE BILL DATA — replace before requesting a real assessment.' : 'Based on homeowner-entered bill data; not independently verified.',
+    '', `Name: ${contact('name')}`, `Email: ${contact('email')}`, `ZIP / postal code: ${contact('postal') || 'Not supplied'}`,
+    '', `Suggested package: ${r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
+    '', 'Services to discuss:', ...r.services.map(service => `- ${service}`),
+    '', `Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`,
+    '', 'Entered monthly bills:', ...billLines,
+    '', 'Solar assessment note:', document.querySelector('#recommendation-solar-note').textContent,
+    '', 'Solar cost comparison:', comparisonVisible
+      ? `Current: ${document.querySelector('#compare-current-annual').textContent}/year; solar only: ${document.querySelector('#compare-solar-annual').textContent}/year; solar + upgrades: ${document.querySelector('#compare-combined-annual').textContent}/year.\n${document.querySelector('#comparison-assumptions').innerText}`
+      : document.querySelector('#comparison-notice').textContent,
+    '', `Homeowner notes: ${contact('notes') || 'None'}`,
+    '', 'Planning recommendations are not a diagnosis, quote, or savings guarantee. Confirm bills, equipment, roof suitability, installation costs, financing, and utility rules with a qualified provider.',
+    'Share this file with your chosen provider to request an assessment. It contains your contact details and energy data.',
+  ].join('\n');
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'helio-home-assessment-request.txt';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  set('assessment-status', 'Your request file is ready to share with a provider. Nothing was sent and no appointment was booked.');
+});
 reset();
 renderReview();

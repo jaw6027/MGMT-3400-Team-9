@@ -31,6 +31,14 @@ The review shows annual totals, average monthly usage and bills, total billed co
 
 **Use average usage in solar plan** copies only average monthly kWh into the existing calculator. It preserves the variable electricity rate and all other assumptions: billed costs can include fixed fees and taxes, so their blended rate must not automatically become a solar savings rate. Editing or clearing bills does not silently overwrite the solar plan. **Print report** includes entered bills and the completed review along with the solar scenario. No utility connection, upload, or customer data storage is implemented.
 
+### Personalized recommendation and home assessment request
+
+After all 12 months are entered, **A plan shaped around your home** explains a main opportunity, supporting bill patterns, and a suggested service package. Months more than 20% above average trigger a peak-use investigation and **Smart Efficiency Starter**; otherwise **Home Energy Essentials** focuses on recurring loads. These are prompts for an audit, not diagnoses. Zero recorded consumption gets **Bill & Meter Review**, not an equipment recommendation.
+
+When the valid solar-only comparison shows positive ongoing savings and some solar used at home, the suggested package becomes **Efficiency + Solar Assessment**, while preserving the bill-based efficiency opportunity. This does not establish roof suitability, installation affordability, or payback. Missing, inconsistent, or unfavorable solar assumptions keep the recommendation focused on efficiency. Example bill data is labeled, and suggestions update when bills or solar inputs change.
+
+**Request a Home Assessment** opens a local dialog for a name, email, optional postal code, and notes. **Download assessment request** creates a plain-text draft with contact details, bill data, the recommendation, and current solar assumptions. The homeowner must share it with their chosen provider. This prototype has no booking backend or email destination: nothing is sent, no appointment is booked, and no lead is stored. Closing the dialog clears its contact fields. The recommendation is also included in the printed report.
+
 ### Solar savings scenario
 
 The existing scenario uses its manually entered monthly usage. The **Current costs vs. solar** section instead uses annual kWh and actual bill totals directly from the completed Homeowner Energy Review, without requiring the usage-transfer button. It shows current annual/monthly costs, solar-only ongoing costs, and solar plus smart-upgrade ongoing costs. All assumptions and the cost breakdown are visible and included when printing.
