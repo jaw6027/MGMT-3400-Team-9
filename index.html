@@ -51,6 +51,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 @media(max-width:760px){.home-questionnaire{padding:20px}.home-question-group .field-grid{grid-template-columns:1fr;gap:17px}.home-profile-summary dl{grid-template-columns:1fr}.home-questionnaire .review-heading{gap:16px}.home-profile-summary{padding:16px}.home-questionnaire .section-heading{flex-wrap:wrap}}
 @media print{.home-questionnaire{padding:15px;break-before:page;break-inside:auto}.home-questionnaire .review-heading>button,#home-questionnaire-form{display:none}.home-profile-summary{padding:12px}.home-profile-summary dl{grid-template-columns:1fr 1fr;gap:0 18px}.home-profile-summary dl>div{font-size:9px;break-inside:avoid}.home-questionnaire-status{font-size:9px;padding:8px}.home-recommendation-context ul{font-size:9px}.home-recommendation-context h3{font-size:11px}.home-solar-caution{font-size:10px;padding:10px}}
 @media print{.home-questionnaire:not(.has-home-answers){display:none}}
+.solar-usage-guidance{border-top:1px solid var(--line);margin-top:24px;padding-top:22px}.solar-usage-guidance>h3{font-size:20px;font-weight:500;margin-bottom:10px}.solar-usage-options{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}.solar-usage-options li{padding:18px;border:1px solid var(--line);border-radius:9px;background:#fafbf7;break-inside:avoid}.solar-usage-options h4{font-size:15px;line-height:1.5;margin:8px 0}.solar-usage-options p{font-size:12px;line-height:1.8;color:#53665a}.solar-usage-options .solar-option-situation{font-size:11px;font-weight:700;color:var(--ink)}@media(max-width:760px){.solar-usage-options{grid-template-columns:1fr}}@media print{.solar-usage-options{grid-template-columns:1fr 1fr;gap:10px}.solar-usage-options li{padding:10px}.solar-usage-options h4{font-size:11px}.solar-usage-options p{font-size:9px}}
 
 .inspection-help{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;background:#edf3e4;border:1px solid #d8e4ca;border-radius:9px;padding:22px;margin-top:22px}.inspection-help h3{font-size:18px;font-weight:500;margin-bottom:10px}.inspection-help p{font-size:12px;line-height:1.9;color:#53665a}.inspection-help .primary-button{margin:0 0 10px}.inspection-help .hint{font-size:10px}.inspection-help .inspection-phone{margin-top:12px}.inspection-phone span{display:block;font-size:10px;color:var(--muted)}@media(max-width:760px){.inspection-help{grid-template-columns:1fr;gap:15px;padding:18px}.inspection-help .primary-button{margin:0}}@media print{.inspection-help{display:none}}
 
@@ -185,6 +186,12 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
         </div>
         <div id="home-recommendation-context" class="home-recommendation-context" hidden><h3>From your home questionnaire</h3><ul id="home-recommendation-insights"></ul><h3>Still to confirm</h3><ul id="home-recommendation-followups"></ul></div>
         <p id="recommendation-solar-note" class="recommendation-solar-note"></p>
+        <section class="solar-usage-guidance" aria-labelledby="solar-usage-heading">
+          <h3 id="solar-usage-heading">Solar options for your usage</h3>
+          <p class="hint">Options to discuss based on your entered bills and optional home answers. Monthly totals cannot show when you use electricity. These options do not change your calculator settings or establish savings, system size, or installation suitability.</p>
+          <ul id="solar-usage-options" class="solar-usage-options"></ul>
+          <p class="hint">Compare each option with the current solar assessment note above. Installation, financing, batteries, and community-solar subscriptions are not included in the ongoing solar cost comparison. Confirm a full quote and your utility’s rules before deciding.</p>
+        </section>
         <p class="hint">Monthly bills show patterns, not individual appliance loads or confirmed causes. These suggestions are not an equipment diagnosis or a savings guarantee.</p>
         <div class="assessment-cta"><div><h3>Ready to explore your options?</h3><p>Prepare a request with your energy review and suggested package to share with a home energy professional.</p></div><button type="button" id="request-assessment" class="primary-button">Request a Home Assessment &rarr;</button></div>
         <p class="hint assessment-demo-note">Demo: creates a downloadable request file. No request is sent and no appointment is booked.</p>
@@ -708,6 +715,56 @@ function homeSolarCaution(raw) {
   return checks.length ? `Your questionnaire flags ${checks.join(', ')}. Resolve these with a qualified provider before choosing rooftop solar. The cost estimate does not account for these conditions.` : '';
 }
 
+function solarOptionsForUsage(review, raw) {
+  const profile = normalizeHomeProfile(raw);
+  if (!review || !Number.isFinite(review.annualKwh) || review.annualKwh < 0 || !Array.isArray(review.highUsageMonths)) {
+    throw new Error('A completed homeowner energy review is required.');
+  }
+  const options = [];
+  const add = (situation, option, nextStep) => options.push({ situation, option, nextStep });
+  if (profile.existingSolar === 'yes') {
+    add('You reported existing solar', 'Review the current system before adding panels or storage', 'Collect generation and grid import/export records. Utility bills alone do not show total household demand; check equipment performance and new loads with an installer.');
+    return options;
+  }
+  if (review.annualKwh === 0) {
+    add('Your entered use is zero', 'Verify usage before choosing solar equipment', 'Confirm bill units and actual meter readings. There is no recorded demand to size panels or a battery against.');
+    return options;
+  }
+  if (profile.estimatedBills === 'yes' || profile.householdChanges === 'yes') {
+    add('Your bill year may not represent future use', 'Confirm demand before comparing solar sizes', 'Replace estimated readings with actual readings and account for household changes. Avoid sizing a system from an unrepresentative year.');
+  }
+  if (review.highUsageMonths.length) {
+    add(`Higher use in ${review.highUsageMonths.join(', ')}`, 'Efficiency review, then solar sized to the remaining demand', 'Check weather, billing-period length, and equipment schedules. Compare monthly solar production with monthly demand; a large annual total does not mean solar will cover seasonal peaks.');
+  } else {
+    add('Your monthly use is relatively steady', 'Compare a grid-connected solar system with your recurring demand', 'Ask for a production estimate and an itemized quote. Steady monthly totals do not establish daytime use, roof suitability, or financial payback.');
+  }
+  const roofCaution = homeSolarCaution(profile);
+  if (roofCaution || profile.ownership === 'renter') {
+    add('Rooftop installation needs further checks', 'Explore community solar where available while resolving rooftop constraints', `${profile.ownership === 'renter' ? 'You reported renting; confirm owner approval. ' : ''}${roofCaution} Check local community-solar eligibility, subscription charges, bill credits, cancellation terms, and whether it actually lowers your total bill.`);
+    return options;
+  }
+  const hasEv = ['one', 'multiple'].includes(profile.ev);
+  if (profile.daytime === 'usually' || (hasEv && profile.evCharging === 'day')) {
+    add('You reported daytime occupancy or daytime EV charging', 'Assess direct use of rooftop solar during daylight', 'Use interval meter data to check whether loads overlap production. Being home does not establish a high daytime load; adjust the solar-used-at-home assumption only after checking.');
+  }
+  if (profile.daytime === 'rarely' || (hasEv && profile.evCharging === 'night')) {
+    add('You reported daytime absence or overnight EV charging', 'Compare load scheduling, export credits, and optional battery storage', 'Daylight solar will not directly supply overnight charging. Compare safe daytime scheduling with your tariff and export rules before paying for a battery; include storage losses, installation, and replacement costs.');
+  }
+  if (hasEv) {
+    add('You charge an EV at home', 'Include vehicle demand in the solar assessment', 'Check whether the bill year already includes charging so it is not counted twice. For a new EV, provide expected mileage and charger data; ask about electrical capacity and charging schedules.');
+  }
+  if (profile.utilityPlan === 'time-of-use') {
+    add('Your price changes by time of day', 'Compare solar alone with scheduled loads and optional storage using hourly rates', 'Obtain an interval-based tariff analysis including import prices and export credits. The annual single-rate calculator cannot establish time-of-use or battery savings.');
+  }
+  if (profile.goal === 'backup') {
+    add('Backup power is your priority', 'Discuss solar with a compatible battery and backup controls', 'Standard grid-connected solar may shut down during outages. List essential circuits and required backup hours; have an installer verify battery power, usable capacity, and safe isolation. Batteries and backup costs are excluded from the calculator.');
+  }
+  if (!['usually', 'rarely'].includes(profile.daytime) && !(hasEv && ['day', 'night'].includes(profile.evCharging))) {
+    add('Your daytime demand has not been established', 'Compare solar alone first; gather usage timing before considering storage', 'Monthly bills do not reveal hourly use. Request interval meter data and confirm export compensation before choosing a self-consumption assumption or a battery.');
+  }
+  return options;
+}
+
 function tailorHomeRecommendation(base, raw) {
   const profile = normalizeHomeProfile(raw);
   const result = { ...base, services: [...base.services], homeInsights: [], homeFollowups: [] };
@@ -1215,6 +1272,20 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   currentRecommendation = complete ? tailorHomeRecommendation(recommendEnergy(currentReview, comparison), homeQuestionnaire?.read().profile) : null;
   if (!complete) return;
   const r = currentRecommendation;
+  r.solarOptions = solarOptionsForUsage(currentReview, homeQuestionnaire?.read().profile);
+  const solarOptions = document.querySelector('#solar-usage-options');
+  solarOptions.replaceChildren(...r.solarOptions.map(option => {
+    const item = document.createElement('li');
+    const situation = document.createElement('p');
+    situation.className = 'solar-option-situation';
+    situation.textContent = option.situation;
+    const heading = document.createElement('h4');
+    heading.textContent = option.option;
+    const nextStep = document.createElement('p');
+    nextStep.textContent = option.nextStep;
+    item.append(situation, heading, nextStep);
+    return item;
+  }));
   set('recommendation-source', exampleFields.size ? 'EXAMPLE DATA · SUGGESTED NEXT STEP' : 'BASED ON YOUR 12 ENTERED MONTHS');
   set('recommendation-title', r.title);
   set('recommendation-opportunity', r.opportunity);
@@ -1269,6 +1340,7 @@ assessmentForm.addEventListener('submit', event => {
     '', `Request type: ${assessmentMode === 'inspection' ? 'Please contact me to arrange an in-home information and inspection visit.' : 'Home energy assessment.'}`,
     `Suggested package: ${assessmentMode === 'inspection' ? 'Home Information & Inspection Visit' : r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
     '', 'Services to discuss:', ...r.services.map(service => `- ${service}`),
+    '', 'Solar options for your usage:', ...(r.solarOptions?.flatMap(option => [option.situation, option.option, option.nextStep, '']) || ['Complete a bill review to connect solar options to your usage.']),
     '', ...(currentReview ? [`Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`] : ['Annual bill totals are unavailable because the 12-month review is incomplete.']),
     '', 'Entered monthly bills:', ...billLines,
     '', 'HOME ENERGY QUESTIONNAIRE (self-reported, not independently verified):',

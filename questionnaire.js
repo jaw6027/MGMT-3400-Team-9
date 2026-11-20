@@ -89,6 +89,56 @@ export function homeSolarCaution(raw) {
   return checks.length ? `Your questionnaire flags ${checks.join(', ')}. Resolve these with a qualified provider before choosing rooftop solar. The cost estimate does not account for these conditions.` : '';
 }
 
+export function solarOptionsForUsage(review, raw) {
+  const profile = normalizeHomeProfile(raw);
+  if (!review || !Number.isFinite(review.annualKwh) || review.annualKwh < 0 || !Array.isArray(review.highUsageMonths)) {
+    throw new Error('A completed homeowner energy review is required.');
+  }
+  const options = [];
+  const add = (situation, option, nextStep) => options.push({ situation, option, nextStep });
+  if (profile.existingSolar === 'yes') {
+    add('You reported existing solar', 'Review the current system before adding panels or storage', 'Collect generation and grid import/export records. Utility bills alone do not show total household demand; check equipment performance and new loads with an installer.');
+    return options;
+  }
+  if (review.annualKwh === 0) {
+    add('Your entered use is zero', 'Verify usage before choosing solar equipment', 'Confirm bill units and actual meter readings. There is no recorded demand to size panels or a battery against.');
+    return options;
+  }
+  if (profile.estimatedBills === 'yes' || profile.householdChanges === 'yes') {
+    add('Your bill year may not represent future use', 'Confirm demand before comparing solar sizes', 'Replace estimated readings with actual readings and account for household changes. Avoid sizing a system from an unrepresentative year.');
+  }
+  if (review.highUsageMonths.length) {
+    add(`Higher use in ${review.highUsageMonths.join(', ')}`, 'Efficiency review, then solar sized to the remaining demand', 'Check weather, billing-period length, and equipment schedules. Compare monthly solar production with monthly demand; a large annual total does not mean solar will cover seasonal peaks.');
+  } else {
+    add('Your monthly use is relatively steady', 'Compare a grid-connected solar system with your recurring demand', 'Ask for a production estimate and an itemized quote. Steady monthly totals do not establish daytime use, roof suitability, or financial payback.');
+  }
+  const roofCaution = homeSolarCaution(profile);
+  if (roofCaution || profile.ownership === 'renter') {
+    add('Rooftop installation needs further checks', 'Explore community solar where available while resolving rooftop constraints', `${profile.ownership === 'renter' ? 'You reported renting; confirm owner approval. ' : ''}${roofCaution} Check local community-solar eligibility, subscription charges, bill credits, cancellation terms, and whether it actually lowers your total bill.`);
+    return options;
+  }
+  const hasEv = ['one', 'multiple'].includes(profile.ev);
+  if (profile.daytime === 'usually' || (hasEv && profile.evCharging === 'day')) {
+    add('You reported daytime occupancy or daytime EV charging', 'Assess direct use of rooftop solar during daylight', 'Use interval meter data to check whether loads overlap production. Being home does not establish a high daytime load; adjust the solar-used-at-home assumption only after checking.');
+  }
+  if (profile.daytime === 'rarely' || (hasEv && profile.evCharging === 'night')) {
+    add('You reported daytime absence or overnight EV charging', 'Compare load scheduling, export credits, and optional battery storage', 'Daylight solar will not directly supply overnight charging. Compare safe daytime scheduling with your tariff and export rules before paying for a battery; include storage losses, installation, and replacement costs.');
+  }
+  if (hasEv) {
+    add('You charge an EV at home', 'Include vehicle demand in the solar assessment', 'Check whether the bill year already includes charging so it is not counted twice. For a new EV, provide expected mileage and charger data; ask about electrical capacity and charging schedules.');
+  }
+  if (profile.utilityPlan === 'time-of-use') {
+    add('Your price changes by time of day', 'Compare solar alone with scheduled loads and optional storage using hourly rates', 'Obtain an interval-based tariff analysis including import prices and export credits. The annual single-rate calculator cannot establish time-of-use or battery savings.');
+  }
+  if (profile.goal === 'backup') {
+    add('Backup power is your priority', 'Discuss solar with a compatible battery and backup controls', 'Standard grid-connected solar may shut down during outages. List essential circuits and required backup hours; have an installer verify battery power, usable capacity, and safe isolation. Batteries and backup costs are excluded from the calculator.');
+  }
+  if (!['usually', 'rarely'].includes(profile.daytime) && !(hasEv && ['day', 'night'].includes(profile.evCharging))) {
+    add('Your daytime demand has not been established', 'Compare solar alone first; gather usage timing before considering storage', 'Monthly bills do not reveal hourly use. Request interval meter data and confirm export compensation before choosing a self-consumption assumption or a battery.');
+  }
+  return options;
+}
+
 export function tailorHomeRecommendation(base, raw) {
   const profile = normalizeHomeProfile(raw);
   const result = { ...base, services: [...base.services], homeInsights: [], homeFollowups: [] };

@@ -66,6 +66,12 @@ When the valid solar-only comparison shows positive ongoing savings and some sol
 
 **Request a Home Assessment** opens a local dialog for a name, email, optional postal code, and notes. **Download assessment request** creates a plain-text draft with contact details, bill data, the recommendation, and current solar assumptions. The homeowner must share it with their chosen provider. This prototype has no booking backend or email destination: nothing is sent, no appointment is booked, and no lead is stored. Closing the dialog clears its contact fields. The recommendation is also included in the printed report.
 
+### Solar options for different usage situations
+
+After a complete bill review, **Solar options for your usage** connects monthly patterns and optional home answers to steps to discuss with an assessor. Steady use prompts a grid-connected solar comparison; peak months prompt efficiency checks and monthly production matching before sizing. Reported daytime activity prompts a direct-use assessment, while overnight EV charging or daytime absence prompts comparison of scheduling, export credits, and optional storage. EV demand must not be counted twice. Time-of-use pricing needs interval-based analysis, and backup goals need compatible storage and backup controls.
+
+Roof constraints or renting prompt feasibility checks and community solar where available. Existing solar requires generation and import/export records; zero use requires data verification. Unknown timing is left unknown. These suggestions update with bills and home answers, appear in print and downloaded assessment drafts, and do not change calculator inputs. They do not estimate battery or subscription economics, establish roof suitability, or infer hourly use from monthly totals. Confirm full costs and utility rules before choosing equipment.
+
 ### Solar savings scenario
 
 The existing scenario uses its manually entered monthly usage. The **Current costs vs. solar** section instead uses annual kWh and actual bill totals directly from the completed Homeowner Energy Review, without requiring the usage-transfer button. It shows current annual/monthly costs, solar-only ongoing costs, and solar plus smart-upgrade ongoing costs. All assumptions and the cost breakdown are visible and included when printing.

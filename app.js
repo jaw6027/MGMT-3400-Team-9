@@ -2,7 +2,7 @@ import { defaults, estimate, compareCosts } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
 import { setupBillImport } from './bill-ui.js';
 import { setupProgress } from './progress.js';
-import { setupHomeQuestionnaire, tailorHomeRecommendation, homeProfileRows, homeSolarCaution } from './questionnaire.js';
+import { setupHomeQuestionnaire, tailorHomeRecommendation, homeProfileRows, homeSolarCaution, solarOptionsForUsage } from './questionnaire.js';
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -287,6 +287,20 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   currentRecommendation = complete ? tailorHomeRecommendation(recommendEnergy(currentReview, comparison), homeQuestionnaire?.read().profile) : null;
   if (!complete) return;
   const r = currentRecommendation;
+  r.solarOptions = solarOptionsForUsage(currentReview, homeQuestionnaire?.read().profile);
+  const solarOptions = document.querySelector('#solar-usage-options');
+  solarOptions.replaceChildren(...r.solarOptions.map(option => {
+    const item = document.createElement('li');
+    const situation = document.createElement('p');
+    situation.className = 'solar-option-situation';
+    situation.textContent = option.situation;
+    const heading = document.createElement('h4');
+    heading.textContent = option.option;
+    const nextStep = document.createElement('p');
+    nextStep.textContent = option.nextStep;
+    item.append(situation, heading, nextStep);
+    return item;
+  }));
   set('recommendation-source', exampleFields.size ? 'EXAMPLE DATA · SUGGESTED NEXT STEP' : 'BASED ON YOUR 12 ENTERED MONTHS');
   set('recommendation-title', r.title);
   set('recommendation-opportunity', r.opportunity);
@@ -341,6 +355,7 @@ assessmentForm.addEventListener('submit', event => {
     '', `Request type: ${assessmentMode === 'inspection' ? 'Please contact me to arrange an in-home information and inspection visit.' : 'Home energy assessment.'}`,
     `Suggested package: ${assessmentMode === 'inspection' ? 'Home Information & Inspection Visit' : r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
     '', 'Services to discuss:', ...r.services.map(service => `- ${service}`),
+    '', 'Solar options for your usage:', ...(r.solarOptions?.flatMap(option => [option.situation, option.option, option.nextStep, '']) || ['Complete a bill review to connect solar options to your usage.']),
     '', ...(currentReview ? [`Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`] : ['Annual bill totals are unavailable because the 12-month review is incomplete.']),
     '', 'Entered monthly bills:', ...billLines,
     '', 'HOME ENERGY QUESTIONNAIRE (self-reported, not independently verified):',

@@ -73,6 +73,9 @@ try {
   assert.match(await page.locator('#recommendation-title').textContent(), /drafts and insulation/);
   assert.match(await page.locator('#home-recommendation-insights').textContent(), /overnight/);
   assert.match(await page.locator('#home-recommendation-insights').textContent(), /may shut down during outages/);
+  assert.match(await page.locator('#solar-usage-options').textContent(), /will not directly supply overnight charging/);
+  assert.match(await page.locator('#solar-usage-options').textContent(), /interval-based tariff analysis/);
+  assert.match(await page.locator('#solar-usage-options').textContent(), /essential circuits/);
   assert.match(await page.locator('#home-solar-caution').textContent(), /single-rate annual comparison/);
   const solarOnlyCost = await page.locator('#compare-solar-annual').textContent();
   assert.equal(await page.locator('#solarKw').inputValue(), '6');
@@ -80,11 +83,15 @@ try {
   await choose('roofCondition', 'repair');
   await choose('shade', 'heavy');
   assert.equal(await page.locator('#recommendation-package').textContent(), 'Efficiency First + Solar Feasibility Review');
+  assert.match(await page.locator('#solar-usage-options').textContent(), /community solar where available/);
+  assert.doesNotMatch(await page.locator('#solar-usage-options').textContent(), /essential circuits/);
   assert.equal(await page.locator('#compare-solar-annual').textContent(), solarOnlyCost);
   await choose('existingSolar', 'yes');
   assert.equal(await page.locator('#comparison-results').isVisible(), false);
   assert.match(await page.locator('#comparison-notice').textContent(), /already has solar/);
   assert.equal(await page.locator('#recommendation-package').textContent(), 'Existing Solar & Efficiency Review');
+  assert.equal(await page.locator('#solar-usage-options li').count(), 1);
+  assert.match(await page.locator('#solar-usage-options').textContent(), /generation and grid import\/export records/);
   await choose('existingSolar', 'no');
   assert.equal(await page.locator('#comparison-results').isVisible(), true);
   await page.locator('#save-progress').click();
@@ -118,6 +125,8 @@ try {
   assert.match(detailText, /Approximate floor area.*1800/);
   assert.match(detailText, /Do you notice drafts or air leaks.*Yes/);
   assert.match(detailText, /Roof condition: Not sure/);
+  assert.match(detailText, /Solar options for your usage:/);
+  assert.match(detailText, /Higher use in/);
   await page.locator('#assessment-close').click();
   await page.locator('#home-questionnaire').screenshot({ path: '/tmp/helio-questionnaire-desktop.png' });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -126,6 +135,7 @@ try {
   await page.emulateMedia({ media: 'print' });
   assert.equal(await page.locator('#home-questionnaire-summary').isVisible(), true);
   assert.equal(await page.locator('#home-questionnaire-form').isVisible(), false);
+  assert.equal(await page.locator('#solar-usage-options').isVisible(), true);
   await page.emulateMedia({ media: 'screen' });
   await page.locator('#save-home-profile').uncheck();
   await page.locator('#save-progress').click();
@@ -133,6 +143,10 @@ try {
   await page.locator('#clear-home-questionnaire').click();
   assert.equal(await page.locator('#home-profile-summary-panel').isVisible(), false);
   assert.equal(await page.locator('#review-kwh').textContent(), '12,450 kWh');
+  await choose('daytime', 'usually');
+  assert.match(await page.locator('#solar-usage-options').textContent(), /direct use of rooftop solar/);
+  await page.locator('#review-clear').click();
+  assert.equal(await page.locator('#solar-usage-options').isVisible(), false);
   assert.deepEqual(errors, []);
   console.log('PASS: 42 optional questions; no-bill inspection request; inactive demo phone; unknowns; targeted recommendations; existing-solar guard; roof/tariff warnings; unchanged model settings; opt-in save and legacy restore; invalid numeric answers; human-readable request export; print and mobile.');
 } finally {
