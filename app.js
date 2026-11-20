@@ -38,9 +38,15 @@ function reset() {
   render();
 }
 form.addEventListener('input', render);
+form.addEventListener('invalid', event => {
+  const details = event.target.closest('details');
+  if (details) details.open = true;
+}, true);
+const expandSolarDetails = () => form.querySelectorAll('details').forEach(details => { details.open = true; });
+window.addEventListener('beforeprint', expandSolarDetails);
 document.querySelector('#reset').addEventListener('click', reset);
 document.querySelector('#print').addEventListener('click', () => {
-  document.querySelector('details').open = true;
+  expandSolarDetails();
   if (!form.reportValidity()) return;
   window.print();
 });
@@ -195,6 +201,13 @@ function renderComparison() {
   }
   results.hidden = false;
   renderRecommendation(c);
+  set('meaning-bills', `Your ${exampleFields.size ? 'example' : 'entered'} bills add up to ${billMoney.format(c.annualCost)} for the year, or about ${billMoney.format(c.monthlyCost)} a month. You used ${number.format(currentReview.annualKwh)} kWh of electricity over the year.`);
+  const saving = c.solar.annualSavings;
+  const solarChange = Math.abs(saving) < 0.005 ? 'leave ongoing costs roughly unchanged'
+    : saving > 0 ? `lower ongoing costs by about ${billMoney.format(saving)} a year (${billMoney.format(saving / 12)} a month on average)`
+      : `increase ongoing costs by about ${billMoney.format(-saving)} a year (${billMoney.format(-saving / 12)} a month on average)`;
+  set('meaning-solar', `Under the current settings, solar alone could ${solarChange}. This includes maintenance and monitoring, but not installation or loan payments. ${c.solar.projectedAnnualCost < 0 ? 'The negative cost shown is a net credit; your utility may limit or not pay out these credits. ' : ''}Confirm the settings and a full quote before deciding.`);
+  set('meaning-efficiency', `Solar replaces some electricity you buy from the grid; it does not make your appliances use less. Smart upgrades are separately assumed to reduce electricity use by ${values.efficiency}%. ${values.efficiency > 0 ? `That would mean about ${number.format(currentReview.annualKwh * values.efficiency / 100)} fewer kWh used per year, if those improvements are achieved.` : 'No reduction in electricity use from upgrades is assumed in this scenario.'} Your recommendation explains what to check first.`);
   notice.hidden = true;
   set('comparison-source', exampleFields.size ? 'EXAMPLE BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE' : 'ENTERED BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE');
   set('compare-current-annual', billMoney.format(c.annualCost));

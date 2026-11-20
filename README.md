@@ -85,3 +85,11 @@ All values are illustrative, in USD, and editable. No incentives are assumed by 
 ## Customer help
 
 **Need help?** in the header opens an accessible dialog with quick answers about bill entry, photo import, solar assumptions, assessment requests, and privacy. Phone and live chat are explicitly labeled **Coming soon** because no verified business phone number or chat service has been supplied. There is no fake phone number, agent availability claim, message submission, or AI integration. When contact details are available, replace those placeholders with the business's verified phone link or HTTPS chat destination in `scripts/index.template.html`, then rebuild. The help dialog does not change bill entries and is excluded from printed reports.
+
+## Customer-friendly guidance
+
+The **Start here** guide links to bill entry, cost comparison, and the personalized next step. It explains that one bill is enough to start and save, while the full review needs 12 months. Plain-language notes explain kWh, panel power in kW, electricity prices, assumed efficiency improvements, sunlight, system losses, solar used at home, and utility credits.
+
+**Advanced solar settings** starts collapsed. Solar system size stays visible, and all numerical assumptions remain editable. Validation reveals any invalid setting inside a closed section, including a partially saved setting; printing expands advanced settings and project costs so assumptions remain visible.
+
+The bill-based comparison includes **What this means for your home**, explaining entered annual bills, modeled solar-only savings or extra costs, the exclusion of installation and loan payments, and how efficiency improvements differ from solar replacing grid purchases. Example data remains explicitly labeled, unavailable comparisons hide the summary, and zero assumed efficiency does not claim a consumption reduction. Run `npm run test:guidance` for the browser checks. These changes have browser validation; they have not been evaluated in a study with actual homeowners.

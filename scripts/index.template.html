@@ -11,6 +11,15 @@
   <header class="topbar"><a class="brand" href="./"><span class="brand-icon">☀</span> helio<span>home</span></a><span class="badge">HOME ENERGY ADVISOR</span><div class="header-actions"><button type="button" id="open-help" aria-haspopup="dialog" aria-controls="help-dialog">Need help?</button><button type="button" id="print">Print report <span aria-hidden="true">&rarr;</span></button></div></header>
   <main>
     <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
+    <section class="start-guide" aria-labelledby="start-guide-title">
+      <div class="guide-heading"><p class="eyebrow">START HERE</p><h2 id="start-guide-title">Understand your home in three steps</h2><p>Have a bill handy? Start with one month and save your progress. Your full review appears after all 12 months are entered.</p></div>
+      <ol class="guide-steps">
+        <li><span aria-hidden="true">1</span><div><a href="#homeowner-review">Review your bills</a><p>Enter each month's electricity use and cost, or choose a bill photo and check the numbers.</p></div></li>
+        <li><span aria-hidden="true">2</span><div><a href="#cost-comparison">Compare your options</a><p>See what you pay now and what solar might change. Starting solar settings are examples until you confirm them.</p></div></li>
+        <li><span aria-hidden="true">3</span><div><a href="#personalized-recommendation">Choose your next step</a><p>Read your recommendation and prepare a home assessment request to share with a provider.</p></div></li>
+      </ol>
+      <p class="guide-practice">Just exploring? <a href="#review-example">Try the clearly labeled example bills</a> before using your own numbers.</p>
+    </section>
     <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
       <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
       <div class="save-progress-panel" aria-labelledby="save-progress-title">
@@ -21,7 +30,7 @@
       </div>
       <div class="review-layout">
         <div class="review-entry">
-          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Entries are kept only for this visit unless you choose Save progress above.</p>
+          <p id="review-help" class="hint"><strong>kWh measures how much electricity you use.</strong> Find the monthly kWh total on your bill and enter the bill amount in dollars (USD). Use January–December from the same year. Zero is allowed; blank means not entered. Entries are kept only for this visit unless you choose Save progress above.</p>
           <div class="bill-upload">
             <p class="eyebrow">LESS TYPING, MORE CLARITY</p><h3>Add a month from a bill photo</h3><p>Choose a clear, upright screenshot or photo of an English-language electricity bill. Review and correct the month, kWh, and bill total before adding them.</p>
             <input id="bill-image" hidden type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose electricity bill photo" tabindex="-1">
@@ -52,17 +61,19 @@
           <label class="customer">Customer / project name <input id="customer" type="text" maxlength="100" placeholder="e.g. The Johnson home" autocomplete="off"></label>
           <fieldset><legend><span>01</span> Current electricity use</legend><div class="field-grid">
             <label>Monthly electricity use <div class="input-wrap"><input id="monthlyKwh" type="number" min="0" max="100000" step="any" required><span>kWh</span></div></label>
-            <label>Electricity price <div class="input-wrap"><input id="rate" type="number" min="0" max="10" step="any" required><span>$/kWh</span></div></label>
-          </div><p class="hint">Use the last 12 months of bills to find your average. Fixed utility charges are excluded.</p></fieldset>
-          <fieldset><legend><span>02</span> Smart home improvements</legend><label for="efficiency">Estimated energy reduction <strong id="efficiency-value">15%</strong></label><input id="efficiency" type="range" min="0" max="50" step="1"><div class="range-labels"><span>0% · no upgrades</span><span>50%</span></div><p class="hint">Potential savings from smart thermostats, efficient appliances, lighting, and insulation. This is a scenario assumption, not a measured result.</p></fieldset>
-          <fieldset><legend><span>03</span> Your solar setup</legend><div class="field-grid">
-            <label>Solar system size <div class="input-wrap"><input id="solarKw" type="number" min="0" max="1000" step="any" required><span>kW</span></div></label>
-            <label>Peak sun hours / day <div class="input-wrap"><input id="sunHours" type="number" min="0" max="24" step="any" required><span>hours</span></div></label>
-            <label>System performance <div class="input-wrap"><input id="performance" type="number" min="0" max="100" step="any" required><span>%</span></div></label>
-            <label>Solar used at home <div class="input-wrap"><input id="selfUse" type="number" min="0" max="100" step="any" required><span>%</span></div></label>
-            <label>Export credit rate <div class="input-wrap"><input id="exportRate" type="number" min="0" max="10" step="any" required><span>$/kWh</span></div></label>
-          </div><p class="hint">Peak sun hours are not daylight hours. Performance accounts for system losses; self-use depends on when you consume power. Export rules vary by utility.</p></fieldset>
-          <details><summary>Project costs & incentives <span aria-hidden="true">+</span></summary><div class="field-grid cost-fields">
+            <label>Electricity price before fixed fees <div class="input-wrap"><input aria-describedby="rate-help" id="rate" type="number" min="0" max="10" step="any" required><span>$/kWh</span></div></label>
+          </div><p class="hint">Use the last 12 months of bills to find your average. <span id="rate-help">The price in $/kWh is what your utility charges for each unit of electricity. For example, 18 cents is $0.18. Exclude fixed monthly fees.</span></p></fieldset>
+          <fieldset><legend><span>02</span> Smart home improvements</legend><label for="efficiency">Estimated energy reduction <strong id="efficiency-value">15%</strong></label><input aria-describedby="efficiency-help" id="efficiency" type="range" min="0" max="50" step="1"><div class="range-labels"><span>0% · no upgrades</span><span>50%</span></div><p class="hint" id="efficiency-help">This is how much less electricity you think upgrades could use. A setting of 15% means 15 fewer units for every 100 used today. It is an assumption to explore, not a measured saving.</p></fieldset>
+          <fieldset><legend><span>03</span> Explore a solar option</legend><div class="field-grid">
+            <label>Solar system size <div class="input-wrap"><input id="solarKw" type="number" min="0" max="1000" step="any" required aria-describedby="solar-size-help"><span>kW</span></div><span class="field-help" id="solar-size-help">kW describes how much power the panels can produce at a moment. Use an installer's proposed size when you have one.</span></label>
+          </div><p class="hint">Not sure yet? You can explore the example settings. They are not a roof assessment or an installation quote.</p>
+          <details id="advanced-solar"><summary>Advanced solar settings <span aria-hidden="true">+</span></summary><p class="hint">Open these when you have local sunlight information, an installer quote, or your utility's solar rules. Each value changes the estimate.</p><div class="field-grid cost-fields">
+            <label>Peak sun hours each day <div class="input-wrap"><input id="sunHours" type="number" min="0" max="24" step="any" required aria-describedby="sun-help"><span>hours</span></div><span class="field-help" id="sun-help">Equivalent hours of full-strength sunlight, not total daylight hours. Ask your installer for a local estimate.</span></label>
+            <label>Usable solar output <div class="input-wrap"><input id="performance" type="number" min="0" max="100" step="any" required aria-describedby="performance-help"><span>%</span></div><span class="field-help" id="performance-help">The share of output left after losses from heat, wiring, and equipment. An 80% setting assumes 20% is lost.</span></label>
+            <label>Solar power used at home <div class="input-wrap"><input id="selfUse" type="number" min="0" max="100" step="any" required aria-describedby="self-use-help"><span>%</span></div><span class="field-help" id="self-use-help">The share of solar generation your home uses instead of sending it back to the grid. It depends on when you use electricity.</span></label>
+            <label>Credit for extra solar power <div class="input-wrap"><input id="exportRate" type="number" min="0" max="10" step="any" required aria-describedby="export-help"><span>$/kWh</span></div><span class="field-help" id="export-help">What your utility credits for each unit sent back to the grid, also called an export credit. Rules and payment limits vary.</span></label>
+          </div></details></fieldset>
+          <details id="project-costs"><summary>Project costs & incentives <span aria-hidden="true">+</span></summary><div class="field-grid cost-fields">
             <label>Solar installation <div class="input-wrap"><input id="solarCost" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
             <label>Smart home upgrades <div class="input-wrap"><input id="upgradeCost" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
             <label>Verified incentives <div class="input-wrap"><input id="incentive" type="number" min="0" max="10000000" step="any" required><span>$</span></div></label>
@@ -75,7 +86,7 @@
         <div class="results-heading"><p class="eyebrow">YOUR HOME, REIMAGINED</p><h2 id="results-title">Your energy outlook</h2><p class="hint">This scenario uses the monthly usage entered in the solar plan. <a href="#cost-comparison">Compare against your actual bills below &darr;</a></p><p id="report-name" hidden></p><p id="error" role="alert" hidden>Enter valid values in the highlighted fields to update your estimate.</p></div>
         <div id="estimate-results" aria-live="polite" aria-atomic="true">
           <div class="savings-card"><span class="pill">ILLUSTRATIVE ESTIMATE</span><p>Potential annual savings</p><div class="big-number" id="annual-savings"></div><p class="monthly" id="monthly-savings"></p><div class="savings-footer"><span>Reduction in grid electricity</span><strong id="grid-reduction"></strong></div></div>
-          <div class="metric-grid"><div class="card metric"><span>Net upfront investment</span><strong id="net-cost"></strong><small>After entered incentives</small></div><div class="card metric"><span>Simple payback</span><strong id="payback"></strong><small>No financing or rate inflation</small></div></div>
+          <div class="metric-grid"><div class="card metric"><span>Estimated upfront cost</span><strong id="net-cost"></strong><small>After entered incentives</small></div><div class="card metric"><span>Years to recover cost</span><strong id="payback"></strong><small>Years of estimated savings to cover setup cost; excludes financing and rate changes</small></div></div>
           <div class="card breakdown"><h3>Where your savings come from</h3><div class="bar-legend"><span><i class="dot green"></i> Smart upgrades</span><span><i class="dot gold"></i> Solar + export credit</span></div><div class="savings-bar" aria-hidden="true"><span id="efficiency-bar"></span><span id="solar-bar"></span></div><dl><div><dt>Energy efficiency savings</dt><dd id="efficiency-savings"></dd></div><div><dt>Solar use + export credit</dt><dd id="solar-savings"></dd></div><div><dt>Maintenance + subscription</dt><dd id="operating-cost"></dd></div><div class="total"><dt>Net annual savings</dt><dd id="total-savings"></dd></div></dl></div>
           <div class="card flow"><h3>Your annual energy picture</h3><dl><div><dt>Electricity use today</dt><dd id="annual-usage"></dd></div><div><dt>Use after smart upgrades</dt><dd id="reduced-usage"></dd></div><div><dt>Solar generation</dt><dd id="production"></dd></div><div><dt>Solar used at home</dt><dd id="solar-used"></dd></div><div><dt>Solar exported to grid</dt><dd id="exports"></dd></div><div><dt>Electricity bought from grid</dt><dd id="grid-kwh"></dd></div><div class="total"><dt>Modeled annual cost today</dt><dd id="baseline"></dd></div><div><dt>Modeled annual cost with plan</dt><dd id="annual-after"></dd></div></dl><p class="hint">Plan cost includes electricity imports, export credits, maintenance, and subscriptions. A negative cost means modeled credits exceed operating costs; utilities may limit payouts.</p></div>
         </div>
@@ -87,6 +98,11 @@
       <p id="comparison-notice" class="comparison-notice" role="status"></p>
       <div id="comparison-results" hidden>
         <p id="comparison-source" class="eyebrow comparison-source"></p>
+        <section class="customer-meaning" aria-labelledby="customer-meaning-title">
+          <h3 id="customer-meaning-title">What this means for your home</h3>
+          <p id="meaning-bills"></p><p id="meaning-solar"></p><p id="meaning-efficiency"></p>
+          <a href="#personalized-recommendation">See your suggested next step &darr;</a>
+        </section>
         <div class="comparison-cards">
           <div class="comparison-option"><h3>Current electricity bills</h3><strong id="compare-current-annual"></strong><span>per year · entered costs</span><p id="compare-current-monthly"></p></div>
           <div class="comparison-option"><h3>With solar only</h3><strong id="compare-solar-annual"></strong><span>per year · estimated</span><p id="compare-solar-monthly"></p><p class="comparison-savings" id="compare-solar-savings"></p></div>
