@@ -208,3 +208,25 @@ A completed project is an Installed record with an installation date. Use one
 record per homeowner/project/vendor and edit it as it progresses; the anonymous
 tracker cannot independently deduplicate homeowners. Additional rates, ratings
 and follow-up metrics remain in a collapsed “More performance details” panel.
+
+#### Following each referral through the process
+
+Optional fields now record the service requested, assigned team member code (up to
+12 letters/digits/hyphens), planned consultation date, quote received date, next
+action, closure date and a structured closure reason. There is also a **Quote
+received** stage. Use **Edit** on the same referral as work progresses; this is a
+current-state tracker, not a historical audit log. Unknown details remain **Not
+recorded**. Closure fields require the Closed stage, quote dates require a first
+contact date, actual events cannot be future dated, and an installation cannot
+precede a recorded consultation or quote. A planned consultation may be future dated.
+
+The referral table can show all records, open follow-ups due today or earlier, or
+open records missing a next action/follow-up date. Vendor totals always include all
+records, regardless of the table filter. Expand **Process details** on a referral
+to see its service, team member, dates, next action and closure reason. The service
+and action lists and structured reasons avoid adding freeform homeowner information.
+
+The new optional fields round-trip through device saving and JSON backups. Existing
+version 1 backups still load without invented dates or assignments. Sharing remains
+manual and there is no automatic vendor confirmation, reminder delivery or team
+sync. Save again after edits; loading/importing still replaces rather than merges.

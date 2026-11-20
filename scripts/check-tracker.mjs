@@ -35,6 +35,9 @@ try {
   const today = await page.locator('[name=referred]').inputValue();
   await page.locator('[name=vendor]').fill('Synthetic <provider>');
   await page.locator('[name=followup]').fill(today);
+  await page.selectOption('[name=service]', 'solar');
+  await page.locator('[name=owner]').fill('TEAM1');
+  await page.selectOption('[name=nextAction]', 'contact');
   await page.locator('#tracker-form [type=submit]').click();
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
   assert.deepEqual(await totals(), [['Synthetic <provider>', '1', '0', '0']]);
@@ -56,12 +59,15 @@ try {
   await page.locator('#tracker-save').click();
   const backup = await page.evaluate(() => localStorage.getItem('helio-home:referral-tracker:v1'));
   assert.equal(JSON.parse(backup).records.length, 1);
+  assert.equal(JSON.parse(backup).records[0].owner, 'TEAM1');
+  assert.equal(JSON.parse(backup).records[0].service, 'solar');
   await page.reload(); assert.equal(await page.locator('#tracker-records tr').count(), 0);
   await page.locator('#tracker-load').click(); assert.equal(await page.locator('#tracker-records tr').count(), 1);
   const downloadPromise = page.waitForEvent('download'); await page.locator('#tracker-export').click();
   const download = await downloadPromise;
   assert.deepEqual(JSON.parse(await readFile(await download.path(), 'utf8')), JSON.parse(backup));
   await page.locator('#tracker-file').setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{"version":8}') });
+  await page.waitForFunction(() => document.querySelector('#tracker-status').textContent.includes('Import failed'));
   assert.match(await page.locator('#tracker-status').textContent(), /Import failed/);
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
   page.on('dialog', dialog => dialog.accept());
@@ -78,13 +84,40 @@ try {
   const records = [
     { ...installed, id: 'summary-1', vendor: 'Vendor A' },
     { ...installed, id: 'summary-2', vendor: 'vendor a', stage: 'closed', installed: '' },
-    { ...installed, id: 'summary-3', vendor: 'Vendor A', stage: 'referred', contacted: '', installed: '' },
+    { ...installed, id: 'summary-3', vendor: 'Vendor A', stage: 'referred', contacted: '', installed: '', nextAction: '' },
     { ...installed, id: 'summary-4', vendor: 'Vendor B', stage: 'contacted', installed: '' },
   ];
   await page.locator('#tracker-file').setInputFiles({ name: 'summary.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ version: 1, records })) });
   await page.waitForFunction(() => document.querySelectorAll('#tracker-vendor-totals tr').length === 2);
   assert.deepEqual(await totals(), [['Vendor A', '3', '2', '1'], ['Vendor B', '1', '1', '0']]);
   assert.equal(await page.locator('#tracker-empty').isVisible(), false);
+  await page.selectOption('#tracker-filter', 'due');
+  assert.equal(await page.locator('#tracker-records tr').count(), 2);
+  assert.deepEqual(await totals(), [['Vendor A', '3', '2', '1'], ['Vendor B', '1', '1', '0']]);
+  await page.selectOption('#tracker-filter', 'unplanned');
+  assert.equal(await page.locator('#tracker-records tr').count(), 1);
+  await page.getByRole('button', { name: 'Edit referral summary-3', exact: true }).click();
+  assert.equal(await page.locator('[name=owner]').inputValue(), 'TEAM1');
+  await page.selectOption('[name=stage]', 'quoted');
+  await page.locator('[name=contacted]').fill(today);
+  await page.locator('[name=consultation]').fill(today);
+  await page.locator('[name=quoteDate]').fill(today);
+  await page.selectOption('[name=nextAction]', 'review');
+  await page.locator('#tracker-form [type=submit]').click();
+  assert.equal(await page.locator('#tracker-records tr').count(), 0);
+  await page.selectOption('#tracker-filter', 'all');
+  assert.equal(await page.locator('#tracker-records tr').count(), 4);
+  await page.getByRole('button', { name: 'Edit referral summary-3', exact: true }).click();
+  assert.equal(await page.locator('[name=quoteDate]').inputValue(), today);
+  await page.selectOption('[name=stage]', 'closed');
+  await page.selectOption('[name=closeReason]', 'cost');
+  await page.locator('[name=closedDate]').fill(today);
+  await page.locator('#tracker-form [type=submit]').click();
+  assert.deepEqual(await totals(), [['Vendor A', '3', '3', '1'], ['Vendor B', '1', '1', '0']]);
+  const row = page.locator('#tracker-records tr').filter({ hasText: 'summary-3' });
+  await row.locator('summary').click();
+  assert.match(await row.textContent(), /Cost or financing/);
+
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.deepEqual(errors, []);

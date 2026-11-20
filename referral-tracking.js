@@ -1,4 +1,7 @@
-export const referralStages = { referred: 'Referred', contacted: 'Contacted', scheduled: 'Consultation scheduled', installed: 'Installed', closed: 'Closed without installation' };
+export const referralStages = { referred: 'Referred', contacted: 'Contacted', scheduled: 'Consultation scheduled', quoted: 'Quote received', installed: 'Installed', closed: 'Closed without installation' };
+export const trackingServices = { assessment: 'Home energy assessment', solar: 'Rooftop solar', maintenance: 'Existing solar review', storage: 'Solar and battery', backup: 'Outage backup', community: 'Community solar eligibility' };
+export const trackingActions = { contact: 'Contact vendor', consultation: 'Confirm consultation', quote: 'Request written quote', review: 'Review quote with homeowner', installation: 'Confirm installation plans', feedback: 'Request customer feedback', verify: 'Verify project outcome' };
+export const trackingCloseReasons = { cost: 'Cost or financing', suitability: 'Home or roof unsuitable', declined: 'Homeowner declined', unresponsive: 'No response', unavailable: 'Vendor unavailable', alternative: 'Another option chosen', other: 'Other / discuss with team' };
 export function trackingToday() {
   const date = new Date();
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -16,12 +19,32 @@ export function validateReferralRecord(raw, today = trackingToday()) {
     if (typeof value !== 'string' || (value && (!trackingDate(value) || value < raw.referred || (key !== 'followup' && value > today)))) throw new Error('Event dates must be valid, on or after the referral date, and not in the future. Follow-up dates may be in the future.');
     record[key] = value;
   }
-  if (['contacted', 'scheduled', 'installed'].includes(raw.stage) && !record.contacted) throw new Error('Enter the first contact date for this stage.');
+  if (['contacted', 'scheduled', 'quoted', 'installed'].includes(raw.stage) && !record.contacted) throw new Error('Enter the first contact date for this stage.');
   if (raw.stage === 'referred' && record.contacted) throw new Error('Choose a contacted or later stage when a contact date is supplied.');
   if (raw.stage === 'installed' && (!record.installed || record.installed < record.contacted)) throw new Error('Enter an installation date on or after first contact.');
   if (raw.stage !== 'installed' && record.installed) throw new Error('An installation date requires the Installed stage.');
   if (raw.rating !== '' && raw.rating != null && (!Number.isInteger(raw.rating) || raw.rating < 1 || raw.rating > 5)) throw new Error('Choose a customer rating from 1 to 5, or leave it blank.');
   record.rating = raw.rating === '' || raw.rating == null ? null : raw.rating;
+  // Optional fields keep older version 1 backups usable without inventing history.
+  for (const [key, choices] of [['service', trackingServices], ['nextAction', trackingActions], ['closeReason', trackingCloseReasons]]) {
+    if (raw[key] == null || raw[key] === '') continue;
+    if (typeof raw[key] !== 'string' || !Object.hasOwn(choices, raw[key])) throw new Error('Choose a listed service, next action or closure reason.');
+    record[key] = raw[key];
+  }
+  if (raw.owner != null && raw.owner !== '') {
+    if (typeof raw.owner !== 'string' || !/^[a-z0-9-]{1,12}$/i.test(raw.owner)) throw new Error('Use a team member code of up to 12 letters, digits or hyphens.');
+    record.owner = raw.owner;
+  }
+  for (const key of ['consultation', 'quoteDate', 'closedDate']) {
+    if (raw[key] == null || raw[key] === '') continue;
+    if (!trackingDate(raw[key]) || raw[key] < (record.contacted || record.referred) || (key !== 'consultation' && raw[key] > today)) throw new Error('Process dates must follow referral/first contact. Only a planned consultation may be in the future.');
+    record[key] = raw[key];
+  }
+  if ((record.closeReason || record.closedDate) && record.stage !== 'closed') throw new Error('Closure details require the Closed stage.');
+  if (record.quoteDate && !record.contacted) throw new Error('Record first contact before recording a received quote.');
+  if (record.stage === 'referred' && record.consultation) throw new Error('Choose a contacted or later stage before scheduling a consultation.');
+  if (record.installed && [record.consultation, record.quoteDate].some(date => date && date > record.installed)) throw new Error('Installation cannot precede a recorded consultation or quote.');
+  if (record.closedDate && record.quoteDate && record.closedDate < record.quoteDate) throw new Error('Closure cannot precede the received quote.');
   return record;
 }
 export function readReferralBackup(text, today = trackingToday()) {

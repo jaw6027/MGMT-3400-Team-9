@@ -5,13 +5,16 @@
 </style></head><body><main><a href="index.html">← Customer website</a><h1>Vendor performance</h1><p>Track how providers handle referrals, then follow up where help is needed.</p><p class="hint">Team prototype · No sign-in or shared database. Records stay in this tab unless you choose Save on this device or download a backup. Use anonymous referral IDs; do not enter homeowner names, bills, addresses or contact details.</p>
 <p id="tracker-status" role="status">No records loaded. Add a referral or load a saved copy.</p>
 <section aria-labelledby="vendor-totals-title"><h2 id="vendor-totals-title">Referrals, contacts and completed projects</h2><p>Totals for each vendor across all records entered by your group.</p><p id="tracker-empty">No referrals recorded yet. Add a referral below or load your saved copy.</p><div class="scroll" tabindex="0" role="region" aria-label="Vendor referral totals"><table><caption>Vendor totals</caption><thead><tr><th scope="col">Vendor</th><th scope="col">Referrals received</th><th scope="col">Customers contacted</th><th scope="col">Projects completed</th></tr></thead><tbody id="tracker-vendor-totals"></tbody></table></div><p class="hint">One record represents one homeowner’s project referral to one vendor. “Contacted” means a first contact date is entered, including projects later completed or closed. “Completed” means the stage is Installed with an installation date. Update the existing referral as it progresses to avoid counting it twice.</p><details id="tracker-more-metrics"><summary>More performance details</summary><p>All recorded referrals · Alphabetical order. Compare providers cautiously: jobs, referral ages and sample sizes differ. These figures are not a quality or affordability ranking.</p><p class="hint">Installation rate = installed ÷ all referrals, including open ones. Contact time runs from referral to the vendor’s first contact with the homeowner, using only records with that date. Ratings show only customers who supplied a score. Due includes open follow-ups scheduled for today or earlier.</p><div class="scroll" tabindex="0" role="region" aria-label="Vendor performance table"><table><caption>Results by vendor</caption><thead><tr><th>Vendor</th><th>Referrals</th><th>Open</th><th>Installed</th><th>Closed without installation</th><th>Installation rate</th><th>Average days to first contact</th><th>Customer rating</th><th>Follow-ups due</th></tr></thead><tbody id="tracker-performance"></tbody></table></div></details></section>
-<section><h2 id="tracker-form-title">Add a referral</h2><form id="tracker-form"><div class="fields"><label>Vendor business name<input name="vendor" required maxlength="100" autocomplete="off"></label><label>Referral date<input name="referred" type="date" required></label><label>Current stage<select name="stage" id="tracker-stage"></select></label><label>Vendor first contacted homeowner (date)<input name="contacted" type="date"></label><label>Installation date (Installed stage only)<input name="installed" type="date"></label><label>Next follow-up date (optional)<input name="followup" type="date"></label><label>Customer rating (optional, only if supplied)<select name="rating"><option value="">No rating supplied</option><option value="1">1 — Very dissatisfied</option><option value="2">2 — Dissatisfied</option><option value="3">3 — Neutral</option><option value="4">4 — Satisfied</option><option value="5">5 — Very satisfied</option></select></label></div><p class="hint">Use the same business name each time. Stages and dates are entered by your group; nothing is confirmed with the vendor automatically. A referral is not created by clicking a provider link on the customer website.</p><div class="actions"><button type="submit">Add referral</button><button type="button" id="tracker-cancel" hidden>Cancel editing</button></div></form></section>
+<section><h2 id="tracker-form-title">Add a referral</h2><form id="tracker-form"><div class="fields"><label>Vendor business name<input name="vendor" required maxlength="100" autocomplete="off"></label><label>Service requested (optional)<select name="service"><option value="">Not recorded</option></select></label><label>Team member code (optional)<input name="owner" maxlength="12" pattern="[A-Za-z0-9-]{1,12}" placeholder="e.g. TEAM1" autocomplete="off"></label><label>Referral date<input name="referred" type="date" required></label><label>Current stage<select name="stage" id="tracker-stage"></select></label><label>Vendor first contacted homeowner (date)<input name="contacted" type="date"></label><label>Planned consultation date (optional)<input name="consultation" type="date"></label><label>Quote received date (optional)<input name="quoteDate" type="date"></label><label>Installation date (Installed stage only)<input name="installed" type="date"></label><label>Next follow-up date (optional)<input name="followup" type="date"></label><label>Next action (optional)<select name="nextAction"><option value="">Not recorded</option></select></label><label>Closed date (Closed stage only)<input name="closedDate" type="date"></label><label>Closure reason (Closed stage only)<select name="closeReason"><option value="">Not recorded</option></select></label><label>Customer rating (optional, only if supplied)<select name="rating"><option value="">No rating supplied</option><option value="1">1 — Very dissatisfied</option><option value="2">2 — Dissatisfied</option><option value="3">3 — Neutral</option><option value="4">4 — Satisfied</option><option value="5">5 — Very satisfied</option></select></label></div><p class="hint">Use the same business name each time. Use a short team member code, not a homeowner name. Set a next action and follow-up date for open work; mark unknown details as Not recorded. Stages and dates are entered by your group; nothing is confirmed with the vendor automatically. A referral is not created by clicking a provider link on the customer website.</p><div class="actions"><button type="submit">Add referral</button><button type="button" id="tracker-cancel" hidden>Cancel editing</button></div></form></section>
 
-<section><h2>Referral records</h2><p id="tracker-count">0 referrals</p><div class="scroll" tabindex="0" role="region" aria-label="Referral records table"><table><caption>Edit stages and follow-up dates here</caption><thead><tr><th>Referral ID</th><th>Vendor</th><th>Referred</th><th>Stage</th><th>First contact</th><th>Installed</th><th>Follow-up</th><th>Rating</th><th>Actions</th></tr></thead><tbody id="tracker-records"></tbody></table></div></section>
+<section><h2>Referral records</h2><label>Show referrals<select id="tracker-filter"><option value="all">All referrals</option><option value="due">Open follow-ups due</option><option value="unplanned">Open referrals missing a next action or follow-up date</option></select></label><p id="tracker-count">0 referrals</p><div class="scroll" tabindex="0" role="region" aria-label="Referral records table"><table><caption>Edit stages and follow-up dates here</caption><thead><tr><th>Referral ID</th><th>Vendor</th><th>Referred</th><th>Stage</th><th>First contact</th><th>Installed</th><th>Follow-up</th><th>Rating</th><th>Process details</th><th>Actions</th></tr></thead><tbody id="tracker-records"></tbody></table></div></section>
 <section><h2>Save or share with your group</h2><p>Saving is manual. Save again after changes. Device storage is accessible to others using this browser; it is not a secure team workspace. Download a backup before clearing the browser. Loading or importing replaces this tab’s records after confirmation; it does not merge copies.</p><div class="actions"><button id="tracker-save">Save on this device</button><button id="tracker-load">Load device copy</button><button id="tracker-export">Download backup</button><button id="tracker-import">Import backup</button><button id="tracker-clear">Delete device copy</button></div><input id="tracker-file" type="file" accept="application/json,.json" hidden></section>
 </main><script>
 (() => {
-const referralStages = { referred: 'Referred', contacted: 'Contacted', scheduled: 'Consultation scheduled', installed: 'Installed', closed: 'Closed without installation' };
+const referralStages = { referred: 'Referred', contacted: 'Contacted', scheduled: 'Consultation scheduled', quoted: 'Quote received', installed: 'Installed', closed: 'Closed without installation' };
+const trackingServices = { assessment: 'Home energy assessment', solar: 'Rooftop solar', maintenance: 'Existing solar review', storage: 'Solar and battery', backup: 'Outage backup', community: 'Community solar eligibility' };
+const trackingActions = { contact: 'Contact vendor', consultation: 'Confirm consultation', quote: 'Request written quote', review: 'Review quote with homeowner', installation: 'Confirm installation plans', feedback: 'Request customer feedback', verify: 'Verify project outcome' };
+const trackingCloseReasons = { cost: 'Cost or financing', suitability: 'Home or roof unsuitable', declined: 'Homeowner declined', unresponsive: 'No response', unavailable: 'Vendor unavailable', alternative: 'Another option chosen', other: 'Other / discuss with team' };
 function trackingToday() {
   const date = new Date();
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -29,12 +32,32 @@ function validateReferralRecord(raw, today = trackingToday()) {
     if (typeof value !== 'string' || (value && (!trackingDate(value) || value < raw.referred || (key !== 'followup' && value > today)))) throw new Error('Event dates must be valid, on or after the referral date, and not in the future. Follow-up dates may be in the future.');
     record[key] = value;
   }
-  if (['contacted', 'scheduled', 'installed'].includes(raw.stage) && !record.contacted) throw new Error('Enter the first contact date for this stage.');
+  if (['contacted', 'scheduled', 'quoted', 'installed'].includes(raw.stage) && !record.contacted) throw new Error('Enter the first contact date for this stage.');
   if (raw.stage === 'referred' && record.contacted) throw new Error('Choose a contacted or later stage when a contact date is supplied.');
   if (raw.stage === 'installed' && (!record.installed || record.installed < record.contacted)) throw new Error('Enter an installation date on or after first contact.');
   if (raw.stage !== 'installed' && record.installed) throw new Error('An installation date requires the Installed stage.');
   if (raw.rating !== '' && raw.rating != null && (!Number.isInteger(raw.rating) || raw.rating < 1 || raw.rating > 5)) throw new Error('Choose a customer rating from 1 to 5, or leave it blank.');
   record.rating = raw.rating === '' || raw.rating == null ? null : raw.rating;
+  // Optional fields keep older version 1 backups usable without inventing history.
+  for (const [key, choices] of [['service', trackingServices], ['nextAction', trackingActions], ['closeReason', trackingCloseReasons]]) {
+    if (raw[key] == null || raw[key] === '') continue;
+    if (typeof raw[key] !== 'string' || !Object.hasOwn(choices, raw[key])) throw new Error('Choose a listed service, next action or closure reason.');
+    record[key] = raw[key];
+  }
+  if (raw.owner != null && raw.owner !== '') {
+    if (typeof raw.owner !== 'string' || !/^[a-z0-9-]{1,12}$/i.test(raw.owner)) throw new Error('Use a team member code of up to 12 letters, digits or hyphens.');
+    record.owner = raw.owner;
+  }
+  for (const key of ['consultation', 'quoteDate', 'closedDate']) {
+    if (raw[key] == null || raw[key] === '') continue;
+    if (!trackingDate(raw[key]) || raw[key] < (record.contacted || record.referred) || (key !== 'consultation' && raw[key] > today)) throw new Error('Process dates must follow referral/first contact. Only a planned consultation may be in the future.');
+    record[key] = raw[key];
+  }
+  if ((record.closeReason || record.closedDate) && record.stage !== 'closed') throw new Error('Closure details require the Closed stage.');
+  if (record.quoteDate && !record.contacted) throw new Error('Record first contact before recording a received quote.');
+  if (record.stage === 'referred' && record.consultation) throw new Error('Choose a contacted or later stage before scheduling a consultation.');
+  if (record.installed && [record.consultation, record.quoteDate].some(date => date && date > record.installed)) throw new Error('Installation cannot precede a recorded consultation or quote.');
+  if (record.closedDate && record.quoteDate && record.closedDate < record.quoteDate) throw new Error('Closure cannot precede the received quote.');
   return record;
 }
 function readReferralBackup(text, today = trackingToday()) {
@@ -74,6 +97,13 @@ const trackerStatus = message => { document.querySelector('#tracker-status').tex
 for (const [value, label] of Object.entries(referralStages)) {
   const option = document.createElement('option'); option.value = value; option.textContent = label; trackerForm.elements.stage.append(option);
 }
+for (const [field, choices] of [['service', trackingServices], ['nextAction', trackingActions], ['closeReason', trackingCloseReasons]]) {
+  for (const [value, label] of Object.entries(choices)) {
+    const option = document.createElement('option'); option.value = value; option.textContent = label; trackerForm.elements[field].append(option);
+  }
+}
+const trackerFilter = document.querySelector('#tracker-filter');
+trackerFilter.addEventListener('change', () => trackerRender());
 function trackerResetForm() {
   trackerEditing = null; trackerForm.reset(); trackerForm.elements.referred.value = trackingToday();
   document.querySelector('#tracker-form-title').textContent = 'Add a referral';
@@ -82,7 +112,13 @@ function trackerResetForm() {
 }
 function trackerCell(value) { const cell = document.createElement('td'); cell.textContent = value; return cell; }
 function trackerRender() {
-  document.querySelector('#tracker-count').textContent = `${trackerRecords.length} referrals`;
+  const visible = trackerRecords.filter(record => {
+    const open = !['installed', 'closed'].includes(record.stage);
+    if (trackerFilter.value === 'due') return open && record.followup && record.followup <= trackingToday();
+    if (trackerFilter.value === 'unplanned') return open && (!record.nextAction || !record.followup);
+    return true;
+  });
+  document.querySelector('#tracker-count').textContent = `Showing ${visible.length} of ${trackerRecords.length} referrals. Vendor totals always include all records.`;
   const performance = referralPerformance(trackerRecords);
   document.querySelector('#tracker-empty').hidden = trackerRecords.length > 0;
   document.querySelector('#tracker-vendor-totals').replaceChildren(...performance.map(row => {
@@ -95,14 +131,23 @@ function trackerRender() {
     const values = [row.vendor, row.referrals, row.open, row.installed, row.closed, `${row.installationRate.toFixed(1)}%`, row.contacts ? `${row.averageContactDays.toFixed(1)} (${row.contacts} contacted)` : 'No contact dates', row.ratings ? `${row.averageRating.toFixed(1)}/5 (${row.ratings} ratings)` : 'No ratings', row.due];
     tr.append(...values.map(trackerCell)); return tr;
   }));
-  document.querySelector('#tracker-records').replaceChildren(...trackerRecords.map(record => {
+  document.querySelector('#tracker-records').replaceChildren(...visible.map(record => {
     const tr = document.createElement('tr');
     tr.append(...[record.id, record.vendor, record.referred, referralStages[record.stage], record.contacted || '—', record.installed || '—', record.followup || '—', record.rating ?? '—'].map(trackerCell));
+    const processCell = document.createElement('td');
+    const process = document.createElement('details');
+    const summary = document.createElement('summary'); summary.textContent = record.nextAction ? trackingActions[record.nextAction] : 'View process details';
+    const fields = document.createElement('dl');
+    for (const [label, value] of [['Service', trackingServices[record.service]], ['Team member', record.owner], ['Consultation', record.consultation], ['Quote received', record.quoteDate], ['Next action', trackingActions[record.nextAction]], ['Closed', record.closedDate], ['Closure reason', trackingCloseReasons[record.closeReason]]]) {
+      const dt = document.createElement('dt'); dt.textContent = label;
+      const dd = document.createElement('dd'); dd.textContent = value || 'Not recorded'; fields.append(dt, dd);
+    }
+    process.append(summary, fields); processCell.append(process); tr.append(processCell);
     const actions = document.createElement('td');
     const edit = document.createElement('button'); edit.textContent = 'Edit'; edit.setAttribute('aria-label', `Edit referral ${record.id}`);
     edit.addEventListener('click', () => {
       trackerEditing = record.id;
-      for (const field of ['vendor', 'referred', 'stage', 'contacted', 'installed', 'followup', 'rating']) trackerForm.elements[field].value = record[field] ?? '';
+      for (const field of ['vendor', 'referred', 'stage', 'contacted', 'installed', 'followup', 'rating', 'service', 'owner', 'consultation', 'quoteDate', 'nextAction', 'closedDate', 'closeReason']) trackerForm.elements[field].value = record[field] ?? '';
       document.querySelector('#tracker-form-title').textContent = `Edit referral ${record.id}`;
       trackerForm.querySelector('[type=submit]').textContent = 'Update referral';
       document.querySelector('#tracker-cancel').hidden = false;
