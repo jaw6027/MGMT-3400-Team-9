@@ -1,3 +1,5 @@
+import { referralVendors } from './referral-vendors.js';
+import { setupReferrals } from './referrals.js';
 import { defaults, estimate, compareCosts, solarExampleHomes } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
 import { setupBillImport } from './bill-ui.js';
@@ -10,6 +12,7 @@ const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
 let progressControl = null;
 let homeQuestionnaire = null;
+let referralControl = null;
 
 function render() {
   progressControl?.refresh();
@@ -303,6 +306,7 @@ function renderComparison() {
 }
 
 function renderRecommendation(comparison = null, solarStatus = '') {
+  referralControl?.refresh();
   const complete = currentReview !== null;
   document.querySelector('#personalized-recommendation').hidden = !complete;
   document.querySelector('#recommendation-results').hidden = !complete;
@@ -418,6 +422,10 @@ setupBillImport((month, kwh, cost) => {
   renderReview();
 });
 homeQuestionnaire = setupHomeQuestionnaire(() => renderReview());
+referralControl = setupReferrals({
+  directory: referralVendors,
+  getContext: () => ({ review: currentReview, profile: homeQuestionnaire?.read().profile, example: exampleFields.size > 0 }),
+});
 reset();
 renderReview();
 progressControl = setupProgress({

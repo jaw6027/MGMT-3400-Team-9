@@ -63,6 +63,13 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 @media(max-width:760px){.intro{padding:25px 0}.intro h1{font-size:38px}.start-guide{padding:18px}.guide-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.guide-steps li{flex-direction:column;align-items:start;gap:7px}.guide-steps a{font-size:11px;line-height:1.6}.primary-comparison{grid-template-columns:1fr}.inspection-step{padding:22px 20px}.optional-panel{padding:16px 20px}.customer-meaning{padding:16px}.customer-meaning p{font-size:12px}.optional-panel>summary{font-size:13px}}
 @media print{.compact-save-status,.inspection-step{display:none}.optional-panel:not(:has(.has-home-answers)){display:none}.optional-panel{border:0;padding:0;margin:0}.primary-comparison{grid-template-columns:1fr 1fr}.more-details>summary,.method-details>summary,.optional-panel>summary{font-size:11px}.cost-comparison>.personalized-recommendation{break-before:auto;break-inside:auto}.estimate-limits,.key-assumptions{font-size:9px}.customer-meaning p{font-size:10px}.intro h1{font-size:28px}.method-details{border:0;margin-top:15px}.guide-more{display:none}}
 
+#referral-details { margin: 1rem 0; }
+#referral-details label { display: block; margin-top: 1rem; font-weight: 600; }
+#referral-details select { max-width: 100%; padding: .6rem; font: inherit; }
+.referral-list { list-style: none; padding: 0; }
+.referral-list li { padding: 1rem; border: 1px solid #ccd9d1; border-radius: 12px; margin: 1rem 0; overflow-wrap: anywhere; }
+.referral-list a { display: inline-block; margin: .4rem 1rem .4rem 0; }
+
 </style>
 </head>
 <body>
@@ -196,7 +203,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
         <div class="example-assumptions"><h4>Assumptions behind these examples</h4><p>Electricity price: <strong>$0.18/kWh</strong> · Sunlight: <strong>4.5 peak sun hours/day</strong> · System performance: <strong>80%</strong> · Efficiency improvements: <strong>none assumed</strong>.</p><p><strong>Simplified assumption:</strong> every unit of solar generated offsets electricity worth the full $0.18 retail price. This may require matching daytime use or retail-value export credits; neither is guaranteed. These examples do not model hourly use or seasonal changes. Actual export credits may be lower.</p><p><strong>Electricity charges only:</strong> fixed utility fees, maintenance, monitoring, installation, financing, batteries, and replacement costs are excluded. Monthly figures average a full year and are rounded; generation varies by season.</p></div>
         <p class="hint">To explore your own situation, enter your bills and review the solar assumptions with a qualified provider. Solar produces electricity; efficiency improvements reduce the amount your home uses.</p>
       </details></section>
-    <section id="inspection-step" class="inspection-step card" aria-labelledby="inspection-step-title"><p class="eyebrow">GET HELP WITH THE NEXT STEP</p><h2 id="inspection-step-title">3. Request an inspection</h2><div class="inspection-help"><div><h3>Not sure? Let someone inspect your home.</h3><p>You do not need all the answers—or 12 bills—to ask for a visit. A qualified provider can help identify your equipment, check conditions, and explain what information is still needed.</p><p class="inspection-phone" id="inspection-phone">Phone: <strong>661-111-111</strong> <span>Demo number only · calling is not available</span></p></div><div><button type="button" id="request-inspection" class="primary-button">Request an inspection visit →</button><p class="hint">Prepares a request file for you to share. No request is sent and no appointment is booked. A real business phone number is needed to enable calls.</p></div></div></section><details id="home-questionnaire-details" class="optional-panel"><summary>More details: tell us about your home (optional)</summary><section class="home-questionnaire card" id="home-questionnaire" aria-labelledby="home-questionnaire-title">
+    <section id="inspection-step" class="inspection-step card" aria-labelledby="inspection-step-title"><p class="eyebrow">GET HELP WITH THE NEXT STEP</p><h2 id="inspection-step-title">3. Request an inspection</h2><details id="referral-details" class="optional-panel"><summary>Find a provider for your next step (optional)</summary><p>Choose a service to discuss based on your bills and optional home answers. A directory match means the provider lists that service in your area; it is not an endorsement or a confirmed installation recommendation.</p><p id="referral-example" class="notice" hidden>EXAMPLE BILL DATA · Replace the example bills for a personal match.</p><label for="referral-area">Where is your home?</label><select id="referral-area"><option value="">Choose service area</option><option value="bakersfield-ca">Bakersfield, California</option><option value="other">Outside Bakersfield</option></select><label for="referral-service">Service to discuss</label><select id="referral-service"></select><p id="referral-reason"></p><p id="referral-status" role="status"></p><ul id="referral-list" class="referral-list"></ul><p class="hint">Contact links open your phone, email app or the vendor website. No bills, contact details or referral requests are sent automatically. Confirm licensing, service area, equipment, contract terms and costs directly.</p></details><div class="inspection-help"><div><h3>Not sure? Let someone inspect your home.</h3><p>You do not need all the answers—or 12 bills—to ask for a visit. A qualified provider can help identify your equipment, check conditions, and explain what information is still needed.</p><p class="inspection-phone" id="inspection-phone">Phone: <strong>661-111-111</strong> <span>Demo number only · calling is not available</span></p></div><div><button type="button" id="request-inspection" class="primary-button">Request an inspection visit →</button><p class="hint">Prepares a request file for you to share. No request is sent and no appointment is booked. A real business phone number is needed to enable calls.</p></div></div></section><details id="home-questionnaire-details" class="optional-panel"><summary>More details: tell us about your home (optional)</summary><section class="home-questionnaire card" id="home-questionnaire" aria-labelledby="home-questionnaire-title">
       <div class="review-heading"><div><p class="eyebrow">FILL IN THE PICTURE</p><h2 id="home-questionnaire-title">Tell us about your home</h2><p class="review-description">Bills show how much electricity you use. These details help us suggest what to check first and prepare a more useful assessment request.</p></div><button type="button" id="clear-home-questionnaire" class="text-button">Clear questionnaire</button></div>
       <p class="hint">Answer what you know. Every question is optional, and Not sure is welcome. Leave unknown numbers blank. A professional must still verify equipment, wiring, roof condition, local sunlight, and utility rules. These answers do not automatically change the calculator's savings assumptions.</p>
 
@@ -1015,6 +1022,122 @@ function setupProgress({ getState, applyState, storage = () => globalThis.localS
   return { refresh };
 }
 
+// Add only businesses whose Bakersfield coverage, services and public contacts
+// your group has checked. See README.md for the directory format.
+const referralVendors = [];
+
+
+const referralServices = {
+  assessment: 'Home energy assessment',
+  solar: 'Rooftop solar consultation',
+  maintenance: 'Existing solar system review',
+  storage: 'Solar and battery consultation',
+  backup: 'Battery and outage-backup design',
+  community: 'Community solar eligibility review',
+};
+
+// Monthly bills support a consultation, not equipment sizing or a savings quote.
+function referralOptions(review, raw) {
+  const profile = normalizeHomeProfile(raw);
+  const options = [{ service: 'assessment', reason: !review
+    ? 'Start with an assessment while you gather your bills and home details.'
+    : review.highUsageMonths.length
+      ? 'Review seasonal peaks and efficiency opportunities before sizing solar.'
+      : 'Check equipment and energy-saving opportunities alongside solar.' }];
+  const add = (service, reason) => options.push({ service, reason });
+  if (profile.existingSolar === 'yes') {
+    add('maintenance', 'Review generation and import/export records before adding equipment.');
+    return options;
+  }
+  if (!review || review.annualKwh === 0) return options;
+  if (profile.ownership === 'renter' || homeSolarCaution(profile)) {
+    add('community', 'Rooftop constraints need review. Community solar depends on local availability, eligibility and contract terms.');
+    return options;
+  }
+  add('solar', `Use your entered ${Math.round(review.annualKwh).toLocaleString('en-US')} kWh/year to request a production and cost comparison. Roof, shade, utility rules and hourly use still need checking.`);
+  if (profile.daytime === 'rarely' || (['one', 'multiple'].includes(profile.ev) && profile.evCharging === 'night') || profile.utilityPlan === 'time-of-use') {
+    add('storage', 'Compare solar alone, load scheduling and optional storage using hourly usage and your tariff. Battery savings are not established by monthly bills.');
+  }
+  if (profile.goal === 'backup') add('backup', 'Ask about essential circuits, backup hours and compatible isolation controls. Ordinary solar or a battery alone may not provide outage power.');
+  return options;
+}
+
+function publicVendorContacts(vendor) {
+  const contacts = [];
+  if (typeof vendor.phone === 'string') {
+    const digits = vendor.phone.replace(/[^0-9]/g, '').replace(/^1(?=\d{10}$)/, '');
+    if (/^[2-9]\d{2}[2-9]\d{6}$/.test(digits)) contacts.push({ label: `Call ${vendor.phone}`, href: `tel:+1${digits}` });
+  }
+  if (typeof vendor.email === 'string' && /^[a-z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(vendor.email)) {
+    contacts.push({ label: `Email ${vendor.email}`, href: `mailto:${vendor.email}` });
+  }
+  try {
+    const url = new URL(vendor.website);
+    if (url.protocol === 'https:' && !url.username && !url.password) contacts.push({ label: 'Visit website', href: url.href });
+  } catch { /* Invalid contact URLs are never rendered. */ }
+  return contacts;
+}
+
+function matchReferralVendors(directory, area, service) {
+  if (area !== 'bakersfield-ca' || !Object.hasOwn(referralServices, service)) return [];
+  const seen = new Set();
+  return directory.filter(vendor => {
+    if (!vendor || typeof vendor.id !== 'string' || !vendor.id.trim() || seen.has(vendor.id)
+      || typeof vendor.name !== 'string' || !vendor.name.trim()
+      || !Array.isArray(vendor.areas) || !vendor.areas.includes(area)
+      || !Array.isArray(vendor.services) || !vendor.services.includes(service)
+      || !publicVendorContacts(vendor).length) return false;
+    seen.add(vendor.id);
+    return true;
+  }).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function setupReferrals({ directory, getContext }) {
+  const area = document.querySelector('#referral-area');
+  const service = document.querySelector('#referral-service');
+  const list = document.querySelector('#referral-list');
+  let options = [];
+  function showMatches() {
+    const selected = options.find(option => option.service === service.value);
+    document.querySelector('#referral-reason').textContent = selected?.reason || '';
+    const matches = matchReferralVendors(directory, area.value, service.value);
+    document.querySelector('#referral-status').textContent = !area.value
+      ? 'Choose your service area to see directory matches.'
+      : area.value !== 'bakersfield-ca'
+        ? 'This directory currently covers Bakersfield only. You can still prepare an inspection request.'
+        : !matches.length
+          ? 'No matching providers are listed in our Bakersfield directory yet. This does not mean no providers are available. You can prepare an inspection request below to share with a provider you choose.'
+          : `${matches.length} directory match${matches.length === 1 ? '' : 'es'}. Confirm availability, qualifications and pricing directly.`;
+    list.replaceChildren(...matches.map(vendor => {
+      const card = document.createElement('li');
+      const heading = document.createElement('h4'); heading.textContent = vendor.name;
+      const why = document.createElement('p'); why.textContent = `Listed for Bakersfield · ${referralServices[service.value]}`;
+      const contacts = document.createElement('p');
+      publicVendorContacts(vendor).forEach(contact => {
+        const link = document.createElement('a'); link.textContent = contact.label; link.href = contact.href;
+        if (contact.href.startsWith('https:')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+        contacts.append(link, document.createTextNode(' '));
+      });
+      card.append(heading, why, contacts);
+      return card;
+    }));
+  }
+  function refresh() {
+    const previous = service.value;
+    const { review, profile, example } = getContext();
+    options = referralOptions(review, profile);
+    service.replaceChildren(...options.map(item => {
+      const option = document.createElement('option'); option.value = item.service; option.textContent = referralServices[item.service]; return option;
+    }));
+    if (options.some(item => item.service === previous)) service.value = previous;
+    document.querySelector('#referral-example').hidden = !example;
+    showMatches();
+  }
+  area.addEventListener('change', showMatches);
+  service.addEventListener('change', showMatches);
+  return { refresh };
+}
+
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
@@ -1022,6 +1145,7 @@ const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
 let progressControl = null;
 let homeQuestionnaire = null;
+let referralControl = null;
 
 function render() {
   progressControl?.refresh();
@@ -1315,6 +1439,7 @@ function renderComparison() {
 }
 
 function renderRecommendation(comparison = null, solarStatus = '') {
+  referralControl?.refresh();
   const complete = currentReview !== null;
   document.querySelector('#personalized-recommendation').hidden = !complete;
   document.querySelector('#recommendation-results').hidden = !complete;
@@ -1430,6 +1555,10 @@ setupBillImport((month, kwh, cost) => {
   renderReview();
 });
 homeQuestionnaire = setupHomeQuestionnaire(() => renderReview());
+referralControl = setupReferrals({
+  directory: referralVendors,
+  getContext: () => ({ review: currentReview, profile: homeQuestionnaire?.read().profile, example: exampleFields.size > 0 }),
+});
 reset();
 renderReview();
 progressControl = setupProgress({

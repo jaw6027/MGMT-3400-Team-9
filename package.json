@@ -12,7 +12,8 @@
     "test:progress": "npm run build && node scripts/check-progress.mjs",
     "test:guidance": "npm run build && node scripts/check-guidance.mjs",
     "test:questionnaire": "npm run build && node scripts/check-questionnaire.mjs",
-    "test:simplified": "npm run build && node scripts/check-simplified.mjs"
+    "test:simplified": "npm run build && node scripts/check-simplified.mjs",
+    "test:referrals": "npm run build && node scripts/check-referrals.mjs"
   },
   "devDependencies": {
     "@tesseract.js-data/eng": "1.0.0",

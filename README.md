@@ -125,3 +125,33 @@ The default page presents three main cards: **1. Add your bills**, **2. Understa
 Save controls, monthly patterns, the complete solar scenario editor, efficiency comparisons, cost breakdowns, recommendation evidence/options, and the home questionnaire are available through labeled **More details** disclosures. Educational examples remain optional. None of the existing data fields, local OCR protections, calculations, saved-profile consent, or request-download behavior were removed. Local links open enclosing disclosures before navigating, and validation reveals nested invalid solar inputs. Printed and downloaded assessments retain detailed assumptions even when those panels are closed on screen. After printing, the original disclosure states are restored.
 
 Run `npm run test:simplified` to check the three-step default, collapsed optional tools, results and visible limits, no-bill inspection, link navigation, nested validation, saving, complete print output, restored screen layout, and mobile overflow. Existing browser feature checks explicitly open the tools they exercise, while this test guards the collapsed default experience.
+
+### Bakersfield referral finder
+
+Step 3 includes a collapsed provider finder. It suggests assessment, rooftop solar,
+existing-system review, storage, outage backup, or community-solar eligibility
+services from the completed bill review and optional home answers. These are
+consultations, not equipment sizes, quotes, savings promises, or endorsements.
+Homeowners confirm their area; no exact address is required. Incomplete or zero-use
+reviews offer an assessment first. Existing solar and rooftop constraints restrict
+which services appear. Community solar is subject to actual local availability.
+
+The production directory in `referral-vendors.js` is intentionally empty until the
+group supplies checked public business details. No providers or contacts are invented.
+Add records using this schema (values below describe fields, not a real listing):
+
+```js
+// { id: 'unique-id', name: 'Business legal/public name',
+//   areas: ['bakersfield-ca'], services: ['assessment', 'solar'],
+//   phone: 'verified public US phone', email: 'verified public email',
+//   website: 'https://official-business-site' }
+```
+
+Supported service codes: `assessment`, `solar`, `maintenance`, `storage`, `backup`,
+`community`. Include only services and coverage confirmed by the business. Generic
+battery service does not establish outage-backup capability. At least one valid
+public contact is required; missing or invalid contacts are omitted. Recheck details
+before publishing and when vendors change. Listings are alphabetical, not ranked.
+Rebuild with `npm run build` after editing the directory to update standalone
+`index.html`. Contact links carry no homeowner or bill data. Nothing is submitted
+or booked; inspection requests remain local files the homeowner chooses to share.

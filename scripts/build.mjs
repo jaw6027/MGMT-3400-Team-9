@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 const read = path => readFile(new URL(path, import.meta.url), 'utf8');
 const [template, css, ...sources] = await Promise.all([
   read('./index.template.html'), read('../style.css'), read('../energy.js'), read('../review.js'),
-  read('../bill-parser.js'), read('../bill-ocr.js'), read('../bill-ui.js'), read('../questionnaire.js'), read('../progress.js'), read('../app.js'),
+  read('../bill-parser.js'), read('../bill-ocr.js'), read('../bill-ui.js'), read('../questionnaire.js'), read('../progress.js'), read('../referral-vendors.js'), read('../referrals.js'), read('../app.js'),
 ]);
 const script = sources.map(source => source.replace(/^export /gm, '')
   .replace(/^import .* from '\.\/[\w-]+\.js';\n/gm, '')).join('\n');
