@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { referralOptions, publicVendorContacts, matchReferralVendors } from './referrals.js';
+import { referralOptions, publicVendorContacts, matchReferralVendors, referralSearchUrl } from './referrals.js';
 const review = { annualKwh: 12000, highUsageMonths: ['July'] };
 const codes = (r, p) => referralOptions(r, p).map(item => item.service);
 test('referrals require representative demand before solar, and respect roof and ownership constraints', () => {
@@ -24,4 +24,14 @@ test('contact links reject executable URLs, credentials, demo phone and email he
   assert.deepEqual(publicVendorContacts({ website: 'javascript:alert(1)', phone: '661-111-111', email: 'test@example.test\nBcc:other@example.test' }), []);
   assert.deepEqual(publicVendorContacts({ website: 'https://user:secret@example.test' }), []);
   assert.deepEqual(publicVendorContacts({ phone: '(202) 555-0100', email: 'hello@example.test', website: 'https://example.test/contact' }).map(c => c.href), ['tel:+12025550100', 'mailto:hello@example.test', 'https://example.test/contact']);
+});
+
+test('discovery searches use only a known service and Bakersfield, never homeowner details', () => {
+  assert.equal(referralSearchUrl('', 'solar'), null);
+  assert.equal(referralSearchUrl('other', 'solar'), null);
+  assert.equal(referralSearchUrl('bakersfield-ca', 'private bill data'), null);
+  const url = new URL(referralSearchUrl('bakersfield-ca', 'solar'));
+  assert.equal(url.origin, 'https://www.google.com');
+  assert.equal(url.searchParams.get('q'), 'Rooftop solar consultation providers Bakersfield California');
+  assert.equal([...url.searchParams].length, 1);
 });

@@ -65,6 +65,14 @@ export function matchReferralVendors(directory, area, service) {
   }).sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// Only a public service name and the chosen city enter an external search.
+export function referralSearchUrl(area, service) {
+  if (area !== 'bakersfield-ca' || !Object.hasOwn(referralServices, service)) return null;
+  const url = new URL('https://www.google.com/search');
+  url.searchParams.set('q', `${referralServices[service]} providers Bakersfield California`);
+  return url.href;
+}
+
 export function setupReferrals({ directory, getContext }) {
   const area = document.querySelector('#referral-area');
   const service = document.querySelector('#referral-service');
@@ -74,13 +82,21 @@ export function setupReferrals({ directory, getContext }) {
     const selected = options.find(option => option.service === service.value);
     document.querySelector('#referral-reason').textContent = selected?.reason || '';
     const matches = matchReferralVendors(directory, area.value, service.value);
+    const discovery = document.querySelector('#referral-discovery');
+    const searchLink = document.querySelector('#referral-search');
+    const searchUrl = referralSearchUrl(area.value, service.value);
+    discovery.hidden = !searchUrl;
+    if (searchUrl) {
+      searchLink.href = searchUrl;
+      searchLink.textContent = `Search for ${referralServices[service.value].toLowerCase()} providers in Bakersfield ↗`;
+    } else searchLink.removeAttribute('href');
     document.querySelector('#referral-status').textContent = !area.value
       ? 'Choose your service area to see directory matches.'
       : area.value !== 'bakersfield-ca'
         ? 'This directory currently covers Bakersfield only. You can still prepare an inspection request.'
         : !matches.length
           ? 'No matching providers are listed in our Bakersfield directory yet. This does not mean no providers are available. You can prepare an inspection request below to share with a provider you choose.'
-          : `${matches.length} directory match${matches.length === 1 ? '' : 'es'}. Confirm availability, qualifications and pricing directly.`;
+          : `${matches.length} directory match${matches.length === 1 ? '' : 'es'}. Listed alphabetically, not ranked by quality or price. Confirm coverage at your address, availability, qualifications and pricing directly.`;
     list.replaceChildren(...matches.map(vendor => {
       const card = document.createElement('li');
       const heading = document.createElement('h4'); heading.textContent = vendor.name;
@@ -91,7 +107,9 @@ export function setupReferrals({ directory, getContext }) {
         if (contact.href.startsWith('https:')) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
         contacts.append(link, document.createTextNode(' '));
       });
-      card.append(heading, why, contacts);
+      const price = document.createElement('p');
+      price.textContent = 'Price: request a written quote. We have no comparable price data to rate this provider as affordable.';
+      card.append(heading, why, price, contacts);
       return card;
     }));
   }

@@ -31,13 +31,20 @@ try {
   assert.equal(await page.locator('#referral-details').getAttribute('open'), null);
   await page.locator('#referral-details > summary').click();
   assert.deepEqual(await page.locator('#referral-service option').evaluateAll(nodes => nodes.map(n => n.value)), ['assessment']);
+  assert.equal(await page.locator('#referral-discovery').isVisible(), false);
   await page.selectOption('#referral-area', 'bakersfield-ca');
   assert.match(await page.locator('#referral-status').textContent(), /No matching providers are listed/);
   await page.locator('#review-example').click();
   assert.equal(await page.locator('#referral-example').isVisible(), true);
   await page.selectOption('#referral-service', 'solar');
+  assert.equal(await page.locator('#referral-discovery').isVisible(), true);
+  assert.match(await page.locator('#referral-search').getAttribute('href'), /Rooftop\+solar/);
+  assert.equal(await page.locator('#referral-search').getAttribute('referrerpolicy'), 'no-referrer');
+  assert.equal(await page.locator('#referral-price-guide').getAttribute('open'), null);
   assert.match(await page.locator('#referral-reason').textContent(), /kWh.year/);
   await page.selectOption('#referral-area', 'other');
+  assert.equal(await page.locator('#referral-search').getAttribute('href'), null);
+  assert.equal(await page.locator('#referral-discovery').isVisible(), false);
   assert.match(await page.locator('#referral-status').textContent(), /covers Bakersfield only/);
   // Synthetic test directory is injected into the test response only.
   const fixture = [{ id: 'synthetic', name: 'Synthetic <provider>', areas: ['bakersfield-ca'], services: ['solar'], phone: '202-555-0100', email: 'hello@example.test', website: 'https://example.test/' }];
@@ -52,6 +59,8 @@ try {
   await page.locator('#review-example').click();
   await page.selectOption('#referral-service', 'solar');
   assert.equal(await page.locator('#referral-list h4').textContent(), 'Synthetic <provider>');
+  assert.match(await page.locator('#referral-list').textContent(), /Price: request a written quote/);
+  assert.match(await page.locator('#referral-status').textContent(), /not ranked by quality or price/);
   assert.equal(await page.locator('#referral-list a[href="tel:+12025550100"]').count(), 1);
   assert.equal(await page.locator('#referral-list a[href="mailto:hello@example.test"]').count(), 1);
   assert.equal(await page.locator('#referral-list a[target="_blank"]').getAttribute('rel'), 'noopener noreferrer');

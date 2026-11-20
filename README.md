@@ -155,3 +155,11 @@ before publishing and when vendors change. Listings are alphabetical, not ranked
 Rebuild with `npm run build` after editing the directory to update standalone
 `index.html`. Contact links carry no homeowner or bill data. Nothing is submitted
 or booked; inspection requests remain local files the homeowner chooses to share.
+
+The finder also offers an explicitly unverified external Google Search for the
+selected service in Bakersfield, including when the directory has no matches.
+No homeowner data is included; the link is removed for unknown/unsupported areas.
+Provider cards state that a written quote is needed; there is no invented
+quality or affordability ranking. A collapsed price guide explains how to compare
+2–3 equivalent quotes, full installed costs, financing totals, warranties and
+remaining utility charges, with a link to California's CSLB license lookup.
