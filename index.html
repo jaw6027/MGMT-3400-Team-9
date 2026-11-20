@@ -46,6 +46,13 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 .start-guide{background:#eaf0df;border:1px solid #d9e3cb;border-radius:12px;padding:27px 28px;margin-bottom:28px}.guide-heading .eyebrow{margin-bottom:8px}.guide-heading>p:last-child{font-size:13px;color:#53665a;line-height:1.8;max-width:720px;margin-top:10px}.guide-steps{padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:23px 0}.guide-steps li{display:flex;align-items:start;gap:12px;min-width:0}.guide-steps li>span{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:white;border-radius:50%;font-size:12px;width:27px;height:27px;flex-shrink:0}.guide-steps a{font-size:13px;font-weight:600;text-decoration:underline;text-underline-offset:3px}.guide-steps p,.guide-practice{font-size:11px;line-height:1.9;color:#53665a;margin-top:6px}.guide-practice{padding-top:14px;border-top:1px solid #d2ddc4}.guide-practice a{font-weight:600;text-decoration:underline;text-underline-offset:3px}.field-help{display:block;font-size:10px;line-height:1.8;color:var(--muted);margin-top:8px}#advanced-solar{clear:both;margin-top:20px}#advanced-solar summary{font-size:13px}.customer-meaning{border:1px solid #d8e3ca;border-left:4px solid var(--green);background:#f0f5e9;border-radius:9px;padding:22px;margin:18px 0 24px}.customer-meaning h3{font-size:18px;font-weight:500;letter-spacing:-.3px;margin-bottom:13px}.customer-meaning p{font-size:13px;line-height:1.9;color:#475f50;margin:10px 0}.customer-meaning a{display:inline-block;font-size:12px;font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-top:5px}
 @media(max-width:760px){.start-guide{padding:22px 20px}.guide-steps{grid-template-columns:1fr;gap:18px;margin:20px 0}.guide-steps p{font-size:12px}.customer-meaning{padding:18px}.customer-meaning p{font-size:12px}.field-help{font-size:11px}}
 @media print{.start-guide{display:none}.customer-meaning{break-inside:avoid;padding:14px;margin:12px 0}.customer-meaning h3{font-size:13px}.customer-meaning p{font-size:10px;line-height:1.7;margin:7px 0}.customer-meaning>a{display:none}.field-help{font-size:8px;line-height:1.6}}
+/* Optional home context, with no free-text personal fields. */
+.home-questionnaire{padding:28px;margin-bottom:30px;scroll-margin-top:20px}.home-questionnaire-status{font-size:12px;color:#53665a;background:#f0f4e9;padding:13px;border-radius:7px;margin-top:16px;line-height:1.8}.home-question-group{margin-top:0;padding:19px 0;border-top:1px solid var(--line)}.home-question-group:first-child{margin-top:20px}.home-question-group summary{font-size:14px}.home-question-group .field-grid{margin-top:20px;gap:20px 24px}.home-question-group select{width:100%;max-width:100%;font:inherit;font-size:12px;border:1px solid #dce3d7;border-radius:6px;padding:11px 9px;background:#fafbf7;color:var(--ink);margin-top:7px}.home-question-group input:not([type=range]){font-size:12px}.home-question-group select:focus-visible{outline:2px solid var(--green);outline-offset:2px}.home-profile-summary{margin-top:20px;padding:20px;background:#fafbf7;border:1px solid var(--line);border-radius:9px}.home-profile-summary dl{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}.home-profile-summary dl>div{display:block;border-bottom:1px solid #e8eddf;padding:9px 0;margin:0;font-size:11px}.home-profile-summary dd{text-align:left;white-space:normal;font-weight:500;margin-top:4px}.save-profile-consent{display:flex;align-items:start;gap:9px;font-size:12px;line-height:1.8;margin-top:14px}.save-profile-consent input:not([type=range]){width:auto;margin:5px 0 0;flex:0 0 auto;accent-color:var(--ink)}.home-solar-caution{padding:14px 17px;background:#fff2d9;border:1px solid #efdba8;border-radius:8px;font-size:12px;line-height:1.8;color:#805127;margin:12px 0}.home-recommendation-context{border-top:1px solid var(--line);margin-top:24px;padding-top:20px}.home-recommendation-context ul{font-size:12px;line-height:1.9;color:#53665a;padding-left:18px}.home-recommendation-context li{margin-bottom:9px}.home-recommendation-context h3{margin:10px 0}.home-recommendation-context ul:empty{display:none}
+@media(max-width:760px){.home-questionnaire{padding:20px}.home-question-group .field-grid{grid-template-columns:1fr;gap:17px}.home-profile-summary dl{grid-template-columns:1fr}.home-questionnaire .review-heading{gap:16px}.home-profile-summary{padding:16px}.home-questionnaire .section-heading{flex-wrap:wrap}}
+@media print{.home-questionnaire{padding:15px;break-before:page;break-inside:auto}.home-questionnaire .review-heading>button,#home-questionnaire-form{display:none}.home-profile-summary{padding:12px}.home-profile-summary dl{grid-template-columns:1fr 1fr;gap:0 18px}.home-profile-summary dl>div{font-size:9px;break-inside:avoid}.home-questionnaire-status{font-size:9px;padding:8px}.home-recommendation-context ul{font-size:9px}.home-recommendation-context h3{font-size:11px}.home-solar-caution{font-size:10px;padding:10px}}
+@media print{.home-questionnaire:not(.has-home-answers){display:none}}
+
+.inspection-help{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;background:#edf3e4;border:1px solid #d8e4ca;border-radius:9px;padding:22px;margin-top:22px}.inspection-help h3{font-size:18px;font-weight:500;margin-bottom:10px}.inspection-help p{font-size:12px;line-height:1.9;color:#53665a}.inspection-help .primary-button{margin:0 0 10px}.inspection-help .hint{font-size:10px}.inspection-help .inspection-phone{margin-top:12px}.inspection-phone span{display:block;font-size:10px;color:var(--muted)}@media(max-width:760px){.inspection-help{grid-template-columns:1fr;gap:15px;padding:18px}.inspection-help .primary-button{margin:0}}@media print{.inspection-help{display:none}}
 
 </style>
 </head>
@@ -60,12 +67,13 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
         <li><span aria-hidden="true">2</span><div><a href="#cost-comparison">Compare your options</a><p>See what you pay now and what solar might change. Starting solar settings are examples until you confirm them.</p></div></li>
         <li><span aria-hidden="true">3</span><div><a href="#personalized-recommendation">Choose your next step</a><p>Read your recommendation and prepare a home assessment request to share with a provider.</p></div></li>
       </ol>
-      <p class="guide-practice">Just exploring? <a href="#review-example">Try the clearly labeled example bills</a> before using your own numbers.</p>
+      <p class="guide-practice">Just exploring? <a href="#review-example">Try the clearly labeled example bills</a> before using your own numbers. <a href="#home-questionnaire">Add home details</a> for more specific recommendations.</p>
     </section>
     <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
-      <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
+      <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#home-questionnaire" class="skip-link">Add home details &rarr;</a></div>
       <div class="save-progress-panel" aria-labelledby="save-progress-title">
-        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes.</p></div>
+        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes. Questionnaire answers are included only if you select the option below.</p></div>
+        <label class="save-profile-consent"><input id="save-home-profile" type="checkbox"> Also save my home questionnaire answers on this browser</label>
         <div class="progress-actions"><button type="button" id="save-progress">Save progress</button><button type="button" id="delete-progress" disabled>Delete saved progress</button></div>
         <p id="save-progress-status" role="status" class="progress-status"></p>
         <p class="hint">No bill photos, full bill text, names, email addresses, postal codes, or notes are saved. Anyone using this browser can restore the saved numbers. They do not sync across devices. Private browsing and some previews may block saving.</p>
@@ -95,6 +103,15 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
           </div>
         </div>
       </div>
+    </section>
+    <section class="home-questionnaire card" id="home-questionnaire" aria-labelledby="home-questionnaire-title">
+      <div class="review-heading"><div><p class="eyebrow">FILL IN THE PICTURE</p><h2 id="home-questionnaire-title">Tell us about your home</h2><p class="review-description">Bills show how much electricity you use. These details help us suggest what to check first and prepare a more useful assessment request.</p></div><button type="button" id="clear-home-questionnaire" class="text-button">Clear questionnaire</button></div>
+      <p class="hint">Answer what you know. Every question is optional, and Not sure is welcome. Leave unknown numbers blank. A professional must still verify equipment, wiring, roof condition, local sunlight, and utility rules. These answers do not automatically change the calculator's savings assumptions.</p>
+      <div class="inspection-help"><div><h3>Not sure? Let someone inspect your home.</h3><p>You do not need all the answers—or 12 bills—to ask for a visit. A qualified provider can help identify your equipment, check conditions, and explain what information is still needed.</p><p class="inspection-phone" id="inspection-phone">Phone: <strong>661-111-111</strong> <span>Demo number only · calling is not available</span></p></div><div><button type="button" id="request-inspection" class="primary-button">Request an inspection visit &rarr;</button><p class="hint">Prepares a request file for you to share. No request is sent and no appointment is booked. A real business phone number is needed to enable calls.</p></div></div>
+      <p id="home-questionnaire-status" role="status" class="home-questionnaire-status"></p>
+      <form id="home-questionnaire-form" novalidate><div id="home-questionnaire-groups"></div></form>
+      <div id="home-profile-summary-panel" class="home-profile-summary" hidden><h3>Your home details for the assessment</h3><dl id="home-questionnaire-summary"></dl><p class="hint">Self-reported answers; not independently verified. Names, exact addresses, account numbers, and bill text are not collected here.</p></div>
+      <p class="hint">Your answers stay in this visit unless you select “Also save my home questionnaire answers” beside Save progress. They are included in a report or assessment request only when you choose to print or download it.</p>
     </section>
     <div class="workspace" id="solar-plan">
       <section class="inputs card" aria-labelledby="plan-title">
@@ -139,7 +156,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
       <div class="review-heading"><div><p class="eyebrow">FROM YOUR BILLS TO YOUR POSSIBILITIES</p><h2 id="comparison-title">Current costs vs. solar</h2><p class="review-description">Compare your entered electricity bills with estimated ongoing costs using the solar plan assumptions above.</p></div><a href="#solar-plan" class="skip-link">Edit solar assumptions &uarr;</a></div>
       <p id="comparison-notice" class="comparison-notice" role="status"></p>
       <div id="comparison-results" hidden>
-        <p id="comparison-source" class="eyebrow comparison-source"></p>
+        <p id="comparison-source" class="eyebrow comparison-source"></p><p id="home-solar-caution" class="home-solar-caution" hidden></p>
         <section class="customer-meaning" aria-labelledby="customer-meaning-title">
           <h3 id="customer-meaning-title">What this means for your home</h3>
           <p id="meaning-bills"></p><p id="meaning-solar"></p><p id="meaning-efficiency"></p>
@@ -166,24 +183,25 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
           <div class="recommendation-opportunity"><span class="recommendation-label">MAIN OPPORTUNITY</span><h3 id="recommendation-title"></h3><p id="recommendation-opportunity"></p><p id="recommendation-evidence" class="recommendation-evidence"></p></div>
           <div class="recommended-package"><span class="recommendation-label">SUGGESTED SERVICE PACKAGE</span><h3 id="recommendation-package"></h3><p id="recommendation-why"></p><ul id="recommendation-services"></ul><p class="hint">Suggested scope for an assessment; availability and pricing must be confirmed with a provider.</p></div>
         </div>
+        <div id="home-recommendation-context" class="home-recommendation-context" hidden><h3>From your home questionnaire</h3><ul id="home-recommendation-insights"></ul><h3>Still to confirm</h3><ul id="home-recommendation-followups"></ul></div>
         <p id="recommendation-solar-note" class="recommendation-solar-note"></p>
         <p class="hint">Monthly bills show patterns, not individual appliance loads or confirmed causes. These suggestions are not an equipment diagnosis or a savings guarantee.</p>
         <div class="assessment-cta"><div><h3>Ready to explore your options?</h3><p>Prepare a request with your energy review and suggested package to share with a home energy professional.</p></div><button type="button" id="request-assessment" class="primary-button">Request a Home Assessment &rarr;</button></div>
         <p class="hint assessment-demo-note">Demo: creates a downloadable request file. No request is sent and no appointment is booked.</p>
       </div>
     </section>
-    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps only bill numbers, solar settings, and example-data labels on this browser; photos and contact details are excluded.</p></section>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps bill numbers, solar settings, example-data labels, and separately opted-in home questionnaire answers on this browser; photos and contact details are excluded.</p></section>
   </main>
   <dialog id="help-dialog" aria-labelledby="help-heading" aria-describedby="help-intro">
     <div class="section-heading"><div><p class="eyebrow">WE'RE HERE TO HELP YOU GET STARTED</p><h2 id="help-heading">How can we help?</h2></div><button type="button" id="close-help" aria-label="Close help">Close</button></div>
     <p id="help-intro">Find quick answers about your energy review and solar estimates.</p>
-    <div class="help-contact-options"><div><h3>Call our team</h3><span class="help-status">Coming soon</span><p>A business phone number has not been added yet.</p></div><div><h3>Live chat</h3><span class="help-status">Coming soon</span><p>Live chat is not connected yet. No agent is currently available through this app.</p></div></div>
+    <div class="help-contact-options"><div><h3>Call our team</h3><span class="help-status">Demo only</span><p><strong>661-111-111</strong> is a placeholder, not an active phone line. A real business number is needed before customers can call to arrange an inspection.</p></div><div><h3>Live chat</h3><span class="help-status">Coming soon</span><p>Live chat is not connected yet. No agent is currently available through this app.</p></div></div>
     <h3 class="help-faq-heading">Quick answers</h3>
     <details><summary>How do I review my electricity bills?</summary><p>Enter January–December usage in kWh and bill costs in USD. All 12 months are needed for your energy review. Zero is allowed. Use bills from the same calendar year.</p></details>
     <details><summary>Can I use a photo of my bill?</summary><p>Choose a PNG, JPG, or WebP bill photo in Homeowner Energy Review. The full app reads it locally in your browser. Review and correct all three fields before adding them. Unreadable values are flagged, and existing months require replacement confirmation.</p></details>
     <details><summary>Are the solar savings guaranteed?</summary><p>No. Results depend on the rates, solar output, fees, and other assumptions shown in Current costs vs. solar. Confirm these with your utility and installer before investing.</p></details>
-    <details><summary>How do I request a home assessment?</summary><p>Complete your bill review and use Request a Home Assessment in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
-    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves only monthly numbers, solar settings, and example-data labels on this browser. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
+    <details><summary>How do I request a home assessment?</summary><p>Use Request an inspection visit in the home questionnaire even if you do not know the answers or have all your bills. After a complete bill review, Request a Home Assessment also appears in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
+    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves monthly numbers, solar settings, and example-data labels on this browser. Home questionnaire answers are included only if you select the separate save option. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
     <a id="help-review-link" href="#homeowner-review" class="help-review-link">Go to Homeowner Energy Review &rarr;</a>
     <p class="hint">These are general answers about using the app. This panel is not a live or AI chat service.</p>
   </dialog>
@@ -205,6 +223,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
   <dialog id="assessment-dialog" aria-labelledby="assessment-heading" aria-describedby="assessment-explanation">
     <div class="section-heading"><div><p class="eyebrow">TAKE THE NEXT STEP</p><h2 id="assessment-heading">Request a Home Assessment</h2></div><button type="button" id="assessment-close" aria-label="Close assessment request">Close</button></div>
     <p id="assessment-explanation">Prepare a downloadable request to share with your chosen provider. This demo does not send requests or book appointments.</p>
+    <p id="inspection-request-note" class="hint" hidden>You are asking for a visit to help gather missing home information. You can prepare this request without completing the questionnaire or bill review. Share the downloaded file with your chosen provider to arrange a visit.</p>
     <p class="assessment-selected">Suggested package: <strong id="assessment-package"></strong></p>
     <form id="assessment-form">
       <label>Your name <input name="name" type="text" autocomplete="name" maxlength="100" required></label>
@@ -598,6 +617,219 @@ function setupBillImport(onApply) {
   });
 }
 
+const yesNoUnknown = [['yes', 'Yes'], ['no', 'No'], ['unknown', 'Not sure']];
+const withUnknown = options => [...options, ['unknown', 'Not sure']];
+const homeQuestionGroups = [
+  { title: 'Home & household', questions: [
+    { id: 'homeType', label: 'Type of home', options: withUnknown([['detached', 'Detached house'], ['attached', 'Townhouse / attached house'], ['apartment', 'Condo / apartment']]) },
+    { id: 'area', label: 'Approximate floor area (square feet)', min: 1, max: 100000, help: 'Leave blank if you do not know. An estimate is fine.' },
+    { id: 'homeAge', label: 'Approximate age of the home (years)', min: 0, max: 300 },
+    { id: 'floors', label: 'Number of floors', options: withUnknown([['one', 'One'], ['two', 'Two'], ['three-plus', 'Three or more']]) },
+    { id: 'residents', label: 'Number of people living here', min: 1, max: 50 },
+    { id: 'daytime', label: 'Is someone usually home during the day?', options: withUnknown([['usually', 'Usually'], ['sometimes', 'Sometimes'], ['rarely', 'Rarely']]) },
+    { id: 'ownership', label: 'Your connection to the home', options: withUnknown([['owner', 'Owner'], ['renter', 'Renter'], ['other', 'Other / helping someone']]) },
+  ] },
+  { title: 'Heating, cooling & comfort', questions: [
+    { id: 'heating', label: 'Main heating system', options: withUnknown([['resistance', 'Electric furnace / baseboards'], ['heat-pump', 'Heat pump'], ['gas', 'Natural gas'], ['other-fuel', 'Oil / propane / other fuel'], ['none', 'No heating system']]) },
+    { id: 'hvacAge', label: 'Heating / cooling equipment age', options: withUnknown([['under-ten', 'Under 10 years'], ['ten-fourteen', '10–14 years'], ['fifteen-plus', '15 years or more']]) },
+    { id: 'cooling', label: 'Main cooling system', options: withUnknown([['central', 'Central air conditioning'], ['room', 'Window / portable units'], ['heat-pump', 'Heat pump'], ['none', 'No air conditioning']]) },
+    { id: 'heatingTemp', label: 'Usual heating setting (°F)', min: 40, max: 90, help: 'Optional. Do not change a setting that is needed for health or comfort.' },
+    { id: 'coolingTemp', label: 'Usual cooling setting (°F)', min: 50, max: 100 },
+    { id: 'insulation', label: 'How is the insulation?', options: withUnknown([['good', 'Good / recently checked'], ['mixed', 'Mixed / some rooms uncomfortable'], ['poor', 'Poor / improvement needed']]) },
+    { id: 'drafts', label: 'Do you notice drafts or air leaks?', options: yesNoUnknown },
+    { id: 'windows', label: 'Window glazing', options: withUnknown([['single', 'Single pane'], ['multiple', 'Double / triple pane'], ['mixed', 'A mixture']]) },
+  ] },
+  { title: 'Appliances, lighting & controls', questions: [
+    { id: 'waterHeating', label: 'Water heater type', options: withUnknown([['resistance', 'Standard electric tank'], ['heat-pump', 'Heat-pump water heater'], ['gas', 'Gas / other fuel'], ['solar', 'Solar water heating']]) },
+    { id: 'applianceAge', label: 'Age of major appliances', options: withUnknown([['newer', 'Mostly under 10 years'], ['mixed', 'Mixed ages'], ['older', 'Mostly 10+ years']]) },
+    { id: 'extraFreezer', label: 'Extra refrigerator or freezer?', options: yesNoUnknown },
+    { id: 'laundry', label: 'Laundry loads per week', options: withUnknown([['few', '0–2'], ['medium', '3–6'], ['many', '7 or more']]) },
+    { id: 'dryer', label: 'How do you usually dry laundry?', options: withUnknown([['electric', 'Electric dryer'], ['gas', 'Gas dryer'], ['air', 'Air dry / clothesline']]) },
+    { id: 'cooking', label: 'Cooking equipment', options: withUnknown([['electric', 'Electric / induction'], ['gas', 'Gas'], ['mixed', 'A mixture']]) },
+    { id: 'lighting', label: 'How much lighting uses LED bulbs?', options: withUnknown([['most', 'All / most'], ['some', 'Some'], ['few', 'Few / none']]) },
+    { id: 'smartThermostat', label: 'Do you have a smart thermostat?', options: yesNoUnknown },
+    { id: 'standby', label: 'Electronics and plug-in devices', options: withUnknown([['usually-off', 'Usually off when unused'], ['often-on', 'Often left on / in standby']]) },
+  ] },
+  { title: 'Electric vehicles & other large loads', questions: [
+    { id: 'ev', label: 'Electric vehicles charged at home', options: withUnknown([['none', 'None'], ['one', 'One'], ['multiple', 'Two or more']]) },
+    { id: 'evCharging', label: 'When do you usually charge?', options: withUnknown([['day', 'Daytime'], ['night', 'Overnight'], ['mixed', 'Varies'], ['na', 'Not applicable']]) },
+    { id: 'pool', label: 'Pool pump or pool heater?', options: yesNoUnknown },
+    { id: 'hotTub', label: 'Electric hot tub or spa?', options: yesNoUnknown },
+    { id: 'spaceHeaters', label: 'Portable electric space heaters', options: withUnknown([['never', 'Never / do not have any'], ['sometimes', 'Sometimes'], ['often', 'Often']]) },
+  ] },
+  { title: 'Roof, existing solar & installation checks', questions: [
+    { id: 'existingSolar', label: 'Does this home already have solar panels?', options: yesNoUnknown, help: 'Existing solar changes how utility bills should be interpreted.' },
+    { id: 'roofAge', label: 'Approximate roof age (years)', min: 0, max: 100 },
+    { id: 'roofCondition', label: 'Roof condition', options: withUnknown([['good', 'Good / recently checked'], ['repair', 'Repairs may be needed'], ['replace', 'Replacement planned / needed']]) },
+    { id: 'shade', label: 'Shade on the roof', options: withUnknown([['little', 'Little / no shade'], ['some', 'Some shade'], ['heavy', 'Heavy shade']]) },
+    { id: 'roofDirection', label: 'Main roof direction', options: withUnknown([['south', 'South'], ['east-west', 'East / west'], ['north', 'North'], ['mixed', 'Multiple directions']]) },
+    { id: 'solarPermission', label: 'Permission to install rooftop solar?', options: withUnknown([['yes', 'Yes / confirmed'], ['no', 'No / approval still needed']]) },
+    { id: 'electricalPanel', label: 'Electrical panel readiness', options: withUnknown([['reviewed', 'A professional has reviewed it'], ['upgrade', 'A professional says an upgrade is needed']]), help: 'Do not open or inspect electrical equipment yourself. Not sure is fine.' },
+  ] },
+  { title: 'Local conditions & your priorities', questions: [
+    { id: 'climate', label: 'Typical climate at your home', options: withUnknown([['cold', 'Mostly a heating climate'], ['hot', 'Mostly a cooling climate'], ['mixed', 'Both hot and cold seasons'], ['mild', 'Mostly mild']]) },
+    { id: 'utilityPlan', label: 'Electricity pricing plan', options: withUnknown([['flat', 'Same price throughout the day'], ['time-of-use', 'Price changes by time of day']]) },
+    { id: 'estimatedBills', label: 'Do any bills use estimated meter readings?', options: yesNoUnknown },
+    { id: 'householdChanges', label: 'Did household size or routines change during the bill year?', options: yesNoUnknown },
+    { id: 'goal', label: 'Your main priority', options: withUnknown([['bills', 'Lower bills'], ['comfort', 'More comfortable rooms'], ['solar', 'Explore solar'], ['backup', 'Backup power during outages']]) },
+    { id: 'budget', label: 'Optional budget for improvements', options: [['small', 'Under $2,500'], ['medium', '$2,500–$10,000'], ['larger', 'Over $10,000'], ['unknown', 'Not sure / prefer not to say']] },
+  ] },
+];
+const allHomeQuestions = homeQuestionGroups.flatMap(group => group.questions);
+
+function normalizeHomeProfile(raw = {}) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('Invalid home questionnaire.');
+  return Object.fromEntries(allHomeQuestions.map(question => {
+    const value = raw[question.id] ?? (question.options ? '' : null);
+    if (question.options) {
+      if (value !== '' && !question.options.some(([code]) => code === value)) throw new Error('Invalid questionnaire choice.');
+    } else if (value !== null && (typeof value !== 'number' || !Number.isInteger(value) || value < question.min || value > question.max)) {
+      throw new Error('Invalid questionnaire number.');
+    }
+    return [question.id, value];
+  }));
+}
+
+function homeProfileRows(raw) {
+  const profile = normalizeHomeProfile(raw);
+  return allHomeQuestions.filter(question => profile[question.id] !== '' && profile[question.id] !== null).map(question => [
+    question.label,
+    question.options ? question.options.find(([code]) => code === profile[question.id])[1] : String(profile[question.id]),
+  ]);
+}
+
+function homeSolarCaution(raw) {
+  const profile = normalizeHomeProfile(raw);
+  const checks = [];
+  if (['repair', 'replace'].includes(profile.roofCondition)) checks.push('roof repairs or replacement');
+  if (profile.shade === 'heavy') checks.push('heavy roof shade');
+  if (profile.solarPermission === 'no') checks.push('installation permission');
+  if (profile.electricalPanel === 'upgrade') checks.push('an electrical-panel upgrade');
+  return checks.length ? `Your questionnaire flags ${checks.join(', ')}. Resolve these with a qualified provider before choosing rooftop solar. The cost estimate does not account for these conditions.` : '';
+}
+
+function tailorHomeRecommendation(base, raw) {
+  const profile = normalizeHomeProfile(raw);
+  const result = { ...base, services: [...base.services], homeInsights: [], homeFollowups: [] };
+  if (!homeProfileRows(profile).length) return result;
+  const add = text => result.homeInsights.push(text);
+  if (profile.estimatedBills === 'yes') add('You reported estimated meter readings. Compare them with actual readings through your utility before treating bill patterns as representative.');
+  if (profile.householdChanges === 'yes') add('Household routines changed during the bill year. Choose representative usage before sizing a future system.');
+  if (profile.heating === 'resistance') add('You reported electric resistance heating. Ask an assessor to compare controls, insulation, and heat-pump options for your climate; savings are not established by this answer alone.');
+  if (profile.waterHeating === 'resistance') add('A standard electric water heater is reported. Discuss hot-water demand, maintenance, and efficient replacement options when appropriate.');
+  if (profile.lighting === 'few') add('Few or no LED bulbs are reported. Review frequently used lights for suitable LED replacements.');
+  if (profile.applianceAge === 'older' || profile.extraFreezer === 'yes') add('Review appliance condition and extra refrigeration use before replacing working equipment.');
+  if (['one', 'multiple'].includes(profile.ev)) add(`You charge an electric vehicle at home${profile.evCharging === 'night' ? ' overnight' : ''}. Review charging schedules against utility prices and solar production; charging demand is not automatically waste.`);
+  if (profile.pool === 'yes' || profile.hotTub === 'yes') add('A pool or spa is reported. Review pump and heating schedules while keeping equipment and water-care requirements in place.');
+  if (profile.utilityPlan === 'time-of-use') add('Your rate changes by time of day. The current single-rate annual calculator cannot model that tariff; obtain a time-based analysis before relying on the savings estimate.');
+  if (profile.goal === 'backup') add('Backup power is a priority. Standard solar alone may shut down during outages; discuss a compatible battery or backup system. Battery costs are excluded from this calculator.');
+  if (profile.goal === 'comfort') add('Comfort is your priority. Ask for a room-by-room review of temperature differences, controls, insulation, and air leaks.');
+  if (profile.budget === 'small') add('You selected a budget under $2,500. Ask for a staged, itemized plan; this does not establish that a solar installation fits that budget.');
+  if (['unknown', ''].includes(profile.hvacAge)) result.homeFollowups.push('Confirm heating/cooling equipment age and condition.');
+  if (['unknown', ''].includes(profile.roofCondition) || ['unknown', ''].includes(profile.shade)) result.homeFollowups.push('Have an installer verify roof condition, usable area, and shade.');
+  if (['unknown', ''].includes(profile.solarPermission)) result.homeFollowups.push('Confirm ownership, landlord, or association approvals for rooftop work.');
+  if (base.kind === 'verify') return result;
+  if (profile.insulation === 'poor' || profile.drafts === 'yes') {
+    result.title = 'Check drafts and insulation before sizing upgrades';
+    result.opportunity = 'You reported poor insulation or drafts. Start with an inspection of air leaks, insulation, and room comfort so your home may need less heating and cooling. The inspection must confirm the cause and suitable improvements.';
+    result.evidence += ' Your questionnaire reports insulation or air-leak concerns; these have not been independently verified.';
+    result.services.unshift('Inspect reported insulation and draft concerns');
+  } else if (profile.hvacAge === 'fifteen-plus' || profile.spaceHeaters === 'often') {
+    result.title = 'Review heating and cooling performance';
+    result.opportunity = 'You reported older heating/cooling equipment or frequent space-heater use. Review equipment condition, controls, and room comfort with an assessor before choosing a replacement.';
+    result.services.unshift('Review reported equipment age and supplemental heating');
+  }
+  const caution = homeSolarCaution(profile);
+  if (caution) {
+    result.packageName = 'Efficiency First + Solar Feasibility Review';
+    result.why = 'Your home details raise installation questions that a favorable cost estimate cannot resolve. Prioritize efficiency and feasibility checks before committing to solar.';
+    result.solarNote = caution;
+  }
+  if (profile.existingSolar === 'yes') {
+    result.packageName = 'Existing Solar & Efficiency Review';
+    result.why = 'Your home already has solar. Review generation, imported/exported electricity, equipment, and efficiency together before planning an expansion.';
+    result.solarNote = 'The current bill comparison assumes a home without solar, so it is not used for this existing-solar home. An assessor needs generation and import/export records.';
+  }
+  if (!result.homeInsights.length) add('Bring these home details to the assessment. They provide context, but do not identify exact appliance loads or establish savings.');
+  result.services = [...new Set(result.services)];
+  return result;
+}
+
+function setupHomeQuestionnaire(onChange) {
+  const homeForm = document.querySelector('#home-questionnaire-form');
+  const groups = document.querySelector('#home-questionnaire-groups');
+  const controls = new Map();
+  homeQuestionGroups.forEach((group, index) => {
+    const details = document.createElement('details');
+    details.className = 'home-question-group';
+    details.open = index === 0;
+    const summary = document.createElement('summary');
+    summary.textContent = `${index + 1}. ${group.title}`;
+    const grid = document.createElement('div');
+    grid.className = 'field-grid';
+    for (const question of group.questions) {
+      const label = document.createElement('label');
+      label.htmlFor = `home-${question.id}`;
+      label.textContent = question.label;
+      const input = document.createElement(question.options ? 'select' : 'input');
+      input.id = label.htmlFor;
+      input.name = question.id;
+      if (question.options) {
+        input.add(new Option('Choose an answer (optional)', ''));
+        for (const [value, text] of question.options) input.add(new Option(text, value));
+      } else {
+        input.type = 'number'; input.min = question.min; input.max = question.max; input.step = '1'; input.placeholder = 'Not sure? Leave blank';
+      }
+      label.append(input);
+      if (question.help) {
+        const hint = document.createElement('span');
+        hint.className = 'field-help'; hint.id = `${input.id}-help`; hint.textContent = question.help;
+        input.setAttribute('aria-describedby', hint.id); label.append(hint);
+      }
+      controls.set(question.id, input); grid.append(label);
+    }
+    details.append(summary, grid); groups.append(details);
+  });
+  function read() {
+    const raw = {};
+    const invalid = [];
+    for (const question of allHomeQuestions) {
+      const input = controls.get(question.id);
+      if (question.options) raw[question.id] = input.value;
+      else if (!input.validity.valid) { raw[question.id] = null; invalid.push(question.label); }
+      else raw[question.id] = input.value === '' ? null : input.valueAsNumber;
+    }
+    return { profile: normalizeHomeProfile(raw), invalid };
+  }
+  function refresh() {
+    const { profile, invalid } = read();
+    const rows = homeProfileRows(profile);
+    const unsure = Object.values(profile).filter(value => value === 'unknown').length;
+    document.querySelector('#home-questionnaire-status').textContent = `${rows.length} of ${allHomeQuestions.length} questions answered${unsure ? `; ${unsure} marked Not sure` : ''}. ${invalid.length ? `Correct these numbers: ${invalid.join(', ')}. Invalid values are not used.` : 'Skipped and Not sure answers become follow-up questions, not assumed facts.'}`;
+    const dl = document.querySelector('#home-questionnaire-summary');
+    dl.replaceChildren(...rows.map(([label, value]) => {
+      const pair = document.createElement('div');
+      const dt = document.createElement('dt'); const dd = document.createElement('dd');
+      dt.textContent = label; dd.textContent = value; pair.append(dt, dd); return pair;
+    }));
+    document.querySelector('#home-profile-summary-panel').hidden = rows.length === 0;
+    document.querySelector('#home-questionnaire').classList.toggle('has-home-answers', rows.length > 0);
+  }
+  homeForm.addEventListener('submit', event => event.preventDefault());
+  homeForm.addEventListener('input', () => { refresh(); onChange(); });
+  document.querySelector('#clear-home-questionnaire').addEventListener('click', () => { homeForm.reset(); refresh(); onChange(); });
+  refresh();
+  return {
+    read,
+    restore(profile = {}) {
+      const clean = normalizeHomeProfile(profile);
+      for (const [id, input] of controls) input.value = clean[id] ?? '';
+      refresh();
+    },
+  };
+}
+
+
 const PROGRESS_KEY = 'helio-home:progress:v1';
 const planLimits = {
   monthlyKwh: 100000, rate: 10, efficiency: 50, solarKw: 1000, sunHours: 24,
@@ -624,7 +856,9 @@ function normalizeProgress(state) {
     const match = typeof id === 'string' && id.match(/^bill-(kwh|cost)-(\d|1[01])$/);
     return match && bills[Number(match[2])][match[1]] !== null;
   }))].sort();
-  return { version: 1, bills, plan, exampleFields };
+  const clean = { version: 1, bills, plan, exampleFields };
+  if (Object.hasOwn(state, 'homeProfile')) clean.homeProfile = normalizeHomeProfile(state.homeProfile);
+  return clean;
 }
 
 function encodeProgress(state) {
@@ -642,7 +876,7 @@ function setupProgress({ getState, applyState, storage = () => globalThis.localS
   const status = document.querySelector('#save-progress-status');
   let baseline = null;
   let hasSaved = false;
-  let message = 'Not saved yet. Choose Save progress to keep these numbers on this browser.';
+  let message = 'Not saved yet. Choose Save progress to keep your progress on this browser.';
   const say = text => { if (status.textContent !== text) status.textContent = text; };
 
   function refresh() {
@@ -654,7 +888,7 @@ function setupProgress({ getState, applyState, storage = () => globalThis.localS
       say(dirty ? 'Unsaved changes — choose Save progress to keep your updates. Your previous saved copy is unchanged.' : message);
     } catch {
       save.disabled = true;
-      say('Correct the invalid bill numbers or solar settings before saving. Blank fields can be saved for later; your previous saved copy is unchanged.');
+      say('Correct invalid bill numbers, solar settings, or any home answers selected for saving. Blank fields can be saved for later; your previous saved copy is unchanged.');
     }
   }
 
@@ -703,6 +937,7 @@ const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
 let progressControl = null;
+let homeQuestionnaire = null;
 
 function render() {
   progressControl?.refresh();
@@ -885,6 +1120,11 @@ function renderComparison() {
     notice.textContent = 'Correct the invalid solar plan inputs to update this comparison. Previous estimates are hidden.';
     return;
   }
+  if (homeQuestionnaire?.read().profile.existingSolar === 'yes') {
+    renderRecommendation();
+    notice.textContent = 'Your questionnaire says this home already has solar. This comparison assumes bills from a home without solar, so estimates are hidden. Ask an assessor to review your generation and grid import/export records before considering changes.';
+    return;
+  }
   const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
   const c = compareCosts(currentReview, values);
   if (!c.available) {
@@ -896,6 +1136,14 @@ function renderComparison() {
   }
   results.hidden = false;
   renderRecommendation(c);
+  const homeProfile = homeQuestionnaire?.read().profile;
+  const homeCaution = [
+    homeSolarCaution(homeProfile),
+    homeProfile?.utilityPlan === 'time-of-use' ? 'Your electricity price changes by time of day. This single-rate annual comparison does not model that tariff; get a time-based analysis before relying on these savings.' : '',
+    homeProfile?.estimatedBills === 'yes' ? 'Some entered bills may use estimated readings. Confirm actual usage with your utility before relying on this comparison.' : '',
+  ].filter(Boolean).join(' ');
+  set('home-solar-caution', homeCaution);
+  document.querySelector('#home-solar-caution').hidden = !homeCaution;
   set('meaning-bills', `Your ${exampleFields.size ? 'example' : 'entered'} bills add up to ${billMoney.format(c.annualCost)} for the year, or about ${billMoney.format(c.monthlyCost)} a month. You used ${number.format(currentReview.annualKwh)} kWh of electricity over the year.`);
   const saving = c.solar.annualSavings;
   const solarChange = Math.abs(saving) < 0.005 ? 'leave ongoing costs roughly unchanged'
@@ -964,7 +1212,7 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   const complete = currentReview !== null;
   document.querySelector('#recommendation-results').hidden = !complete;
   document.querySelector('#recommendation-empty').hidden = complete;
-  currentRecommendation = complete ? recommendEnergy(currentReview, comparison) : null;
+  currentRecommendation = complete ? tailorHomeRecommendation(recommendEnergy(currentReview, comparison), homeQuestionnaire?.read().profile) : null;
   if (!complete) return;
   const r = currentRecommendation;
   set('recommendation-source', exampleFields.size ? 'EXAMPLE DATA · SUGGESTED NEXT STEP' : 'BASED ON YOUR 12 ENTERED MONTHS');
@@ -975,16 +1223,24 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   set('recommendation-why', r.why);
   fillList('recommendation-services', r.services);
   set('recommendation-solar-note', solarStatus ? `${solarStatus} ${r.solarNote}` : r.solarNote);
+  fillList('home-recommendation-insights', r.homeInsights);
+  fillList('home-recommendation-followups', r.homeFollowups);
+  document.querySelector('#home-recommendation-context').hidden = !r.homeInsights.length && !r.homeFollowups.length;
 }
 
 const assessmentDialog = document.querySelector('#assessment-dialog');
 const assessmentForm = document.querySelector('#assessment-form');
-document.querySelector('#request-assessment').addEventListener('click', () => {
-  if (!currentRecommendation) return;
-  set('assessment-package', currentRecommendation.packageName);
+let assessmentMode = 'energy';
+function openHomeAssessment(mode) {
+  if (mode === 'energy' && !currentRecommendation) return;
+  assessmentMode = mode;
+  set('assessment-package', mode === 'inspection' ? 'Home Information & Inspection Visit' : currentRecommendation.packageName);
+  document.querySelector('#inspection-request-note').hidden = mode !== 'inspection';
   set('assessment-status', '');
   assessmentDialog.showModal();
-});
+}
+document.querySelector('#request-assessment').addEventListener('click', () => openHomeAssessment('energy'));
+document.querySelector('#request-inspection').addEventListener('click', () => openHomeAssessment('inspection'));
 document.querySelector('#assessment-close').addEventListener('click', () => assessmentDialog.close());
 assessmentDialog.addEventListener('close', () => {
   assessmentForm.reset();
@@ -992,22 +1248,34 @@ assessmentDialog.addEventListener('close', () => {
 });
 assessmentForm.addEventListener('submit', event => {
   event.preventDefault();
-  if (!assessmentForm.reportValidity() || !currentRecommendation || !currentReview) return;
-  const r = currentRecommendation;
+  if (!assessmentForm.reportValidity() || (assessmentMode === 'energy' && (!currentRecommendation || !currentReview))) return;
+  const r = currentRecommendation || {
+    title: 'Gather the home information needed for an energy review',
+    opportunity: 'The homeowner would like someone to inspect the home and help identify equipment, insulation, roof conditions, and the information needed for planning.',
+    evidence: 'The bill review is incomplete. No complete-year savings conclusion is included.',
+    why: 'Unknown answers are a reason to request an assessment, not to guess.',
+    services: ['Confirm household energy equipment and controls', 'Review insulation, drafts, and major electric loads', 'Arrange qualified roof and electrical suitability checks where needed'],
+    homeInsights: [], homeFollowups: ['Confirm missing questionnaire details and representative bill data during the visit.'],
+  };
   const fields = new FormData(assessmentForm);
   const contact = name => String(fields.get(name) || '').trim();
-  const billLines = months.map((month, i) => `${month}: ${document.getElementById(`bill-kwh-${i}`).value} kWh; $${document.getElementById(`bill-cost-${i}`).value}`);
+  const billLines = months.map((month, i) => `${month}: usage ${document.getElementById(`bill-kwh-${i}`).value || 'not supplied'} kWh; cost ${document.getElementById(`bill-cost-${i}`).value ? '$' + document.getElementById(`bill-cost-${i}`).value : 'not supplied'}`);
   const comparisonVisible = !document.querySelector('#comparison-results').hidden;
   const text = [
     'HELIO HOME — HOME ASSESSMENT REQUEST DRAFT',
     'Prepared locally. Nothing has been sent and no appointment has been booked.',
     exampleFields.size ? 'CONTAINS EXAMPLE BILL DATA — replace before requesting a real assessment.' : 'Based on homeowner-entered bill data; not independently verified.',
     '', `Name: ${contact('name')}`, `Email: ${contact('email')}`, `ZIP / postal code: ${contact('postal') || 'Not supplied'}`,
-    '', `Suggested package: ${r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
+    '', `Request type: ${assessmentMode === 'inspection' ? 'Please contact me to arrange an in-home information and inspection visit.' : 'Home energy assessment.'}`,
+    `Suggested package: ${assessmentMode === 'inspection' ? 'Home Information & Inspection Visit' : r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
     '', 'Services to discuss:', ...r.services.map(service => `- ${service}`),
-    '', `Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`,
+    '', ...(currentReview ? [`Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`] : ['Annual bill totals are unavailable because the 12-month review is incomplete.']),
     '', 'Entered monthly bills:', ...billLines,
-    '', 'Solar assessment note:', document.querySelector('#recommendation-solar-note').textContent,
+    '', 'HOME ENERGY QUESTIONNAIRE (self-reported, not independently verified):',
+    ...(homeProfileRows(homeQuestionnaire?.read().profile).length ? homeProfileRows(homeQuestionnaire.read().profile).map(([label, answer]) => `${label}: ${answer}`) : ['No home answers supplied yet. The homeowner is requesting help gathering this information.']),
+    ...(homeQuestionnaire?.read().invalid.length ? ['Some questionnaire numbers were invalid and excluded. Confirm these during the assessment.'] : []),
+    '', 'Home-specific assessment notes:', ...r.homeInsights, ...r.homeFollowups,
+    '', 'Solar assessment note:', currentRecommendation ? document.querySelector('#recommendation-solar-note').textContent : 'Solar suitability and savings have not been established. Confirm representative consumption and on-site conditions.',
     '', 'Solar cost comparison:', comparisonVisible
       ? `Current: ${document.querySelector('#compare-current-annual').textContent}/year; solar only: ${document.querySelector('#compare-solar-annual').textContent}/year; solar + upgrades: ${document.querySelector('#compare-combined-annual').textContent}/year.\n${document.querySelector('#comparison-assumptions').innerText}`
       : document.querySelector('#comparison-notice').textContent,
@@ -1039,6 +1307,7 @@ setupBillImport((month, kwh, cost) => {
   exampleFields.delete(`bill-cost-${month}`);
   renderReview();
 });
+homeQuestionnaire = setupHomeQuestionnaire(() => renderReview());
 reset();
 renderReview();
 progressControl = setupProgress({
@@ -1048,12 +1317,18 @@ progressControl = setupProgress({
       if (!input.validity.valid) throw new Error('Invalid input.');
       return input.valueAsNumber;
     };
-    return {
+    const state = {
       version: 1,
       bills: months.map((_, i) => ({ kwh: readNumber(document.getElementById(`bill-kwh-${i}`)), cost: readNumber(document.getElementById(`bill-cost-${i}`)) })),
       plan: Object.fromEntries(Object.keys(defaults).map(key => [key, readNumber(form.elements[key])])),
       exampleFields: [...exampleFields],
     };
+    if (document.querySelector('#save-home-profile').checked) {
+      const home = homeQuestionnaire.read();
+      if (home.invalid.length) throw new Error('Invalid home answers.');
+      state.homeProfile = home.profile;
+    }
+    return state;
   },
   applyState(state) {
     state.bills.forEach((bill, i) => {
@@ -1063,10 +1338,13 @@ progressControl = setupProgress({
     for (const [key, value] of Object.entries(state.plan)) form.elements[key].value = value ?? '';
     exampleFields.clear();
     for (const id of state.exampleFields) exampleFields.add(id);
+    document.querySelector('#save-home-profile').checked = Object.hasOwn(state, 'homeProfile');
+    homeQuestionnaire.restore(state.homeProfile);
     render();
     renderReview();
   },
 });
+document.querySelector('#save-home-profile').addEventListener('change', () => progressControl.refresh());
 
 })();
 </script>

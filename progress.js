@@ -1,3 +1,5 @@
+import { normalizeHomeProfile } from './questionnaire.js';
+
 export const PROGRESS_KEY = 'helio-home:progress:v1';
 const planLimits = {
   monthlyKwh: 100000, rate: 10, efficiency: 50, solarKw: 1000, sunHours: 24,
@@ -24,7 +26,9 @@ export function normalizeProgress(state) {
     const match = typeof id === 'string' && id.match(/^bill-(kwh|cost)-(\d|1[01])$/);
     return match && bills[Number(match[2])][match[1]] !== null;
   }))].sort();
-  return { version: 1, bills, plan, exampleFields };
+  const clean = { version: 1, bills, plan, exampleFields };
+  if (Object.hasOwn(state, 'homeProfile')) clean.homeProfile = normalizeHomeProfile(state.homeProfile);
+  return clean;
 }
 
 export function encodeProgress(state) {
@@ -42,7 +46,7 @@ export function setupProgress({ getState, applyState, storage = () => globalThis
   const status = document.querySelector('#save-progress-status');
   let baseline = null;
   let hasSaved = false;
-  let message = 'Not saved yet. Choose Save progress to keep these numbers on this browser.';
+  let message = 'Not saved yet. Choose Save progress to keep your progress on this browser.';
   const say = text => { if (status.textContent !== text) status.textContent = text; };
 
   function refresh() {
@@ -54,7 +58,7 @@ export function setupProgress({ getState, applyState, storage = () => globalThis
       say(dirty ? 'Unsaved changes — choose Save progress to keep your updates. Your previous saved copy is unchanged.' : message);
     } catch {
       save.disabled = true;
-      say('Correct the invalid bill numbers or solar settings before saving. Blank fields can be saved for later; your previous saved copy is unchanged.');
+      say('Correct invalid bill numbers, solar settings, or any home answers selected for saving. Blank fields can be saved for later; your previous saved copy is unchanged.');
     }
   }
 

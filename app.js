@@ -2,12 +2,14 @@ import { defaults, estimate, compareCosts } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
 import { setupBillImport } from './bill-ui.js';
 import { setupProgress } from './progress.js';
+import { setupHomeQuestionnaire, tailorHomeRecommendation, homeProfileRows, homeSolarCaution } from './questionnaire.js';
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
 let progressControl = null;
+let homeQuestionnaire = null;
 
 function render() {
   progressControl?.refresh();
@@ -190,6 +192,11 @@ function renderComparison() {
     notice.textContent = 'Correct the invalid solar plan inputs to update this comparison. Previous estimates are hidden.';
     return;
   }
+  if (homeQuestionnaire?.read().profile.existingSolar === 'yes') {
+    renderRecommendation();
+    notice.textContent = 'Your questionnaire says this home already has solar. This comparison assumes bills from a home without solar, so estimates are hidden. Ask an assessor to review your generation and grid import/export records before considering changes.';
+    return;
+  }
   const values = Object.fromEntries(Object.keys(defaults).map(key => [key, Number(form.elements[key].value)]));
   const c = compareCosts(currentReview, values);
   if (!c.available) {
@@ -201,6 +208,14 @@ function renderComparison() {
   }
   results.hidden = false;
   renderRecommendation(c);
+  const homeProfile = homeQuestionnaire?.read().profile;
+  const homeCaution = [
+    homeSolarCaution(homeProfile),
+    homeProfile?.utilityPlan === 'time-of-use' ? 'Your electricity price changes by time of day. This single-rate annual comparison does not model that tariff; get a time-based analysis before relying on these savings.' : '',
+    homeProfile?.estimatedBills === 'yes' ? 'Some entered bills may use estimated readings. Confirm actual usage with your utility before relying on this comparison.' : '',
+  ].filter(Boolean).join(' ');
+  set('home-solar-caution', homeCaution);
+  document.querySelector('#home-solar-caution').hidden = !homeCaution;
   set('meaning-bills', `Your ${exampleFields.size ? 'example' : 'entered'} bills add up to ${billMoney.format(c.annualCost)} for the year, or about ${billMoney.format(c.monthlyCost)} a month. You used ${number.format(currentReview.annualKwh)} kWh of electricity over the year.`);
   const saving = c.solar.annualSavings;
   const solarChange = Math.abs(saving) < 0.005 ? 'leave ongoing costs roughly unchanged'
@@ -269,7 +284,7 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   const complete = currentReview !== null;
   document.querySelector('#recommendation-results').hidden = !complete;
   document.querySelector('#recommendation-empty').hidden = complete;
-  currentRecommendation = complete ? recommendEnergy(currentReview, comparison) : null;
+  currentRecommendation = complete ? tailorHomeRecommendation(recommendEnergy(currentReview, comparison), homeQuestionnaire?.read().profile) : null;
   if (!complete) return;
   const r = currentRecommendation;
   set('recommendation-source', exampleFields.size ? 'EXAMPLE DATA · SUGGESTED NEXT STEP' : 'BASED ON YOUR 12 ENTERED MONTHS');
@@ -280,16 +295,24 @@ function renderRecommendation(comparison = null, solarStatus = '') {
   set('recommendation-why', r.why);
   fillList('recommendation-services', r.services);
   set('recommendation-solar-note', solarStatus ? `${solarStatus} ${r.solarNote}` : r.solarNote);
+  fillList('home-recommendation-insights', r.homeInsights);
+  fillList('home-recommendation-followups', r.homeFollowups);
+  document.querySelector('#home-recommendation-context').hidden = !r.homeInsights.length && !r.homeFollowups.length;
 }
 
 const assessmentDialog = document.querySelector('#assessment-dialog');
 const assessmentForm = document.querySelector('#assessment-form');
-document.querySelector('#request-assessment').addEventListener('click', () => {
-  if (!currentRecommendation) return;
-  set('assessment-package', currentRecommendation.packageName);
+let assessmentMode = 'energy';
+function openHomeAssessment(mode) {
+  if (mode === 'energy' && !currentRecommendation) return;
+  assessmentMode = mode;
+  set('assessment-package', mode === 'inspection' ? 'Home Information & Inspection Visit' : currentRecommendation.packageName);
+  document.querySelector('#inspection-request-note').hidden = mode !== 'inspection';
   set('assessment-status', '');
   assessmentDialog.showModal();
-});
+}
+document.querySelector('#request-assessment').addEventListener('click', () => openHomeAssessment('energy'));
+document.querySelector('#request-inspection').addEventListener('click', () => openHomeAssessment('inspection'));
 document.querySelector('#assessment-close').addEventListener('click', () => assessmentDialog.close());
 assessmentDialog.addEventListener('close', () => {
   assessmentForm.reset();
@@ -297,22 +320,34 @@ assessmentDialog.addEventListener('close', () => {
 });
 assessmentForm.addEventListener('submit', event => {
   event.preventDefault();
-  if (!assessmentForm.reportValidity() || !currentRecommendation || !currentReview) return;
-  const r = currentRecommendation;
+  if (!assessmentForm.reportValidity() || (assessmentMode === 'energy' && (!currentRecommendation || !currentReview))) return;
+  const r = currentRecommendation || {
+    title: 'Gather the home information needed for an energy review',
+    opportunity: 'The homeowner would like someone to inspect the home and help identify equipment, insulation, roof conditions, and the information needed for planning.',
+    evidence: 'The bill review is incomplete. No complete-year savings conclusion is included.',
+    why: 'Unknown answers are a reason to request an assessment, not to guess.',
+    services: ['Confirm household energy equipment and controls', 'Review insulation, drafts, and major electric loads', 'Arrange qualified roof and electrical suitability checks where needed'],
+    homeInsights: [], homeFollowups: ['Confirm missing questionnaire details and representative bill data during the visit.'],
+  };
   const fields = new FormData(assessmentForm);
   const contact = name => String(fields.get(name) || '').trim();
-  const billLines = months.map((month, i) => `${month}: ${document.getElementById(`bill-kwh-${i}`).value} kWh; $${document.getElementById(`bill-cost-${i}`).value}`);
+  const billLines = months.map((month, i) => `${month}: usage ${document.getElementById(`bill-kwh-${i}`).value || 'not supplied'} kWh; cost ${document.getElementById(`bill-cost-${i}`).value ? '$' + document.getElementById(`bill-cost-${i}`).value : 'not supplied'}`);
   const comparisonVisible = !document.querySelector('#comparison-results').hidden;
   const text = [
     'HELIO HOME — HOME ASSESSMENT REQUEST DRAFT',
     'Prepared locally. Nothing has been sent and no appointment has been booked.',
     exampleFields.size ? 'CONTAINS EXAMPLE BILL DATA — replace before requesting a real assessment.' : 'Based on homeowner-entered bill data; not independently verified.',
     '', `Name: ${contact('name')}`, `Email: ${contact('email')}`, `ZIP / postal code: ${contact('postal') || 'Not supplied'}`,
-    '', `Suggested package: ${r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
+    '', `Request type: ${assessmentMode === 'inspection' ? 'Please contact me to arrange an in-home information and inspection visit.' : 'Home energy assessment.'}`,
+    `Suggested package: ${assessmentMode === 'inspection' ? 'Home Information & Inspection Visit' : r.packageName}`, `Main opportunity: ${r.title}`, r.opportunity, r.evidence, r.why,
     '', 'Services to discuss:', ...r.services.map(service => `- ${service}`),
-    '', `Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`,
+    '', ...(currentReview ? [`Annual use: ${number.format(currentReview.annualKwh)} kWh`, `Annual bill costs: ${billMoney.format(currentReview.annualCost)}`] : ['Annual bill totals are unavailable because the 12-month review is incomplete.']),
     '', 'Entered monthly bills:', ...billLines,
-    '', 'Solar assessment note:', document.querySelector('#recommendation-solar-note').textContent,
+    '', 'HOME ENERGY QUESTIONNAIRE (self-reported, not independently verified):',
+    ...(homeProfileRows(homeQuestionnaire?.read().profile).length ? homeProfileRows(homeQuestionnaire.read().profile).map(([label, answer]) => `${label}: ${answer}`) : ['No home answers supplied yet. The homeowner is requesting help gathering this information.']),
+    ...(homeQuestionnaire?.read().invalid.length ? ['Some questionnaire numbers were invalid and excluded. Confirm these during the assessment.'] : []),
+    '', 'Home-specific assessment notes:', ...r.homeInsights, ...r.homeFollowups,
+    '', 'Solar assessment note:', currentRecommendation ? document.querySelector('#recommendation-solar-note').textContent : 'Solar suitability and savings have not been established. Confirm representative consumption and on-site conditions.',
     '', 'Solar cost comparison:', comparisonVisible
       ? `Current: ${document.querySelector('#compare-current-annual').textContent}/year; solar only: ${document.querySelector('#compare-solar-annual').textContent}/year; solar + upgrades: ${document.querySelector('#compare-combined-annual').textContent}/year.\n${document.querySelector('#comparison-assumptions').innerText}`
       : document.querySelector('#comparison-notice').textContent,
@@ -344,6 +379,7 @@ setupBillImport((month, kwh, cost) => {
   exampleFields.delete(`bill-cost-${month}`);
   renderReview();
 });
+homeQuestionnaire = setupHomeQuestionnaire(() => renderReview());
 reset();
 renderReview();
 progressControl = setupProgress({
@@ -353,12 +389,18 @@ progressControl = setupProgress({
       if (!input.validity.valid) throw new Error('Invalid input.');
       return input.valueAsNumber;
     };
-    return {
+    const state = {
       version: 1,
       bills: months.map((_, i) => ({ kwh: readNumber(document.getElementById(`bill-kwh-${i}`)), cost: readNumber(document.getElementById(`bill-cost-${i}`)) })),
       plan: Object.fromEntries(Object.keys(defaults).map(key => [key, readNumber(form.elements[key])])),
       exampleFields: [...exampleFields],
     };
+    if (document.querySelector('#save-home-profile').checked) {
+      const home = homeQuestionnaire.read();
+      if (home.invalid.length) throw new Error('Invalid home answers.');
+      state.homeProfile = home.profile;
+    }
+    return state;
   },
   applyState(state) {
     state.bills.forEach((bill, i) => {
@@ -368,7 +410,10 @@ progressControl = setupProgress({
     for (const [key, value] of Object.entries(state.plan)) form.elements[key].value = value ?? '';
     exampleFields.clear();
     for (const id of state.exampleFields) exampleFields.add(id);
+    document.querySelector('#save-home-profile').checked = Object.hasOwn(state, 'homeProfile');
+    homeQuestionnaire.restore(state.homeProfile);
     render();
     renderReview();
   },
 });
+document.querySelector('#save-home-profile').addEventListener('change', () => progressControl.refresh());

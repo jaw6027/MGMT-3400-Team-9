@@ -18,12 +18,13 @@
         <li><span aria-hidden="true">2</span><div><a href="#cost-comparison">Compare your options</a><p>See what you pay now and what solar might change. Starting solar settings are examples until you confirm them.</p></div></li>
         <li><span aria-hidden="true">3</span><div><a href="#personalized-recommendation">Choose your next step</a><p>Read your recommendation and prepare a home assessment request to share with a provider.</p></div></li>
       </ol>
-      <p class="guide-practice">Just exploring? <a href="#review-example">Try the clearly labeled example bills</a> before using your own numbers.</p>
+      <p class="guide-practice">Just exploring? <a href="#review-example">Try the clearly labeled example bills</a> before using your own numbers. <a href="#home-questionnaire">Add home details</a> for more specific recommendations.</p>
     </section>
     <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
-      <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
+      <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#home-questionnaire" class="skip-link">Add home details &rarr;</a></div>
       <div class="save-progress-panel" aria-labelledby="save-progress-title">
-        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes.</p></div>
+        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes. Questionnaire answers are included only if you select the option below.</p></div>
+        <label class="save-profile-consent"><input id="save-home-profile" type="checkbox"> Also save my home questionnaire answers on this browser</label>
         <div class="progress-actions"><button type="button" id="save-progress">Save progress</button><button type="button" id="delete-progress" disabled>Delete saved progress</button></div>
         <p id="save-progress-status" role="status" class="progress-status"></p>
         <p class="hint">No bill photos, full bill text, names, email addresses, postal codes, or notes are saved. Anyone using this browser can restore the saved numbers. They do not sync across devices. Private browsing and some previews may block saving.</p>
@@ -53,6 +54,15 @@
           </div>
         </div>
       </div>
+    </section>
+    <section class="home-questionnaire card" id="home-questionnaire" aria-labelledby="home-questionnaire-title">
+      <div class="review-heading"><div><p class="eyebrow">FILL IN THE PICTURE</p><h2 id="home-questionnaire-title">Tell us about your home</h2><p class="review-description">Bills show how much electricity you use. These details help us suggest what to check first and prepare a more useful assessment request.</p></div><button type="button" id="clear-home-questionnaire" class="text-button">Clear questionnaire</button></div>
+      <p class="hint">Answer what you know. Every question is optional, and Not sure is welcome. Leave unknown numbers blank. A professional must still verify equipment, wiring, roof condition, local sunlight, and utility rules. These answers do not automatically change the calculator's savings assumptions.</p>
+      <div class="inspection-help"><div><h3>Not sure? Let someone inspect your home.</h3><p>You do not need all the answers—or 12 bills—to ask for a visit. A qualified provider can help identify your equipment, check conditions, and explain what information is still needed.</p><p class="inspection-phone" id="inspection-phone">Phone: <strong>661-111-111</strong> <span>Demo number only · calling is not available</span></p></div><div><button type="button" id="request-inspection" class="primary-button">Request an inspection visit &rarr;</button><p class="hint">Prepares a request file for you to share. No request is sent and no appointment is booked. A real business phone number is needed to enable calls.</p></div></div>
+      <p id="home-questionnaire-status" role="status" class="home-questionnaire-status"></p>
+      <form id="home-questionnaire-form" novalidate><div id="home-questionnaire-groups"></div></form>
+      <div id="home-profile-summary-panel" class="home-profile-summary" hidden><h3>Your home details for the assessment</h3><dl id="home-questionnaire-summary"></dl><p class="hint">Self-reported answers; not independently verified. Names, exact addresses, account numbers, and bill text are not collected here.</p></div>
+      <p class="hint">Your answers stay in this visit unless you select “Also save my home questionnaire answers” beside Save progress. They are included in a report or assessment request only when you choose to print or download it.</p>
     </section>
     <div class="workspace" id="solar-plan">
       <section class="inputs card" aria-labelledby="plan-title">
@@ -97,7 +107,7 @@
       <div class="review-heading"><div><p class="eyebrow">FROM YOUR BILLS TO YOUR POSSIBILITIES</p><h2 id="comparison-title">Current costs vs. solar</h2><p class="review-description">Compare your entered electricity bills with estimated ongoing costs using the solar plan assumptions above.</p></div><a href="#solar-plan" class="skip-link">Edit solar assumptions &uarr;</a></div>
       <p id="comparison-notice" class="comparison-notice" role="status"></p>
       <div id="comparison-results" hidden>
-        <p id="comparison-source" class="eyebrow comparison-source"></p>
+        <p id="comparison-source" class="eyebrow comparison-source"></p><p id="home-solar-caution" class="home-solar-caution" hidden></p>
         <section class="customer-meaning" aria-labelledby="customer-meaning-title">
           <h3 id="customer-meaning-title">What this means for your home</h3>
           <p id="meaning-bills"></p><p id="meaning-solar"></p><p id="meaning-efficiency"></p>
@@ -124,24 +134,25 @@
           <div class="recommendation-opportunity"><span class="recommendation-label">MAIN OPPORTUNITY</span><h3 id="recommendation-title"></h3><p id="recommendation-opportunity"></p><p id="recommendation-evidence" class="recommendation-evidence"></p></div>
           <div class="recommended-package"><span class="recommendation-label">SUGGESTED SERVICE PACKAGE</span><h3 id="recommendation-package"></h3><p id="recommendation-why"></p><ul id="recommendation-services"></ul><p class="hint">Suggested scope for an assessment; availability and pricing must be confirmed with a provider.</p></div>
         </div>
+        <div id="home-recommendation-context" class="home-recommendation-context" hidden><h3>From your home questionnaire</h3><ul id="home-recommendation-insights"></ul><h3>Still to confirm</h3><ul id="home-recommendation-followups"></ul></div>
         <p id="recommendation-solar-note" class="recommendation-solar-note"></p>
         <p class="hint">Monthly bills show patterns, not individual appliance loads or confirmed causes. These suggestions are not an equipment diagnosis or a savings guarantee.</p>
         <div class="assessment-cta"><div><h3>Ready to explore your options?</h3><p>Prepare a request with your energy review and suggested package to share with a home energy professional.</p></div><button type="button" id="request-assessment" class="primary-button">Request a Home Assessment &rarr;</button></div>
         <p class="hint assessment-demo-note">Demo: creates a downloadable request file. No request is sent and no appointment is booked.</p>
       </div>
     </section>
-    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps only bill numbers, solar settings, and example-data labels on this browser; photos and contact details are excluded.</p></section>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps bill numbers, solar settings, example-data labels, and separately opted-in home questionnaire answers on this browser; photos and contact details are excluded.</p></section>
   </main>
   <dialog id="help-dialog" aria-labelledby="help-heading" aria-describedby="help-intro">
     <div class="section-heading"><div><p class="eyebrow">WE'RE HERE TO HELP YOU GET STARTED</p><h2 id="help-heading">How can we help?</h2></div><button type="button" id="close-help" aria-label="Close help">Close</button></div>
     <p id="help-intro">Find quick answers about your energy review and solar estimates.</p>
-    <div class="help-contact-options"><div><h3>Call our team</h3><span class="help-status">Coming soon</span><p>A business phone number has not been added yet.</p></div><div><h3>Live chat</h3><span class="help-status">Coming soon</span><p>Live chat is not connected yet. No agent is currently available through this app.</p></div></div>
+    <div class="help-contact-options"><div><h3>Call our team</h3><span class="help-status">Demo only</span><p><strong>661-111-111</strong> is a placeholder, not an active phone line. A real business number is needed before customers can call to arrange an inspection.</p></div><div><h3>Live chat</h3><span class="help-status">Coming soon</span><p>Live chat is not connected yet. No agent is currently available through this app.</p></div></div>
     <h3 class="help-faq-heading">Quick answers</h3>
     <details><summary>How do I review my electricity bills?</summary><p>Enter January–December usage in kWh and bill costs in USD. All 12 months are needed for your energy review. Zero is allowed. Use bills from the same calendar year.</p></details>
     <details><summary>Can I use a photo of my bill?</summary><p>Choose a PNG, JPG, or WebP bill photo in Homeowner Energy Review. The full app reads it locally in your browser. Review and correct all three fields before adding them. Unreadable values are flagged, and existing months require replacement confirmation.</p></details>
     <details><summary>Are the solar savings guaranteed?</summary><p>No. Results depend on the rates, solar output, fees, and other assumptions shown in Current costs vs. solar. Confirm these with your utility and installer before investing.</p></details>
-    <details><summary>How do I request a home assessment?</summary><p>Complete your bill review and use Request a Home Assessment in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
-    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves only monthly numbers, solar settings, and example-data labels on this browser. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
+    <details><summary>How do I request a home assessment?</summary><p>Use Request an inspection visit in the home questionnaire even if you do not know the answers or have all your bills. After a complete bill review, Request a Home Assessment also appears in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
+    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves monthly numbers, solar settings, and example-data labels on this browser. Home questionnaire answers are included only if you select the separate save option. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
     <a id="help-review-link" href="#homeowner-review" class="help-review-link">Go to Homeowner Energy Review &rarr;</a>
     <p class="hint">These are general answers about using the app. This panel is not a live or AI chat service.</p>
   </dialog>
@@ -163,6 +174,7 @@
   <dialog id="assessment-dialog" aria-labelledby="assessment-heading" aria-describedby="assessment-explanation">
     <div class="section-heading"><div><p class="eyebrow">TAKE THE NEXT STEP</p><h2 id="assessment-heading">Request a Home Assessment</h2></div><button type="button" id="assessment-close" aria-label="Close assessment request">Close</button></div>
     <p id="assessment-explanation">Prepare a downloadable request to share with your chosen provider. This demo does not send requests or book appointments.</p>
+    <p id="inspection-request-note" class="hint" hidden>You are asking for a visit to help gather missing home information. You can prepare this request without completing the questionnaire or bill review. Share the downloaded file with your chosen provider to arrange a visit.</p>
     <p class="assessment-selected">Suggested package: <strong id="assessment-package"></strong></p>
     <form id="assessment-form">
       <label>Your name <input name="name" type="text" autocomplete="name" maxlength="100" required></label>
