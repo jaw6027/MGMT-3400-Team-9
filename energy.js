@@ -58,3 +58,22 @@ export function compareCosts(review, input = {}) {
   return { available: true, annualCost: review.annualCost, monthlyCost: review.annualCost / 12,
     retainedCharges, assumptions, solar: result(solar), combined: result(combined) };
 }
+
+// Educational examples are independent of the homeowner's saved inputs.
+export function solarExampleHomes() {
+  const assumptions = { rate: 0.18, sunHours: 4.5, performance: 80, selfUse: 100,
+    exportRate: 0, efficiency: 0, annualCost: 0, monthlyFee: 0 };
+  const homes = [
+    { id: 'low', label: 'Low-use example', monthlyKwh: 400, solarKw: 2,
+      option: 'Compare a small solar system with efficiency improvements alone. Installation costs may outweigh the benefit for a low-use home.' },
+    { id: 'medium', label: 'Medium-use example', monthlyKwh: 900, solarKw: 5,
+      option: 'Explore rooftop solar and scheduling flexible appliances during sunny hours. Confirm actual use during daylight.' },
+    { id: 'high', label: 'High-use example', monthlyKwh: 1600, solarKw: 8,
+      option: 'Review major loads and efficiency first, then size solar for the remaining demand. Roof area and installation costs still matter.' },
+  ].map(home => {
+    const result = estimate({ ...assumptions, monthlyKwh: home.monthlyKwh, solarKw: home.solarKw });
+    return { ...home, monthlyGeneration: result.production / 12, before: result.baseline / 12,
+      after: result.annualAfter / 12, difference: result.annualSavings / 12 };
+  });
+  return { assumptions, homes };
+}

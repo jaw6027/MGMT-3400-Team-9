@@ -1,4 +1,4 @@
-import { defaults, estimate, compareCosts } from './energy.js';
+import { defaults, estimate, compareCosts, solarExampleHomes } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
 import { setupBillImport } from './bill-ui.js';
 import { setupProgress } from './progress.js';
@@ -432,3 +432,31 @@ progressControl = setupProgress({
   },
 });
 document.querySelector('#save-home-profile').addEventListener('change', () => progressControl.refresh());
+
+const exampleHomes = document.querySelector('#solar-example-cards');
+for (const home of solarExampleHomes().homes) {
+  const card = document.createElement('article');
+  card.className = 'solar-example-card';
+  card.dataset.example = home.id;
+  const title = document.createElement('h4');
+  title.textContent = home.label;
+  const usage = document.createElement('p');
+  usage.className = 'example-usage';
+  usage.textContent = `${number.format(home.monthlyKwh)} kWh/month · ${home.solarKw} kW example system`;
+  const costs = document.createElement('dl');
+  for (const [label, value] of [['Before solar / month', home.before], ['With solar / month', home.after], ['Difference / month', home.difference]]) {
+    const pair = document.createElement('div');
+    const dt = document.createElement('dt'); const dd = document.createElement('dd');
+    dt.textContent = label; dd.textContent = money.format(value); pair.append(dt, dd); costs.append(pair);
+  }
+  const generation = document.createElement('p');
+  generation.className = 'hint';
+  generation.textContent = `Average solar generation: ${number.format(home.monthlyGeneration)} kWh/month.`;
+  const description = document.createElement('p');
+  description.textContent = home.option;
+  card.append(title, usage, costs, generation, description);
+  exampleHomes.append(card);
+}
+document.querySelector('#show-solar-examples').addEventListener('click', () => {
+  document.querySelector('#solar-example-homes').open = true;
+});
