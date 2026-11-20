@@ -200,3 +200,11 @@ supports 1,000 records and validates imported dates, stages, ratings and unique 
 unknown fields are discarded. Run `npm run test:tracker` for the browser workflow,
 and `npm test` for date validation, backup validation and metric calculations.
 `npm run build` regenerates both standalone HTML pages from source.
+
+The vendor performance page starts with a four-column per-vendor summary: vendor,
+referrals received, customers contacted and projects completed. A contacted count
+means a first contact date exists, regardless of later closure or installation.
+A completed project is an Installed record with an installation date. Use one
+record per homeowner/project/vendor and edit it as it progresses; the anonymous
+tracker cannot independently deduplicate homeowners. Additional rates, ratings
+and follow-up metrics remain in a collapsed “More performance details” panel.

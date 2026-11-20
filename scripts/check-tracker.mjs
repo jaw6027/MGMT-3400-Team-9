@@ -28,11 +28,16 @@ try {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
   await page.goto(origin + 'vendor-tracker.html');
   await page.evaluate(() => localStorage.setItem('helio-home:progress:v1', 'unrelated'));
+  assert.equal(await page.locator('h1').textContent(), 'Vendor performance');
+  assert.equal(await page.locator('#tracker-empty').isVisible(), true);
+  assert.equal(await page.locator('#tracker-more-metrics').getAttribute('open'), null);
+  const totals = () => page.locator('#tracker-vendor-totals tr').evaluateAll(rows => rows.map(row => [...row.cells].map(cell => cell.textContent)));
   const today = await page.locator('[name=referred]').inputValue();
   await page.locator('[name=vendor]').fill('Synthetic <provider>');
   await page.locator('[name=followup]').fill(today);
   await page.locator('#tracker-form [type=submit]').click();
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
+  assert.deepEqual(await totals(), [['Synthetic <provider>', '1', '0', '0']]);
   assert.equal(await page.locator('#tracker-performance td').first().textContent(), 'Synthetic <provider>');
   assert.equal(await page.locator('#tracker-performance td').last().textContent(), '1');
   assert.equal(await page.evaluate(() => localStorage.getItem('helio-home:referral-tracker:v1')), null);
@@ -47,6 +52,7 @@ try {
   assert.match(await page.locator('#tracker-performance').textContent(), /100.0%/);
   assert.match(await page.locator('#tracker-performance').textContent(), /4.0.5 \(1 ratings\)/);
   assert.equal(await page.locator('#tracker-performance td').last().textContent(), '0');
+  assert.deepEqual(await totals(), [['Synthetic <provider>', '1', '1', '1']]);
   await page.locator('#tracker-save').click();
   const backup = await page.evaluate(() => localStorage.getItem('helio-home:referral-tracker:v1'));
   assert.equal(JSON.parse(backup).records.length, 1);
@@ -67,6 +73,18 @@ try {
   assert.equal(await page.evaluate(() => localStorage.getItem('helio-home:referral-tracker:v1')), null);
   assert.equal(await page.evaluate(() => localStorage.getItem('helio-home:progress:v1')), 'unrelated');
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
+  // Mixed stages and vendors must count contacts across later stages, too.
+  const installed = JSON.parse(backup).records[0];
+  const records = [
+    { ...installed, id: 'summary-1', vendor: 'Vendor A' },
+    { ...installed, id: 'summary-2', vendor: 'vendor a', stage: 'closed', installed: '' },
+    { ...installed, id: 'summary-3', vendor: 'Vendor A', stage: 'referred', contacted: '', installed: '' },
+    { ...installed, id: 'summary-4', vendor: 'Vendor B', stage: 'contacted', installed: '' },
+  ];
+  await page.locator('#tracker-file').setInputFiles({ name: 'summary.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ version: 1, records })) });
+  await page.waitForFunction(() => document.querySelectorAll('#tracker-vendor-totals tr').length === 2);
+  assert.deepEqual(await totals(), [['Vendor A', '3', '2', '1'], ['Vendor B', '1', '1', '0']]);
+  assert.equal(await page.locator('#tracker-empty').isVisible(), false);
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.deepEqual(errors, []);

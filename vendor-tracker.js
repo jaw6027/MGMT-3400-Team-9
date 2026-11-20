@@ -16,7 +16,14 @@ function trackerResetForm() {
 function trackerCell(value) { const cell = document.createElement('td'); cell.textContent = value; return cell; }
 function trackerRender() {
   document.querySelector('#tracker-count').textContent = `${trackerRecords.length} referrals`;
-  document.querySelector('#tracker-performance').replaceChildren(...referralPerformance(trackerRecords).map(row => {
+  const performance = referralPerformance(trackerRecords);
+  document.querySelector('#tracker-empty').hidden = trackerRecords.length > 0;
+  document.querySelector('#tracker-vendor-totals').replaceChildren(...performance.map(row => {
+    const tr = document.createElement('tr');
+    tr.append(...[row.vendor, row.referrals, row.contacts, row.installed].map(trackerCell));
+    return tr;
+  }));
+  document.querySelector('#tracker-performance').replaceChildren(...performance.map(row => {
     const tr = document.createElement('tr');
     const values = [row.vendor, row.referrals, row.open, row.installed, row.closed, `${row.installationRate.toFixed(1)}%`, row.contacts ? `${row.averageContactDays.toFixed(1)} (${row.contacts} contacted)` : 'No contact dates', row.ratings ? `${row.averageRating.toFixed(1)}/5 (${row.ratings} ratings)` : 'No ratings', row.due];
     tr.append(...values.map(trackerCell)); return tr;
