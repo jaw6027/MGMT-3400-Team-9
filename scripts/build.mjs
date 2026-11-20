@@ -29,3 +29,9 @@ const assets = [
 await Promise.all(assets.map(([source, target]) => copyFile(new URL(`../node_modules/${source}`, import.meta.url), new URL(target, vendor))));
 await writeFile(new URL('LANGUAGE-NOTICE.txt', vendor), 'English trained data: @tesseract.js-data/eng 1.0.0 (MIT), https://github.com/naptha/tessdata. Installed using npm package integrity verification.\n');
 console.log('Built standalone calculator and local, on-demand OCR assets.');
+
+const trackerTemplate = await read('./vendor-tracker.template.html');
+const trackerSources = await Promise.all([read('../referral-tracking.js'), read('../vendor-tracker.js')]);
+const trackerScript = trackerSources.map(source => source.replace(/^export /gm, '').replace(/^import .* from '\.\/[\w-]+\.js';\n/gm, '')).join('\n');
+await writeFile(new URL('../vendor-tracker.html', import.meta.url), trackerTemplate.replace('<script type="module" src="vendor-tracker.js"></script>', () => `<script>\n(() => {\n${trackerScript}\n})();\n</script>`));
+console.log('Built standalone team referral tracker.');

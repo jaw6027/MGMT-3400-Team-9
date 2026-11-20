@@ -163,3 +163,40 @@ Provider cards state that a written quote is needed; there is no invented
 quality or affordability ranking. A collapsed price guide explains how to compare
 2–3 equivalent quotes, full installed costs, financing totals, warranties and
 remaining utility charges, with a link to California's CSLB license lookup.
+
+### Team vendor performance tracker
+
+Open `vendor-tracker.html` for the separate internal class-project tracker. It is
+not linked from the customer journey and has no sign-in or shared database. Do not
+use it as a secure production CRM. Add business names and anonymous referrals only;
+there are no fields for homeowner contact details, bills, addresses or freeform notes.
+Clicking a provider link on the customer website does not create a referral.
+
+1. Add a vendor business name, referral date and stage. A random referral ID is
+   generated. Use a consistent business name (case differences are grouped).
+2. Edit that referral as it reaches first contact, a scheduled consultation,
+   installation or closure without installation. Contacted/scheduled/installed
+   stages require a first contact date; installed requires an installation date.
+   These are manually reported facts, not confirmations from the vendor.
+3. Set a next follow-up date and optionally record a customer-supplied 1–5 rating.
+   Open follow-ups on or before today appear in the vendor's due count. Dates use
+   the browser's local calendar day.
+4. Review vendor totals, open/installed/closed counts, installation rate, average
+   days to first contact, rating averages with sample counts, and follow-ups due.
+   Installation rate divides installed by all referrals, including open ones.
+   Contact averages exclude missing dates and ratings exclude missing scores.
+   Differences in job type, referral age and sample size preclude a quality ranking.
+5. Choose **Save on this device** explicitly; edits are not saved automatically.
+   **Load device copy** restores that browser's snapshot. **Download backup** and
+   **Import backup** transfer a versioned JSON snapshot. Import/load replaces the
+   tab's records after confirmation when records exist; it does not merge concurrent
+   work or save automatically. Coordinate one group copy to avoid lost updates.
+   **Delete device copy** removes only this tracker's saved key and retains tab data.
+
+Records never go to GitHub or a server through the tracker. Browser storage and
+backup files are not encrypted by the app. Production team use would require
+access control, a shared database, consent handling and an audit trail. This prototype
+supports 1,000 records and validates imported dates, stages, ratings and unique IDs;
+unknown fields are discarded. Run `npm run test:tracker` for the browser workflow,
+and `npm test` for date validation, backup validation and metric calculations.
+`npm run build` regenerates both standalone HTML pages from source.
