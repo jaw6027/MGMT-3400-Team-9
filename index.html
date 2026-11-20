@@ -38,6 +38,11 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
 @media(max-width:900px){.topbar .badge{display:none}}@media(max-width:600px){.topbar{min-height:75px;height:auto;padding-top:14px;padding-bottom:14px;gap:10px;flex-wrap:wrap}.topbar .brand{font-size:23px}.topbar .brand-icon{font-size:30px;margin-right:3px}.header-actions button{font-size:11px;padding:8px 10px}.header-actions button span{margin-left:4px}.help-contact-options{grid-template-columns:1fr;gap:10px}#help-dialog{padding:22px}}
 @media print{.header-actions,#help-dialog{display:none!important}}
 
+/* Optional, local numeric progress. */
+.save-progress-panel{background:#eef3e6;border:1px solid #dbe4d1;border-radius:9px;margin-top:22px;padding:20px}.save-progress-panel h3{font-size:16px;margin:0 0 8px}.save-progress-panel p{font-size:12px;line-height:1.8;color:#53665a}.progress-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}.progress-actions button{background:white}.progress-actions #save-progress{background:var(--ink);border-color:var(--ink);color:white}.progress-actions button:disabled,.progress-actions #save-progress:disabled{background:#e3e9dc;color:#718069;border-color:#d9e0d0;cursor:not-allowed}.save-progress-panel .progress-status{margin-top:14px;font-weight:600;font-size:12px}.save-progress-panel .hint{font-size:10px;margin-top:9px}
+@media(max-width:600px){.save-progress-panel{padding:16px}.progress-actions{gap:8px}.progress-actions button{padding:9px 11px;font-size:11px}}
+@media print{.save-progress-panel{display:none!important}}
+
 </style>
 </head>
 <body>
@@ -46,9 +51,15 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
     <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
     <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
       <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
+      <div class="save-progress-panel" aria-labelledby="save-progress-title">
+        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes.</p></div>
+        <div class="progress-actions"><button type="button" id="save-progress">Save progress</button><button type="button" id="delete-progress" disabled>Delete saved progress</button></div>
+        <p id="save-progress-status" role="status" class="progress-status"></p>
+        <p class="hint">No bill photos, full bill text, names, email addresses, postal codes, or notes are saved. Anyone using this browser can restore the saved numbers. They do not sync across devices. Private browsing and some previews may block saving.</p>
+      </div>
       <div class="review-layout">
         <div class="review-entry">
-          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Your entries stay in this page only and are cleared when it reloads.</p>
+          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Entries are kept only for this visit unless you choose Save progress above.</p>
           <div class="bill-upload">
             <p class="eyebrow">LESS TYPING, MORE CLARITY</p><h3>Add a month from a bill photo</h3><p>Choose a clear, upright screenshot or photo of an English-language electricity bill. Review and correct the month, kWh, and bill total before adding them.</p>
             <input id="bill-image" hidden type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose electricity bill photo" tabindex="-1">
@@ -141,7 +152,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
         <p class="hint assessment-demo-note">Demo: creates a downloadable request file. No request is sent and no appointment is booked.</p>
       </div>
     </section>
-    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps only bill numbers, solar settings, and example-data labels on this browser; photos and contact details are excluded.</p></section>
   </main>
   <dialog id="help-dialog" aria-labelledby="help-heading" aria-describedby="help-intro">
     <div class="section-heading"><div><p class="eyebrow">WE'RE HERE TO HELP YOU GET STARTED</p><h2 id="help-heading">How can we help?</h2></div><button type="button" id="close-help" aria-label="Close help">Close</button></div>
@@ -152,7 +163,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
     <details><summary>Can I use a photo of my bill?</summary><p>Choose a PNG, JPG, or WebP bill photo in Homeowner Energy Review. The full app reads it locally in your browser. Review and correct all three fields before adding them. Unreadable values are flagged, and existing months require replacement confirmation.</p></details>
     <details><summary>Are the solar savings guaranteed?</summary><p>No. Results depend on the rates, solar output, fees, and other assumptions shown in Current costs vs. solar. Confirm these with your utility and installer before investing.</p></details>
     <details><summary>How do I request a home assessment?</summary><p>Complete your bill review and use Request a Home Assessment in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
-    <details><summary>Is my information saved?</summary><p>Monthly entries stay in this page until you reload. Bill photos and full recognized text are not saved or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
+    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves only monthly numbers, solar settings, and example-data labels on this browser. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
     <a id="help-review-link" href="#homeowner-review" class="help-review-link">Go to Homeowner Energy Review &rarr;</a>
     <p class="hint">These are general answers about using the app. This panel is not a live or AI chat service.</p>
   </dialog>
@@ -180,7 +191,7 @@ html{scroll-behavior:smooth;scroll-padding-top:20px}
       <label>Email <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
       <label>ZIP / postal code (optional) <input name="postal" type="text" autocomplete="postal-code" maxlength="20"></label>
       <label>What would you like help with? (optional) <textarea name="notes" rows="3" maxlength="1500" placeholder="e.g. High summer bills or questions about rooftop solar"></textarea></label>
-      <p class="hint">Your contact details and energy review will be included in the file. Nothing is stored by this app or sent to a provider. Closing this form clears your contact details.</p>
+      <p class="hint">Your contact details and energy review will be included in the file. Contact details and notes are not saved by this app or sent to a provider. Closing this form clears them. Save progress excludes this form.</p>
       <button type="submit" class="primary-button">Download assessment request</button>
       <p id="assessment-status" role="status" class="hint"></p>
     </form>
@@ -567,13 +578,114 @@ function setupBillImport(onApply) {
   });
 }
 
+const PROGRESS_KEY = 'helio-home:progress:v1';
+const planLimits = {
+  monthlyKwh: 100000, rate: 10, efficiency: 50, solarKw: 1000, sunHours: 24,
+  performance: 100, selfUse: 100, exportRate: 10, solarCost: 10000000,
+  upgradeCost: 10000000, incentive: 10000000, annualCost: 1000000, monthlyFee: 100000,
+};
+
+// Construct a strict whitelist. Never serialize form contents or OCR results wholesale.
+function normalizeProgress(state) {
+  if (!state || state.version !== 1 || !Array.isArray(state.bills) || state.bills.length !== 12 ||
+      !state.plan || !Array.isArray(state.exampleFields)) throw new Error('Unsupported saved progress.');
+  const numeric = (value, max) => {
+    if (value === null) return null;
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > max) throw new Error('Invalid saved number.');
+    return value;
+  };
+  const bills = state.bills.map(bill => {
+    if (!bill || typeof bill !== 'object') throw new Error('Invalid saved month.');
+    return { kwh: numeric(bill.kwh, 100000), cost: numeric(bill.cost, 10000000) };
+  });
+  const plan = Object.fromEntries(Object.entries(planLimits).map(([key, max]) => [key, numeric(state.plan[key], max)]));
+  if (plan.efficiency === null) throw new Error('The efficiency slider must have a value.');
+  const exampleFields = [...new Set(state.exampleFields.filter(id => {
+    const match = typeof id === 'string' && id.match(/^bill-(kwh|cost)-(\d|1[01])$/);
+    return match && bills[Number(match[2])][match[1]] !== null;
+  }))].sort();
+  return { version: 1, bills, plan, exampleFields };
+}
+
+function encodeProgress(state) {
+  return JSON.stringify(normalizeProgress(state));
+}
+
+function decodeProgress(text) {
+  if (typeof text !== 'string' || text.length > 8192) throw new Error('Invalid saved progress.');
+  return normalizeProgress(JSON.parse(text));
+}
+
+function setupProgress({ getState, applyState, storage = () => globalThis.localStorage }) {
+  const save = document.querySelector('#save-progress');
+  const remove = document.querySelector('#delete-progress');
+  const status = document.querySelector('#save-progress-status');
+  let baseline = null;
+  let hasSaved = false;
+  let message = 'Not saved yet. Choose Save progress to keep these numbers on this browser.';
+  const say = text => { if (status.textContent !== text) status.textContent = text; };
+
+  function refresh() {
+    remove.disabled = !hasSaved;
+    try {
+      const current = encodeProgress(getState());
+      save.disabled = false;
+      const dirty = baseline !== null && current !== baseline;
+      say(dirty ? 'Unsaved changes — choose Save progress to keep your updates. Your previous saved copy is unchanged.' : message);
+    } catch {
+      save.disabled = true;
+      say('Correct the invalid bill numbers or solar settings before saving. Blank fields can be saved for later; your previous saved copy is unchanged.');
+    }
+  }
+
+  try {
+    const raw = storage().getItem(PROGRESS_KEY);
+    hasSaved = raw !== null;
+    if (hasSaved) {
+      const state = decodeProgress(raw);
+      applyState(state);
+      baseline = encodeProgress(state);
+      message = 'Saved progress restored on this browser. Choose Save progress again after making changes.';
+    }
+  } catch {
+    message = 'Saved progress could not be loaded, or browser storage is unavailable. You can still use the app. No saved data was overwritten.';
+  }
+  save.addEventListener('click', () => {
+    try {
+      const encoded = encodeProgress(getState());
+      storage().setItem(PROGRESS_KEY, encoded);
+      baseline = encoded;
+      hasSaved = true;
+      message = 'Progress saved on this browser. Choose Save progress again after changes. Photos and personal contact details were not saved.';
+      refresh();
+    } catch {
+      say('Progress could not be saved. Browser storage may be blocked or full. Your entries are still on screen; do not close the page until you have kept the numbers another way.');
+    }
+  });
+  remove.addEventListener('click', () => {
+    try {
+      storage().removeItem(PROGRESS_KEY);
+      hasSaved = false;
+      baseline = null;
+      message = 'Saved progress deleted from this browser. Current entries stay on screen and will not be saved again unless you choose Save progress.';
+      refresh();
+    } catch {
+      say('Saved progress could not be deleted because browser storage is unavailable. Try again or remove this site’s data in your browser settings.');
+    }
+  });
+  refresh();
+  return { refresh };
+}
+
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
+let progressControl = null;
 
 function render() {
+  progressControl?.refresh();
   set('efficiency-value', `${form.elements.efficiency.value}%`);
   const valid = form.checkValidity();
   document.querySelector('#error').hidden = valid;
@@ -632,6 +744,7 @@ function fillList(id, items) {
 }
 
 function renderReview() {
+  progressControl?.refresh();
   const entries = months.map((_, i) => {
     const usage = document.getElementById(`bill-kwh-${i}`);
     const cost = document.getElementById(`bill-cost-${i}`);
@@ -895,6 +1008,32 @@ setupBillImport((month, kwh, cost) => {
 });
 reset();
 renderReview();
+progressControl = setupProgress({
+  getState() {
+    const readNumber = input => {
+      if (input.value === '' && !input.validity.badInput) return null;
+      if (!input.validity.valid) throw new Error('Invalid input.');
+      return input.valueAsNumber;
+    };
+    return {
+      version: 1,
+      bills: months.map((_, i) => ({ kwh: readNumber(document.getElementById(`bill-kwh-${i}`)), cost: readNumber(document.getElementById(`bill-cost-${i}`)) })),
+      plan: Object.fromEntries(Object.keys(defaults).map(key => [key, readNumber(form.elements[key])])),
+      exampleFields: [...exampleFields],
+    };
+  },
+  applyState(state) {
+    state.bills.forEach((bill, i) => {
+      document.getElementById(`bill-kwh-${i}`).value = bill.kwh ?? '';
+      document.getElementById(`bill-cost-${i}`).value = bill.cost ?? '';
+    });
+    for (const [key, value] of Object.entries(state.plan)) form.elements[key].value = value ?? '';
+    exampleFields.clear();
+    for (const id of state.exampleFields) exampleFields.add(id);
+    render();
+    renderReview();
+  },
+});
 
 })();
 </script>

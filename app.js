@@ -1,13 +1,16 @@
 import { defaults, estimate, compareCosts } from './energy.js';
 import { months, reviewEnergy, recommendEnergy } from './review.js';
 import { setupBillImport } from './bill-ui.js';
+import { setupProgress } from './progress.js';
 
 const form = document.querySelector('#calculator');
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
 const set = (id, value) => { document.getElementById(id).textContent = value; };
+let progressControl = null;
 
 function render() {
+  progressControl?.refresh();
   set('efficiency-value', `${form.elements.efficiency.value}%`);
   const valid = form.checkValidity();
   document.querySelector('#error').hidden = valid;
@@ -66,6 +69,7 @@ function fillList(id, items) {
 }
 
 function renderReview() {
+  progressControl?.refresh();
   const entries = months.map((_, i) => {
     const usage = document.getElementById(`bill-kwh-${i}`);
     const cost = document.getElementById(`bill-cost-${i}`);
@@ -329,3 +333,29 @@ setupBillImport((month, kwh, cost) => {
 });
 reset();
 renderReview();
+progressControl = setupProgress({
+  getState() {
+    const readNumber = input => {
+      if (input.value === '' && !input.validity.badInput) return null;
+      if (!input.validity.valid) throw new Error('Invalid input.');
+      return input.valueAsNumber;
+    };
+    return {
+      version: 1,
+      bills: months.map((_, i) => ({ kwh: readNumber(document.getElementById(`bill-kwh-${i}`)), cost: readNumber(document.getElementById(`bill-cost-${i}`)) })),
+      plan: Object.fromEntries(Object.keys(defaults).map(key => [key, readNumber(form.elements[key])])),
+      exampleFields: [...exampleFields],
+    };
+  },
+  applyState(state) {
+    state.bills.forEach((bill, i) => {
+      document.getElementById(`bill-kwh-${i}`).value = bill.kwh ?? '';
+      document.getElementById(`bill-cost-${i}`).value = bill.cost ?? '';
+    });
+    for (const [key, value] of Object.entries(state.plan)) form.elements[key].value = value ?? '';
+    exampleFields.clear();
+    for (const id of state.exampleFields) exampleFields.add(id);
+    render();
+    renderReview();
+  },
+});

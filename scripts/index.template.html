@@ -13,9 +13,15 @@
     <section class="intro"><div><p class="eyebrow">A BRIGHTER WAY TO POWER YOUR HOME</p><h1>Small changes.<br>Sunny possibilities.</h1><p class="lede">Explore how a smarter home and rooftop solar could work together to lower your energy costs.</p></div><div class="sun-scene" aria-hidden="true"><div class="sun"></div><div class="orbit"></div><div class="house"><div class="roof"></div><div class="panels"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="window"></div><div class="door"></div></div><span class="scene-label">LESS GRID. MORE POSSIBILITY.</span></div></section>
     <section class="energy-review card" id="homeowner-review" aria-labelledby="review-title">
       <div class="review-heading"><div><p class="eyebrow">START WITH YOUR REAL BILLS</p><h2 id="review-title">Homeowner Energy Review</h2><p class="review-description">Enter 12 months of electricity usage and bill costs to understand your home's energy patterns.</p></div><a href="#solar-plan" class="skip-link">Go to solar plan &rarr;</a></div>
+      <div class="save-progress-panel" aria-labelledby="save-progress-title">
+        <div><h3 id="save-progress-title">Pick up where you left off</h3><p>Save your bill numbers and solar settings on this browser, then return later. Partial entries are welcome. Saving is optional; click Save progress again after making changes.</p></div>
+        <div class="progress-actions"><button type="button" id="save-progress">Save progress</button><button type="button" id="delete-progress" disabled>Delete saved progress</button></div>
+        <p id="save-progress-status" role="status" class="progress-status"></p>
+        <p class="hint">No bill photos, full bill text, names, email addresses, postal codes, or notes are saved. Anyone using this browser can restore the saved numbers. They do not sync across devices. Private browsing and some previews may block saving.</p>
+      </div>
       <div class="review-layout">
         <div class="review-entry">
-          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Your entries stay in this page only and are cleared when it reloads.</p>
+          <p id="review-help" class="hint">Use January–December from the same year. Enter kWh and the bill amount in USD for each month. Zero is allowed; blank means not entered. Entries are kept only for this visit unless you choose Save progress above.</p>
           <div class="bill-upload">
             <p class="eyebrow">LESS TYPING, MORE CLARITY</p><h3>Add a month from a bill photo</h3><p>Choose a clear, upright screenshot or photo of an English-language electricity bill. Review and correct the month, kWh, and bill total before adding them.</p>
             <input id="bill-image" hidden type="file" accept="image/png,image/jpeg,image/webp" aria-label="Choose electricity bill photo" tabindex="-1">
@@ -108,7 +114,7 @@
         <p class="hint assessment-demo-note">Demo: creates a downloadable request file. No request is sent and no appointment is booked.</p>
       </div>
     </section>
-    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. No customer information is stored or sent by this tool.</p></section>
+    <section class="method"><h3>Clear assumptions. Better conversations.</h3><p>This planning tool uses USD and annual averages. Solar output = system size × peak sun hours × 365 × performance. Solar used at home is capped at demand after efficiency improvements; the remainder is exported. Savings compare variable electricity costs before and after upgrades, less maintenance and monitoring fees. Payback = net upfront cost ÷ positive annual savings.</p><p>Illustrative estimates are not a quote or a guarantee. The solar scenario excludes fixed utility charges; the bill-based comparison retains inferred remaining charges. Both estimates exclude batteries, financing, panel degradation, equipment replacement, rate changes, and seasonal or hourly matching. No live meters or smart devices are connected. Nothing is sent to a server. Save progress optionally keeps only bill numbers, solar settings, and example-data labels on this browser; photos and contact details are excluded.</p></section>
   </main>
   <dialog id="help-dialog" aria-labelledby="help-heading" aria-describedby="help-intro">
     <div class="section-heading"><div><p class="eyebrow">WE'RE HERE TO HELP YOU GET STARTED</p><h2 id="help-heading">How can we help?</h2></div><button type="button" id="close-help" aria-label="Close help">Close</button></div>
@@ -119,7 +125,7 @@
     <details><summary>Can I use a photo of my bill?</summary><p>Choose a PNG, JPG, or WebP bill photo in Homeowner Energy Review. The full app reads it locally in your browser. Review and correct all three fields before adding them. Unreadable values are flagged, and existing months require replacement confirmation.</p></details>
     <details><summary>Are the solar savings guaranteed?</summary><p>No. Results depend on the rates, solar output, fees, and other assumptions shown in Current costs vs. solar. Confirm these with your utility and installer before investing.</p></details>
     <details><summary>How do I request a home assessment?</summary><p>Complete your bill review and use Request a Home Assessment in your personalized recommendation. It creates a request file for you to share with a provider. This demo does not send it or book an appointment.</p></details>
-    <details><summary>Is my information saved?</summary><p>Monthly entries stay in this page until you reload. Bill photos and full recognized text are not saved or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
+    <details><summary>Is my information saved?</summary><p>Entries are cleared on reload unless you choose Save progress. That saves only monthly numbers, solar settings, and example-data labels on this browser. Delete saved progress removes that saved copy. Bill photos, full recognized text, and personal contact details are never included or uploaded. Any report or assessment file you choose to download remains your responsibility to share or delete.</p></details>
     <a id="help-review-link" href="#homeowner-review" class="help-review-link">Go to Homeowner Energy Review &rarr;</a>
     <p class="hint">These are general answers about using the app. This panel is not a live or AI chat service.</p>
   </dialog>
@@ -147,7 +153,7 @@
       <label>Email <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
       <label>ZIP / postal code (optional) <input name="postal" type="text" autocomplete="postal-code" maxlength="20"></label>
       <label>What would you like help with? (optional) <textarea name="notes" rows="3" maxlength="1500" placeholder="e.g. High summer bills or questions about rooftop solar"></textarea></label>
-      <p class="hint">Your contact details and energy review will be included in the file. Nothing is stored by this app or sent to a provider. Closing this form clears your contact details.</p>
+      <p class="hint">Your contact details and energy review will be included in the file. Contact details and notes are not saved by this app or sent to a provider. Closing this form clears them. Save progress excludes this form.</p>
       <button type="submit" class="primary-button">Download assessment request</button>
       <p id="assessment-status" role="status" class="hint"></p>
     </form>
