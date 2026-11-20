@@ -45,6 +45,17 @@ export function validateReferralRecord(raw, today = trackingToday()) {
   if (record.stage === 'referred' && record.consultation) throw new Error('Choose a contacted or later stage before scheduling a consultation.');
   if (record.installed && [record.consultation, record.quoteDate].some(date => date && date > record.installed)) throw new Error('Installation cannot precede a recorded consultation or quote.');
   if (record.closedDate && record.quoteDate && record.closedDate < record.quoteDate) throw new Error('Closure cannot precede the received quote.');
+  if (raw.history !== undefined) {
+    if (!Array.isArray(raw.history) || !raw.history.length || raw.history.length > 200) throw new Error('Stage history must contain 1–200 recorded events.');
+    record.history = raw.history.map((event, index) => {
+      if (!event || !Object.hasOwn(referralStages, event.stage) || typeof event.at !== 'string'
+        || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(event.at) || !Number.isFinite(Date.parse(event.at)) || new Date(event.at).toISOString() !== event.at
+        || !(index === 0 ? ['initial', 'baseline'] : ['change']).includes(event.kind)
+        || (index > 0 && (event.at < raw.history[index - 1].at || event.stage === raw.history[index - 1].stage))) throw new Error('Stage history contains an invalid or out-of-order event.');
+      return { stage: event.stage, at: event.at, kind: event.kind };
+    });
+    if (record.history.at(-1).stage !== record.stage) throw new Error('Stage history must end at the current stage.');
+  }
   return record;
 }
 export function readReferralBackup(text, today = trackingToday()) {
@@ -74,4 +85,22 @@ export function referralPerformance(records, today = trackingToday()) {
     averageContactDays: row.contacts ? row.contactDays / row.contacts : null,
     averageRating: row.ratings ? row.ratingTotal / row.ratings : null,
   }));
+}
+
+export const referralAttentionLabels = { waiting: 'Waiting for vendor contact', due: 'Follow-ups due or overdue', unassigned: 'No team member assigned', missing: 'Missing next action' };
+export function referralAttention(record, today = trackingToday()) {
+  if (['installed', 'closed'].includes(record.stage)) return [];
+  const reasons = [];
+  if (!record.contacted) reasons.push('waiting');
+  if (record.followup && record.followup <= today) reasons.push('due');
+  if (!record.owner) reasons.push('unassigned');
+  if (!record.nextAction) reasons.push('missing');
+  return reasons;
+}
+
+export function recordReferralStage(next, previous, at = new Date().toISOString()) {
+  const history = previous?.history?.map(event => ({ ...event })) || [];
+  if (!history.length) history.push({ stage: previous?.stage || next.stage, at, kind: previous ? 'baseline' : 'initial' });
+  if (previous && previous.stage !== next.stage) history.push({ stage: next.stage, at, kind: 'change' });
+  return validateReferralRecord({ ...next, history });
 }

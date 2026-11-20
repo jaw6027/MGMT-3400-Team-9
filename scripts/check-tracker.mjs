@@ -34,6 +34,7 @@ try {
   assert.equal(await page.locator('#tracker-charts-empty').isVisible(), true);
   assert.equal(await page.locator('#tracker-chart-sort').isDisabled(), true);
   const totals = () => page.locator('#tracker-vendor-totals tr').evaluateAll(rows => rows.map(row => [...row.cells].map(cell => cell.textContent)));
+  assert.equal(await page.locator('[data-attention=waiting] strong').textContent(), '0');
   const today = await page.locator('[name=referred]').inputValue();
   await page.locator('[name=vendor]').fill('Synthetic <provider>');
   await page.locator('[name=followup]').fill(today);
@@ -43,6 +44,10 @@ try {
   await page.locator('#tracker-form [type=submit]').click();
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
   assert.deepEqual(await totals(), [['Synthetic <provider>', '1', '0', '0']]);
+  assert.equal(await page.locator('[data-attention=waiting] strong').textContent(), '1');
+  assert.equal(await page.locator('[data-attention=due] strong').textContent(), '1');
+  assert.equal(await page.locator('[data-attention=unassigned] strong').textContent(), '0');
+  assert.equal(await page.locator('[data-attention=missing] strong').textContent(), '0');
   assert.equal(await page.locator('#tracker-performance td').first().textContent(), 'Synthetic <provider>');
   assert.equal(await page.locator('#tracker-performance td').last().textContent(), '1');
   assert.equal(await page.evaluate(() => localStorage.getItem('helio-home:referral-tracker:v1')), null);
@@ -63,6 +68,8 @@ try {
   assert.equal(JSON.parse(backup).records.length, 1);
   assert.equal(JSON.parse(backup).records[0].owner, 'TEAM1');
   assert.equal(JSON.parse(backup).records[0].service, 'solar');
+  assert.deepEqual(JSON.parse(backup).records[0].history.map(event => event.stage), ['referred', 'installed']);
+  assert.equal(await page.locator('[data-attention=waiting] strong').textContent(), '0');
   await page.reload(); assert.equal(await page.locator('#tracker-records tr').count(), 0);
   await page.locator('#tracker-load').click(); assert.equal(await page.locator('#tracker-records tr').count(), 1);
   const downloadPromise = page.waitForEvent('download'); await page.locator('#tracker-export').click();
@@ -83,6 +90,7 @@ try {
   assert.equal(await page.locator('#tracker-records tr').count(), 1);
   // Mixed stages and vendors must count contacts across later stages, too.
   const installed = JSON.parse(backup).records[0];
+  delete installed.history; // Legacy fixtures deliberately have no captured timeline.
   const records = [
     { ...installed, id: 'summary-1', vendor: 'Vendor A' },
     { ...installed, id: 'summary-2', vendor: 'vendor a', stage: 'closed', installed: '' },
@@ -93,6 +101,11 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('#tracker-vendor-totals tr').length === 2);
   assert.deepEqual(await totals(), [['Vendor A', '3', '2', '1'], ['Vendor B', '1', '1', '0']]);
   assert.equal(await page.locator('#tracker-empty').isVisible(), false);
+  await page.locator('[data-attention=waiting]').click();
+  assert.equal(await page.locator('#tracker-filter').inputValue(), 'waiting');
+  assert.equal(await page.locator('#tracker-records tr').count(), 1);
+  await page.locator('#tracker-show-all').click();
+  assert.equal(await page.locator('#tracker-records tr').count(), 4);
   await page.selectOption('#tracker-filter', 'due');
   assert.equal(await page.locator('#tracker-records tr').count(), 2);
   assert.deepEqual(await totals(), [['Vendor A', '3', '2', '1'], ['Vendor B', '1', '1', '0']]);
@@ -117,8 +130,12 @@ try {
   await page.locator('#tracker-form [type=submit]').click();
   assert.deepEqual(await totals(), [['Vendor A', '3', '3', '1'], ['Vendor B', '1', '1', '0']]);
   const row = page.locator('#tracker-records tr').filter({ hasText: 'summary-3' });
-  await row.locator('summary').click();
+  await row.locator('summary').first().click();
   assert.match(await row.textContent(), /Cost or financing/);
+  await row.locator('.referral-timeline > summary').click();
+  assert.match(await row.locator('.timeline').textContent(), /first tracked; earlier history unknown/);
+  assert.equal(await row.locator('.timeline li').count(), 3);
+  assert.match(await row.locator('.timeline li').last().textContent(), /Closed without installation/);
 
   const daysAgo = days => new Date(Date.parse(today) - days * 86400000).toISOString().slice(0, 10);
   const chartRecords = [
@@ -144,6 +161,10 @@ try {
   assert.deepEqual(await page.locator('#tracker-response-chart strong').allTextContents(), ['Beta', 'Alpha', 'Gamma <uncontacted>']);
   await page.selectOption('#tracker-filter', 'unplanned');
   assert.equal(await page.locator('#tracker-rate-chart li').count(), 3);
+  assert.equal(await page.locator('[data-attention=waiting] strong').textContent(), '2');
+  assert.equal(await page.locator('[data-attention=unassigned] strong').textContent(), '3');
+  assert.equal(await page.locator('[data-attention=missing] strong').textContent(), '3');
+  assert.equal(await page.locator('[data-attention=due] strong').textContent(), '0');
   await page.screenshot({ path: '/tmp/vendor-charts-desktop.png', fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);

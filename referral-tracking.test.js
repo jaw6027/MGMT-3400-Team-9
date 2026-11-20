@@ -37,3 +37,26 @@ test('process details survive backups and reject invalid or contradictory events
   assert.throws(() => validateReferralRecord({ ...closed, closedDate: '2026-11-04' }, today));
   assert.equal(validateReferralRecord({ ...detailed, consultation: '2026-12-01' }, today).consultation, '2026-12-01');
 });
+
+test('attention checks overlap and exclude completed or closed referrals', async () => {
+  const { referralAttention } = await import('./referral-tracking.js');
+  assert.deepEqual(referralAttention({ ...base, followup: today }, today), ['waiting', 'due', 'unassigned', 'missing']);
+  assert.deepEqual(referralAttention({ ...base, contacted: today, owner: 'T1', nextAction: 'quote', followup: '2026-11-20' }, today), []);
+  for (const stage of ['closed', 'installed']) assert.deepEqual(referralAttention({ ...base, stage, followup: today }, today), []);
+});
+test('stage timelines preserve actual recorded changes and mark legacy baselines', async () => {
+  const { recordReferralStage } = await import('./referral-tracking.js');
+  const first = recordReferralStage(base, null, '2026-11-19T10:00:00.000Z');
+  assert.deepEqual(first.history.map(event => event.kind), ['initial']);
+  const changed = recordReferralStage({ ...base, stage: 'contacted', contacted: today }, first, '2026-11-19T11:00:00.000Z');
+  assert.deepEqual(changed.history.map(event => event.stage), ['referred', 'contacted']);
+  const same = recordReferralStage({ ...changed, nextAction: 'quote' }, changed, '2026-11-19T12:00:00.000Z');
+  assert.equal(same.history.length, 2);
+  assert.equal(first.history.length, 1);
+  const legacy = recordReferralStage({ ...base, nextAction: 'contact' }, base, '2026-11-19T10:00:00.000Z');
+  assert.equal(legacy.history[0].kind, 'baseline');
+  assert.deepEqual(readReferralBackup(JSON.stringify({ version: 1, records: [changed] }), today), [changed]);
+  assert.throws(() => validateReferralRecord({ ...changed, stage: 'closed' }, today));
+  assert.throws(() => validateReferralRecord({ ...changed, history: [{ stage: 'contacted', at: 'bad date', kind: 'initial' }] }, today));
+  assert.throws(() => validateReferralRecord({ ...changed, history: [...changed.history].reverse() }, today));
+});

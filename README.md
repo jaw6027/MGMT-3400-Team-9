@@ -249,3 +249,29 @@ loading and import. With no records they show an empty-state prompt instead of
 example performance. They use no external chart library and remain part of the
 standalone tracker. Referral ages, open jobs and missing data can distort comparisons;
 these are internal indicators, not a public vendor ranking.
+
+#### Needs attention and stage timelines
+
+The team tracker starts with a **Needs attention** dashboard for open referrals:
+waiting for a recorded vendor contact, follow-ups due today or earlier, missing team
+member assignment, and missing next action. Counts overlap; the page also shows the
+number of distinct flagged referrals. Clicking a category filters and focuses the
+referral table. **Show all referrals** resets it. Installed and closed referrals are
+excluded. A missing contact date is a data-based flag, not proof a vendor failed to
+respond. There are no automatic messages or external reminders.
+
+Each referral now has a collapsed **Stage timeline** next to its process details.
+New records get a recorded creation stage; subsequent stage changes append a UTC
+timestamp displayed in the browser's local time. Edits that leave the stage unchanged
+do not add a stage event. Older records have no invented history: their first saved
+edit records a baseline marked **earlier history unknown**, then any changed stage.
+Times show when the tracker recorded the stage, not the entered referral/contact/
+installation dates or verified vendor events. This is not a tamper-proof audit log,
+and field edits/deleted records are not retained as audit events.
+
+History is validated and retained in the same explicit device saves and version 1
+backups; older backups without it remain compatible. Each record supports up to 200
+stage events. Updates are checked against the 1 MB snapshot limit before replacing
+in-memory records, so a rejected oversized update retains the prior data. Download
+archives before removing older records if space is needed. Shared copies still do
+not synchronize or merge automatically.
