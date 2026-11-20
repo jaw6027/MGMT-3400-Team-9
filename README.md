@@ -230,3 +230,22 @@ The new optional fields round-trip through device saving and JSON backups. Exist
 version 1 backups still load without invented dates or assignments. Sharing remains
 manual and there is no automatic vendor confirmation, reminder delivery or team
 sync. Save again after edits; loading/importing still replaces rather than merges.
+
+#### Vendor comparison charts
+
+The performance page includes two horizontal bar charts built from the same
+validated records as the tables. Completion rate is installed projects divided by
+all referrals, including open ones, on a fixed 0–100% scale. Average response time
+is calendar days from referral to first homeowner contact, excluding missing dates,
+on a shared response-time scale from zero to the rounded-up maximum (at least one
+day). Same-day contact is 0.0 days; vendors without contact dates display **Not
+available**, not a zero-day response. Each bar includes sample counts, open referrals
+or missing contact counts, and a text value accessible without color or hovering.
+
+Sort both charts consistently by vendor name, highest completion rate, or shortest
+response time (missing response data last). Sorting changes charts only; referral
+filters do not change the comparison dataset. The charts update on edits, deletion,
+loading and import. With no records they show an empty-state prompt instead of
+example performance. They use no external chart library and remain part of the
+standalone tracker. Referral ages, open jobs and missing data can distort comparisons;
+these are internal indicators, not a public vendor ranking.

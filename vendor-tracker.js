@@ -21,6 +21,38 @@ function trackerResetForm() {
   document.querySelector('#tracker-cancel').hidden = true;
 }
 function trackerCell(value) { const cell = document.createElement('td'); cell.textContent = value; return cell; }
+const trackerChartSort = document.querySelector('#tracker-chart-sort');
+trackerChartSort.addEventListener('change', () => trackerRender());
+function trackerRenderCharts(performance) {
+  document.querySelector('#tracker-charts-empty').hidden = performance.length > 0;
+  document.querySelector('#tracker-charts').hidden = performance.length === 0;
+  trackerChartSort.disabled = performance.length === 0;
+  const rows = [...performance].sort((a, b) => {
+    if (trackerChartSort.value === 'completion') return b.installationRate - a.installationRate || a.vendor.localeCompare(b.vendor);
+    if (trackerChartSort.value === 'response') return (a.averageContactDays ?? Infinity) - (b.averageContactDays ?? Infinity) || a.vendor.localeCompare(b.vendor);
+    return a.vendor.localeCompare(b.vendor);
+  });
+  const responseMax = Math.max(1, ...rows.map(row => Math.ceil(row.averageContactDays ?? 0)));
+  document.querySelector('#tracker-response-max').textContent = `${responseMax} days`;
+  function chartRow(row, metric) {
+    const rate = metric === 'rate';
+    const value = rate ? row.installationRate : row.averageContactDays;
+    const item = document.createElement('li');
+    const label = document.createElement('div'); label.className = 'chart-label';
+    const name = document.createElement('strong'); name.textContent = row.vendor;
+    const amount = document.createElement('span');
+    amount.textContent = value === null ? 'Not available' : `${value.toFixed(1)}${rate ? '%' : ' days'}`;
+    label.append(name, amount);
+    const track = document.createElement('div'); track.className = 'chart-track'; track.setAttribute('aria-hidden', 'true');
+    const bar = document.createElement('div'); bar.className = 'chart-bar'; bar.style.width = `${value === null ? 0 : value / (rate ? 100 : responseMax) * 100}%`; track.append(bar);
+    const sample = document.createElement('p'); sample.className = 'chart-sample';
+    sample.textContent = rate ? `${row.installed} installed / ${row.referrals} referrals · ${row.open} still open`
+      : `${row.contacts} with a contact date · ${row.referrals - row.contacts} without a contact date`;
+    item.append(label, track, sample); return item;
+  }
+  document.querySelector('#tracker-rate-chart').replaceChildren(...rows.map(row => chartRow(row, 'rate')));
+  document.querySelector('#tracker-response-chart').replaceChildren(...rows.map(row => chartRow(row, 'response')));
+}
 function trackerRender() {
   const visible = trackerRecords.filter(record => {
     const open = !['installed', 'closed'].includes(record.stage);
@@ -30,6 +62,7 @@ function trackerRender() {
   });
   document.querySelector('#tracker-count').textContent = `Showing ${visible.length} of ${trackerRecords.length} referrals. Vendor totals always include all records.`;
   const performance = referralPerformance(trackerRecords);
+  trackerRenderCharts(performance);
   document.querySelector('#tracker-empty').hidden = trackerRecords.length > 0;
   document.querySelector('#tracker-vendor-totals').replaceChildren(...performance.map(row => {
     const tr = document.createElement('tr');

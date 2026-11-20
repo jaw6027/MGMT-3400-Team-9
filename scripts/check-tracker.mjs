@@ -31,6 +31,8 @@ try {
   assert.equal(await page.locator('h1').textContent(), 'Vendor performance');
   assert.equal(await page.locator('#tracker-empty').isVisible(), true);
   assert.equal(await page.locator('#tracker-more-metrics').getAttribute('open'), null);
+  assert.equal(await page.locator('#tracker-charts-empty').isVisible(), true);
+  assert.equal(await page.locator('#tracker-chart-sort').isDisabled(), true);
   const totals = () => page.locator('#tracker-vendor-totals tr').evaluateAll(rows => rows.map(row => [...row.cells].map(cell => cell.textContent)));
   const today = await page.locator('[name=referred]').inputValue();
   await page.locator('[name=vendor]').fill('Synthetic <provider>');
@@ -118,8 +120,34 @@ try {
   await row.locator('summary').click();
   assert.match(await row.textContent(), /Cost or financing/);
 
+  const daysAgo = days => new Date(Date.parse(today) - days * 86400000).toISOString().slice(0, 10);
+  const chartRecords = [
+    { id: 'chart-1', vendor: 'Alpha', stage: 'installed', referred: daysAgo(6), contacted: daysAgo(4), installed: today },
+    { id: 'chart-2', vendor: 'Alpha', stage: 'contacted', referred: daysAgo(6), contacted: daysAgo(2) },
+    { id: 'chart-3', vendor: 'Alpha', stage: 'referred', referred: daysAgo(6) },
+    { id: 'chart-4', vendor: 'Beta', stage: 'installed', referred: today, contacted: today, installed: today },
+    { id: 'chart-5', vendor: 'Gamma <uncontacted>', stage: 'referred', referred: today },
+  ];
+  await page.locator('#tracker-file').setInputFiles({ name: 'chart.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ version: 1, records: chartRecords })) });
+  await page.waitForFunction(() => document.querySelectorAll('#tracker-rate-chart li').length === 3);
+  assert.equal(await page.locator('#tracker-charts').isVisible(), true);
+  assert.equal(await page.locator('#tracker-charts-empty').isVisible(), false);
+  assert.match(await page.locator('#tracker-rate-chart li').nth(0).textContent(), /33.3%.*1 installed \/ 3 referrals/);
+  assert.equal(await page.locator('#tracker-rate-chart .chart-bar').nth(1).evaluate(el => el.style.width), '100%');
+  assert.match(await page.locator('#tracker-response-chart li').nth(0).textContent(), /3.0 days.*2 with a contact date.*1 without/);
+  assert.equal(await page.locator('#tracker-response-max').textContent(), '3 days');
+  assert.match(await page.locator('#tracker-response-chart li').nth(1).textContent(), /0.0 days/);
+  assert.match(await page.locator('#tracker-response-chart li').nth(2).textContent(), /Not available/);
+  await page.selectOption('#tracker-chart-sort', 'completion');
+  assert.equal(await page.locator('#tracker-rate-chart strong').first().textContent(), 'Beta');
+  await page.selectOption('#tracker-chart-sort', 'response');
+  assert.deepEqual(await page.locator('#tracker-response-chart strong').allTextContents(), ['Beta', 'Alpha', 'Gamma <uncontacted>']);
+  await page.selectOption('#tracker-filter', 'unplanned');
+  assert.equal(await page.locator('#tracker-rate-chart li').count(), 3);
+  await page.screenshot({ path: '/tmp/vendor-charts-desktop.png', fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: '/tmp/vendor-charts-mobile.png', fullPage: true });
   assert.deepEqual(errors, []);
   console.log('PASS: add/edit/delete, event validation, performance totals, literal business names, opt-in save, load, backup/import, rejected corrupt import, isolated deletion, mobile.');
 } finally {
