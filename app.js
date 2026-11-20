@@ -40,16 +40,37 @@ function reset() {
   render();
 }
 form.addEventListener('input', render);
-form.addEventListener('invalid', event => {
-  const details = event.target.closest('details');
-  if (details) details.open = true;
-}, true);
-const expandSolarDetails = () => form.querySelectorAll('details').forEach(details => { details.open = true; });
+function revealDetailsAbove(element) {
+  for (let node = element; node; node = node.parentElement) {
+    if (node.tagName === 'DETAILS') node.open = true;
+  }
+}
+form.addEventListener('invalid', event => revealDetailsAbove(event.target), true);
+document.addEventListener('click', event => {
+  const link = event.target.closest?.('a[href^="#"]');
+  if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  try {
+    const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+    if (target) revealDetailsAbove(target);
+  } catch { /* Ignore a malformed fragment without changing navigation. */ }
+});
+let printDisclosureState = null;
+const expandSolarDetails = () => {
+  const ids = ['bill-analysis', 'solar-plan-details', 'cost-details', 'recommendation-details', 'method-details'];
+  if (document.querySelector('#home-questionnaire').classList.contains('has-home-answers')) ids.push('home-questionnaire-details');
+  const details = [...new Set([...form.querySelectorAll('details'), ...ids.map(id => document.getElementById(id)).filter(Boolean)])];
+  if (!printDisclosureState) printDisclosureState = details.map(element => [element, element.open]);
+  details.forEach(element => { element.open = true; });
+};
 window.addEventListener('beforeprint', expandSolarDetails);
+window.addEventListener('afterprint', () => {
+  printDisclosureState?.forEach(([element, open]) => { element.open = open; });
+  printDisclosureState = null;
+});
 document.querySelector('#reset').addEventListener('click', reset);
 document.querySelector('#print').addEventListener('click', () => {
-  expandSolarDetails();
   if (!form.reportValidity()) return;
+  expandSolarDetails();
   window.print();
 });
 
@@ -216,12 +237,13 @@ function renderComparison() {
   ].filter(Boolean).join(' ');
   set('home-solar-caution', homeCaution);
   document.querySelector('#home-solar-caution').hidden = !homeCaution;
-  set('meaning-bills', `Your ${exampleFields.size ? 'example' : 'entered'} bills add up to ${billMoney.format(c.annualCost)} for the year, or about ${billMoney.format(c.monthlyCost)} a month. You used ${number.format(currentReview.annualKwh)} kWh of electricity over the year.`);
+  set('result-key-assumptions', `Solar assumptions to confirm: ${values.solarKw} kW panels; ${values.sunHours} full-strength sun hours/day; ${values.performance}% usable output; ${values.selfUse}% used at home. Grid electricity ${billedRate.format(values.rate)}/kWh; export credit ${billedRate.format(values.exportRate)}/kWh. Maintenance ${billMoney.format(values.annualCost)}/year + monitoring ${billMoney.format(values.monthlyFee)}/month.`);
+  set('meaning-bills', `Your ${exampleFields.size ? 'example' : 'entered'} bills average ${billMoney.format(c.monthlyCost)}/month (${billMoney.format(c.annualCost)}/year).`);
   const saving = c.solar.annualSavings;
   const solarChange = Math.abs(saving) < 0.005 ? 'leave ongoing costs roughly unchanged'
     : saving > 0 ? `lower ongoing costs by about ${billMoney.format(saving)} a year (${billMoney.format(saving / 12)} a month on average)`
       : `increase ongoing costs by about ${billMoney.format(-saving)} a year (${billMoney.format(-saving / 12)} a month on average)`;
-  set('meaning-solar', `Under the current settings, solar alone could ${solarChange}. This includes maintenance and monitoring, but not installation or loan payments. ${c.solar.projectedAnnualCost < 0 ? 'The negative cost shown is a net credit; your utility may limit or not pay out these credits. ' : ''}Confirm the settings and a full quote before deciding.`);
+  set('meaning-solar', `With these settings, solar alone could ${solarChange}. This includes maintenance and monitoring, but not installation or loan payments.${c.solar.projectedAnnualCost < 0 ? ' A negative cost is a net credit; your utility may limit or not pay out these credits.' : ''}`);
   set('meaning-efficiency', `Solar replaces some electricity you buy from the grid; it does not make your appliances use less. Smart upgrades are separately assumed to reduce electricity use by ${values.efficiency}%. ${values.efficiency > 0 ? `That would mean about ${number.format(currentReview.annualKwh * values.efficiency / 100)} fewer kWh used per year, if those improvements are achieved.` : 'No reduction in electricity use from upgrades is assumed in this scenario.'} Your recommendation explains what to check first.`);
   notice.hidden = true;
   set('comparison-source', exampleFields.size ? 'EXAMPLE BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE' : 'ENTERED BILL DATA · ILLUSTRATIVE SOLAR ESTIMATE');
@@ -282,6 +304,7 @@ function renderComparison() {
 
 function renderRecommendation(comparison = null, solarStatus = '') {
   const complete = currentReview !== null;
+  document.querySelector('#personalized-recommendation').hidden = !complete;
   document.querySelector('#recommendation-results').hidden = !complete;
   document.querySelector('#recommendation-empty').hidden = complete;
   currentRecommendation = complete ? tailorHomeRecommendation(recommendEnergy(currentReview, comparison), homeQuestionnaire?.read().profile) : null;
@@ -364,7 +387,7 @@ assessmentForm.addEventListener('submit', event => {
     '', 'Home-specific assessment notes:', ...r.homeInsights, ...r.homeFollowups,
     '', 'Solar assessment note:', currentRecommendation ? document.querySelector('#recommendation-solar-note').textContent : 'Solar suitability and savings have not been established. Confirm representative consumption and on-site conditions.',
     '', 'Solar cost comparison:', comparisonVisible
-      ? `Current: ${document.querySelector('#compare-current-annual').textContent}/year; solar only: ${document.querySelector('#compare-solar-annual').textContent}/year; solar + upgrades: ${document.querySelector('#compare-combined-annual').textContent}/year.\n${document.querySelector('#comparison-assumptions').innerText}`
+      ? `Current: ${document.querySelector('#compare-current-annual').textContent}/year; solar only: ${document.querySelector('#compare-solar-annual').textContent}/year; solar + upgrades: ${document.querySelector('#compare-combined-annual').textContent}/year.\n${[...document.querySelectorAll('#comparison-assumptions > div')].map(pair => `${pair.querySelector('dt').textContent}: ${pair.querySelector('dd').textContent}`).join('\n')}`
       : document.querySelector('#comparison-notice').textContent,
     '', `Homeowner notes: ${contact('notes') || 'None'}`,
     '', 'Planning recommendations are not a diagnosis, quote, or savings guarantee. Confirm bills, equipment, roof suitability, installation costs, financing, and utility rules with a qualified provider.',

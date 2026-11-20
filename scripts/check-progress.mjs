@@ -30,7 +30,11 @@ try {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  const openTools = async targetPage => targetPage.evaluate(() => {
+    for (const id of ['save-details', 'solar-plan-details', 'recommendation-details']) document.getElementById(id).open = true;
+  });
   await page.goto(origin);
+  await openTools(page);
   const key = 'helio-home:progress:v1';
   const stored = () => page.evaluate(key => localStorage.getItem(key), key);
   assert.equal(await stored(), null);
@@ -50,6 +54,7 @@ try {
   assert.match(await page.locator('#save-progress-status').textContent(), /Unsaved changes/);
   assert.equal(await stored(), partial);
   await page.reload();
+  await openTools(page);
   assert.equal(await page.locator('#bill-kwh-0').inputValue(), '0');
   assert.equal(await page.locator('#bill-cost-0').inputValue(), '15.47');
   assert.equal(await page.locator('#bill-kwh-1').inputValue(), '800');
@@ -65,12 +70,14 @@ try {
   await page.locator('#rate').fill('');
   await page.locator('#save-progress').click();
   await page.reload();
+  await openTools(page);
   assert.equal(await page.locator('#rate').inputValue(), '');
   assert.equal(await page.locator('#estimate-results').isVisible(), false);
   await page.locator('#reset').click();
   await page.locator('#review-example').click();
   await page.locator('#save-progress').click();
   await page.reload();
+  await openTools(page);
   assert.match(await page.locator('#review-progress').textContent(), /Includes example data/);
   assert.equal(await page.locator('#review-kwh').textContent(), '12,450 kWh');
   assert.equal(await page.locator('#recommendation-results').isVisible(), true);
@@ -88,6 +95,7 @@ try {
   await page.locator('#save-progress').click();
   assert.equal(JSON.parse(await stored()).exampleFields.includes('bill-kwh-0'), false);
   await page.reload();
+  await openTools(page);
   assert.equal(JSON.parse(await stored()).exampleFields.includes('bill-kwh-0'), false);
   await page.evaluate(() => localStorage.setItem('unrelated-site-setting', 'keep'));
   await page.locator('#delete-progress').click();
@@ -97,9 +105,11 @@ try {
   assert.equal(await stored(), null);
   assert.equal(await page.evaluate(() => localStorage.getItem('unrelated-site-setting')), 'keep');
   await page.reload();
+  await openTools(page);
   assert.equal(await page.locator('#bill-kwh-0').inputValue(), '');
   await page.evaluate(key => localStorage.setItem(key, '{corrupt'), key);
   await page.reload();
+  await openTools(page);
   assert.match(await page.locator('#save-progress-status').textContent(), /could not be loaded/);
   assert.equal(await page.locator('#bill-kwh-0').inputValue(), '');
   assert.equal(await stored(), '{corrupt');
@@ -118,6 +128,7 @@ try {
     for (const method of ['getItem', 'setItem', 'removeItem']) Storage.prototype[method] = () => { throw new DOMException('Blocked', 'SecurityError'); };
   });
   await blocked.goto(origin);
+  await openTools(blocked);
   assert.match(await blocked.locator('#save-progress-status').textContent(), /storage is unavailable/);
   await blocked.locator('#bill-kwh-0').fill('100');
   await blocked.locator('#save-progress').click();
@@ -131,6 +142,7 @@ try {
   quota.on('pageerror', error => errors.push(error.message));
   await quota.addInitScript(() => { Storage.prototype.setItem = () => { throw new DOMException('Full', 'QuotaExceededError'); }; });
   await quota.goto(origin);
+  await openTools(quota);
   await quota.locator('#bill-kwh-0').fill('2000');
   await quota.locator('#save-progress').click();
   assert.match(await quota.locator('#save-progress-status').textContent(), /could not be saved/);
@@ -140,6 +152,7 @@ try {
   cannotDelete.on('pageerror', error => errors.push(error.message));
   await cannotDelete.addInitScript(() => { Storage.prototype.removeItem = () => { throw new DOMException('Blocked', 'SecurityError'); }; });
   await cannotDelete.goto(origin);
+  await openTools(cannotDelete);
   await cannotDelete.locator('#delete-progress').click();
   assert.match(await cannotDelete.locator('#save-progress-status').textContent(), /could not be deleted/);
   assert.equal(await cannotDelete.evaluate(key => localStorage.getItem(key), key), full);

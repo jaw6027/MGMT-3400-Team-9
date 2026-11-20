@@ -37,11 +37,13 @@ try {
   }
   assert.equal(await page.locator('#advanced-solar').getAttribute('open'), null);
   assert.equal(await page.locator('#sunHours').isVisible(), false);
+  assert.equal(await page.locator('#solarKw').isVisible(), false);
+  await page.locator('#cost-comparison > .review-heading a').click();
   assert.equal(await page.locator('#solarKw').isVisible(), true);
   assert.equal(await page.locator('#annual-savings').textContent(), '$1,256');
   await page.locator('#review-example').click();
   assert.equal(await page.locator('.customer-meaning').isVisible(), true);
-  assert.match(await page.locator('#meaning-bills').textContent(), /example bills.*12,450 kWh/);
+  assert.match(await page.locator('#meaning-bills').textContent(), /example bills.*201\.75/);
   assert.match(await page.locator('#meaning-solar').textContent(), /lower ongoing costs/);
   assert.match(await page.locator('#meaning-solar').textContent(), /not installation or loan/);
   assert.match(await page.locator('#meaning-efficiency').textContent(), /does not make your appliances use less/);
@@ -81,6 +83,7 @@ try {
   assert.equal(await page.locator('#sun-help').isVisible(), true);
   await page.pdf({ path: '/tmp/helio-guidance-report.pdf', format: 'A4', printBackground: true });
   await page.emulateMedia({ media: 'screen' });
+  await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.locator('.start-guide').screenshot({ path: '/tmp/helio-guidance-mobile.png' });

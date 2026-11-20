@@ -30,11 +30,16 @@ try {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  const openTools = async targetPage => targetPage.evaluate(() => {
+    for (const id of ['save-details', 'solar-plan-details', 'recommendation-details']) document.getElementById(id).open = true;
+  });
   await page.goto(origin);
+  await openTools(page);
   const key = 'helio-home:progress:v1';
   const choose = async (id, value) => {
     const input = page.locator('#home-' + id);
-    if (!await input.isVisible()) await input.locator('xpath=ancestor::details').locator('summary').click();
+    if (!await page.locator('#home-questionnaire').isVisible()) await page.locator('#home-questionnaire-details > summary').click();
+    if (!await input.isVisible()) await input.locator('xpath=ancestor::details[1]').locator('summary').click();
     const select = await input.evaluate(element => element.tagName === 'SELECT');
     if (select) await input.selectOption(value); else await input.fill(String(value));
   };
@@ -97,6 +102,7 @@ try {
   await page.locator('#save-progress').click();
   assert.equal(await page.evaluate(key => Object.hasOwn(JSON.parse(localStorage.getItem(key)), 'homeProfile'), key), false);
   await page.reload();
+  await openTools(page);
   assert.equal(await page.locator('#home-area').inputValue(), '');
   assert.equal(await page.locator('#review-kwh').textContent(), '12,450 kWh');
   await choose('area', 1800);
@@ -105,6 +111,7 @@ try {
   await page.locator('#save-home-profile').check();
   await page.locator('#save-progress').click();
   await page.reload();
+  await openTools(page);
   assert.equal(await page.locator('#home-area').inputValue(), '1800');
   assert.equal(await page.locator('#save-home-profile').isChecked(), true);
   assert.equal(await page.locator('#home-drafts').inputValue(), 'yes');
@@ -132,11 +139,13 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.locator('.inspection-help').screenshot({ path: '/tmp/helio-inspection-mobile.png' });
+  await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   await page.emulateMedia({ media: 'print' });
   assert.equal(await page.locator('#home-questionnaire-summary').isVisible(), true);
   assert.equal(await page.locator('#home-questionnaire-form').isVisible(), false);
   assert.equal(await page.locator('#solar-usage-options').isVisible(), true);
   await page.emulateMedia({ media: 'screen' });
+  await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   await page.locator('#save-home-profile').uncheck();
   await page.locator('#save-progress').click();
   assert.equal(await page.evaluate(key => Object.hasOwn(JSON.parse(localStorage.getItem(key)), 'homeProfile'), key), false);

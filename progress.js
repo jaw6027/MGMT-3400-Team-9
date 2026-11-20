@@ -46,7 +46,7 @@ export function setupProgress({ getState, applyState, storage = () => globalThis
   const status = document.querySelector('#save-progress-status');
   let baseline = null;
   let hasSaved = false;
-  let message = 'Not saved yet. Choose Save progress to keep your progress on this browser.';
+  let message = 'Not saved yet. Open Save progress to keep your entries on this browser.';
   const say = text => { if (status.textContent !== text) status.textContent = text; };
 
   function refresh() {
