@@ -3,6 +3,8 @@ Requires XlsxWriter; generated formulas are recalculated by Excel on opening.
 """
 from pathlib import Path
 import math
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 import xlsxwriter
 
 OUTPUT = Path(__file__).with_name('Helio_Home_Venture_Economics.xlsx')
@@ -149,5 +151,84 @@ s.merge_range('A23:D24', '“Not achievable” means expected revenue per referr
 chart = w.add_chart({'type':'column'})
 for col,name,color in [('B','Low case','#9A6B35'),('C','Expected case',green),('D','High case','#285B86')]: chart.add_series({'name':name,'categories':['Scenarios',15,0,15,0],'values':f'=Scenarios!${col}$16','fill':{'color':color},'border':{'none':True},'data_labels':{'value':True,'num_format':'$#,##0'}})
 chart.set_title({'name':'Expected monthly operating profit'}); chart.set_y_axis({'name':'Dollars','num_format':'$#,##0'}); chart.set_legend({'position':'bottom'}); chart.set_style(13); s.insert_chart('A27',chart,{'x_scale':1.5,'y_scale':.9}); s.print_area('A1:D41')
+
+# Actual results are intentionally blank. Payment rows are one invoice per row;
+# total received is cumulative, not a cash transaction log.
+actual = setup('Actual vs Plan', 10, [17, 20, 20, 20, 20, 20, 20, 22, 22, 22, 19])
+pay = setup('Vendor Payments', 10, [24, 29, 19, 20, 19, 21, 21, 20, 20, 21, 36])
+for sheet in [actual, pay]: sheet.freeze_panes(7, 2); sheet.set_row(6, 48)
+formats['inputdate'] = w.add_format({'bg_color': blue, 'font_color': '#124E96', 'num_format': 'mmm d, yyyy', 'border': 1, 'border_color': '#B5CADE'})
+formats['outputdate'] = w.add_format({'bg_color': pale, 'num_format': 'mmm d, yyyy'})
+formats['date'] = w.add_format({'bg_color': pale, 'num_format': 'mmm yyyy'})
+formats['inputtext'] = w.add_format({'bg_color': blue, 'font_color': '#124E96', 'border': 1, 'border_color': '#B5CADE'})
+formats['status'] = w.add_format({'bg_color': pale, 'text_wrap': True, 'font_color': navy})
+today = datetime.now(ZoneInfo('America/Los_Angeles')).date()
+start_month = date(today.year, today.month, 1)
+def serial(value): return (value - date(1899, 12, 30)).days
+
+title(pay, 'Vendor fees and payments', 10, 'Enter real records only · One row per unique invoice/reference. Amount received is the cumulative total for that invoice, including partial payments. Blue cells are editable. No customer names, addresses or bill details are needed.')
+for cell, label in [('A4','Fees earned · valid rows'),('D4','Received · valid rows'),('G4','Outstanding · valid rows'),('J4','Rows needing fixes'),('A5','Overdue · valid rows'),('D5','As of today')]: pay.write(cell,label,formats['label'])
+formula(pay,'B4','=SUMIF(K8:K207,"OK",D8:D207)',0)
+formula(pay,'E4','=SUMIF(K8:K207,"OK",F8:F207)',0)
+formula(pay,'H4','=SUMIF(K8:K207,"OK",H8:H207)',0)
+formula(pay,'K4','=COUNTIF(K8:K207,"?*")-COUNTIF(K8:K207,"OK")',0,'int')
+formula(pay,'B5','=SUMIF(K8:K207,"OK",I8:I207)',0)
+formula(pay,'E5','=TODAY()',serial(today),'outputdate')
+pay.write_row('A7',['Invoice / referral ID','Vendor business name','Fee earned date','Fee earned / invoiced','Payment due date','Total received to date','Most recent payment date','Outstanding balance','Overdue balance','Payment status','Data check'],formats['head'])
+for r in range(8,208):
+ for col in ['A','B']: pay.write_blank(f'{col}{r}',None,formats['inputtext'])
+ for col in ['C','E','G']:
+  pay.write_blank(f'{col}{r}',None,formats['inputdate'])
+  pay.data_validation(f'{col}{r}',{'validate':'date','criteria':'between','minimum':datetime(2000,1,1),'maximum':datetime(2100,12,31),'ignore_blank':True,'error_title':'Check the date','error_message':'Enter an Excel date between 2000 and 2100.'})
+ for col in ['D','F']: pay.write_blank(f'{col}{r}',None,formats['inputmoney']); validation(pay,f'{col}{r}')
+ # Nested IFs retain compatibility with older Excel versions and flag invalid pasted values.
+ check=f'=IF(COUNTA(A{r}:G{r})=0,"",IF(A{r}="","Add invoice/reference ID",IF(SUMPRODUCT(--($A$8:$A$207=A{r}))>1,"Duplicate ID",IF(B{r}="","Add vendor name",IF(OR(NOT(ISNUMBER(C{r})),C{r}<DATE(2000,1,1),C{r}>TODAY()),"Check earned date",IF(OR(NOT(ISNUMBER(D{r})),D{r}<0),"Enter fee earned",IF(OR(NOT(ISNUMBER(E{r})),E{r}<C{r},E{r}>DATE(2100,12,31)),"Check due date",IF(AND(F{r}<>"",OR(NOT(ISNUMBER(F{r})),F{r}<0,F{r}>D{r})),"Check amount received",IF(AND(N(F{r})>0,OR(NOT(ISNUMBER(G{r})),G{r}<C{r},G{r}>TODAY())),"Check payment date",IF(AND(N(F{r})=0,G{r}<>""),"Clear date or enter receipt","OK"))))))))))'
+ formula(pay,f'K{r}',check,'','status')
+ formula(pay,f'H{r}',f'=IF(K{r}="OK",MAX(D{r}-N(F{r}),0),"")','','money')
+ formula(pay,f'I{r}',f'=IF(K{r}="OK",IF(AND(H{r}>0,E{r}<TODAY()),H{r},0),"")','','money')
+ formula(pay,f'J{r}',f'=IF(K{r}="", "",IF(K{r}<>"OK","Needs review",IF(H{r}=0,"Paid",IF(I{r}>0,"Overdue",IF(N(F{r})>0,"Part-paid","Awaiting payment")))))','','status')
+pay.autofilter('A7:K207')
+pay.conditional_format('A8:K207',{'type':'formula','criteria':'=AND($K8<>"",$K8<>"OK")','format':formats['bad']})
+pay.conditional_format('I8:I207',{'type':'cell','criteria':'>','value':0,'format':formats['bad']})
+pay.merge_range('A210:K211','Only rows marked OK enter the summaries. Duplicate IDs flag all matching rows. Payment due today is not overdue until tomorrow. Do not enter a receipt as a second invoice row; update the cumulative received amount. Refunds, overpayments and write-offs need review outside this simple ledger.',formats['note'])
+pay.merge_range('A213:K214','The most recent payment date is a reference field, not a full receipt history. This cumulative ledger does not allocate partial receipts to individual months. Actual vs Plan compares earned fees with operating expenses, not bank cash flow.',formats['note'])
+pay.fit_to_pages(1,0); pay.repeat_rows(6); pay.print_area('A1:K214')
+
+title(actual,'Actual results vs. your plan',10,'Use real business results, not homeowner electricity savings. Revenue comes from valid earned-fee rows in Vendor Payments. Enter monthly operating costs and mark reviewed months Yes. Unreviewed or incomplete months stay blank.')
+actual.write('A4','Plan start month',formats['label']); actual.write_datetime('B4',datetime.combine(start_month,datetime.min.time()),formats['inputdate'])
+actual.data_validation('B4',{'validate':'custom','value':'=AND(ISNUMBER(B4),DAY(B4)=1,B4>=DATE(2000,1,1),B4<=DATE(2099,12,1))','ignore_blank':False,'error_title':'Use the first day','error_message':'Enter the first day of your reporting start month.'})
+actual.merge_range('D4:K4','Month 1 in Monthly Plan = the start month selected here. Set this before entering results.',formats['note'])
+actual.write('A5','Complete months',formats['label']); formula(actual,'B5','=COUNT(H8:H19)',0,'int')
+actual.merge_range('D5:K5','',formats['status'])
+# merge_range writes its label; write the formula again into the merged range's first cell.
+formula(actual,'D5','=IF(\'Vendor Payments\'!K4>0,"Fix flagged Vendor Payments rows before actual results calculate.",IF(B5=0,"No complete reviewed months yet.","Totals compare only complete reviewed months."))','No complete reviewed months yet.','status')
+actual.write_row('A7',['Month','Planned revenue','Actual fees earned','Revenue variance','Planned operating costs','Actual variable costs','Actual fixed costs','Actual operating profit','Planned operating profit','Profit variance','Month reviewed?'],formats['head'])
+for i,r in enumerate(range(8,20)):
+ month_index=start_month.year*12+start_month.month-1+i
+ month=date(month_index//12,month_index%12+1,1)
+ formula(actual,f'A{r}',f'=DATE(YEAR($B$4),MONTH($B$4)+{i},1)',serial(month),'date')
+ formula(actual,f'B{r}',f"='Monthly Plan'!D{i+6}",2000)
+ earned=f'SUMIFS(\'Vendor Payments\'!$D$8:$D$207,\'Vendor Payments\'!$C$8:$C$207,">="&A{r},\'Vendor Payments\'!$C$8:$C$207,"<"&DATE(YEAR(A{r}),MONTH(A{r})+1,1),\'Vendor Payments\'!$K$8:$K$207,"OK")'
+ formula(actual,f'C{r}',f'=IF(AND(K{r}="Yes",COUNT(F{r}:G{r})=2,\'Vendor Payments\'!$K$4=0),{earned},"")','')
+ formula(actual,f'D{r}',f'=IF(ISNUMBER(C{r}),C{r}-B{r},"")','')
+ formula(actual,f'E{r}',f"=SUM('Monthly Plan'!E{i+6}:F{i+6})",1400)
+ for col in ['F','G']: actual.write_blank(f'{col}{r}',None,formats['inputmoney']); validation(actual,f'{col}{r}')
+ formula(actual,f'H{r}',f'=IF(ISNUMBER(C{r}),C{r}-SUM(F{r}:G{r}),"")','')
+ formula(actual,f'I{r}',f"='Monthly Plan'!G{i+6}",600)
+ formula(actual,f'J{r}',f'=IF(ISNUMBER(H{r}),H{r}-I{r},"")','')
+ actual.write_blank(f'K{r}',None,formats['inputtext']); actual.data_validation(f'K{r}',{'validate':'list','source':['Yes','No'],'ignore_blank':True})
+actual.write('A21','Comparable totals',formats['head'])
+for col in 'BCDEFGHIJ': formula(actual,f'{col}21',f'=IF(COUNT($H$8:$H$19)>0,SUMPRODUCT(--ISNUMBER($H$8:$H$19),{col}8:{col}19),"")','','totalmoney')
+actual.conditional_format('D8:D21',{'type':'cell','criteria':'<','value':0,'format':formats['bad']})
+actual.conditional_format('H8:J21',{'type':'cell','criteria':'<','value':0,'format':formats['bad']})
+actual.merge_range('A23:K24','Mark Yes only after all earned referral fees and both cost figures (including a real zero, if applicable) are entered. Any flagged ledger row pauses monthly actual results until corrected. Comparable totals include only months with a numeric actual profit, not the full-year plan.',formats['note'])
+actual.merge_range('A26:K27','Variance = actual minus planned; positive revenue/profit variance is favorable. Costs here are recurring operating expenses only. Keep one-time startup costs, taxes and loan payments out of this operating-profit comparison. The original cash plan remains a forecast, not an actual cash statement.',formats['note'])
+actual.merge_range('A29:K30','No automatic connection to the website or bank is included. Enter or paste checked records manually. Vendor fees are revenue when earned in this planning worksheet, even if not yet collected; your actual accounting/tax treatment may differ.',formats['note'])
+actual.print_area('A1:K30')
+start.merge_range('A27:D27','Track actual results after you begin operating',formats['head'])
+start.merge_range('A28:D29','Vendor Payments tracks earned fees, due dates and cumulative receipts. Actual vs Plan uses that ledger plus your entered monthly costs. These tabs start blank; example projections are not actual results.',formats['note'])
+start.write_url('A31',"internal:'Actual vs Plan'!A1",string='Open Actual vs Plan →')
+start.write_url('C31',"internal:'Vendor Payments'!A1",string='Open Vendor Payments →')
+
 w.close()
 print(OUTPUT)

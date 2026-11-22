@@ -34,3 +34,51 @@ and temporary copies with zero completions, zero contribution, and changed volum
 fees, startup cost and starting cash. Formula errors, cross-sheet updates, annual
 sums and break-even behavior were checked. No test data or credentials from the app
 are included in this workbook.
+
+## Actual results and vendor payments
+
+Two additional tabs start **blank**, so practice projections cannot be mistaken for
+actual business results:
+
+- **Vendor Payments:** 200 prepared rows for a unique invoice/reference ID, vendor
+  business name, earned date, fee earned, due date, cumulative amount received, and
+  most recent payment date. Outstanding and overdue balances and payment status
+  calculate automatically. Update the same row as partial receipts arrive; do not
+  create a second invoice row for another receipt. A payment due today is not overdue
+  until tomorrow. Use anonymous references, without homeowner names or bill details.
+- **Actual vs Plan:** set the reporting start month (first day of a month), then
+  enter actual variable and fixed operating costs and mark a reviewed month **Yes**.
+  Earned revenue is linked by earned date from the payment ledger. Missing costs,
+  unreviewed months, or any flagged ledger row leave results blank. Enter a real zero
+  when there was genuinely no cost. Month 1 maps to your selected start month.
+
+Ledger summaries use only rows marked **OK**. Duplicate IDs, invalid/missing dates,
+missing fees, overpayments and inconsistent receipt dates are flagged in **Data
+check**, and the count of rows needing correction is visible at the top. Fix all
+flagged rows before interpreting monthly actuals. Do not treat excluded rows as zero
+business activity. A blank received amount means no receipt recorded yet, not a
+verified statement from the bank.
+
+Actual revenue means **fees earned**, not cash collected. The cumulative receipt
+field and most recent payment date do not form a month-by-month cash transaction
+history. Fees earned before the reporting period remain in the ledger summary but
+are excluded from that period's earned revenue. These worksheets are a planning
+record, not a replacement for an accountant's revenue-recognition or tax guidance.
+Refunds, write-offs and overpayments require separate review.
+
+Revenue and profit variance are actual minus planned, so a positive variance is
+favorable. Comparable totals include only months with complete reviewed actual
+profit, and compare against those same planned months; they do not compare a partial
+year of actuals with a full-year plan. One-time startup spending, taxes and financing
+remain outside this operating-profit comparison. The original Monthly Plan cash
+chart remains a **forecast**, not actual bank cash.
+
+There is no automatic website/bank import. Enter checked records manually. Prepared
+ledger rows can be filtered; print a selection if you do not want unused rows printed.
+**Regenerating the workbook also clears these new tabs**; save your edited copy
+separately before running the generator.
+
+The added sheets were also recalculated independently with synthetic invoices:
+part-paid, fully paid, unpaid, due-today, and outside-period fees; reviewed-month
+profit and comparable-plan totals; and duplicate IDs, overpayments and inconsistent
+receipt dates. The distributed file contains none of those synthetic actual records.
