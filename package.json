@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "prestart": "npm run build",
-    "start": "python3 -m http.server 3000 --bind 0.0.0.0",
+    "start": "node --env-file-if-exists=.env server.mjs",
     "test": "node --test",
     "test:ocr": "npm run build && node scripts/check-bill-import.mjs",
     "test:progress": "npm run build && node scripts/check-progress.mjs",
@@ -14,7 +14,10 @@
     "test:questionnaire": "npm run build && node scripts/check-questionnaire.mjs",
     "test:simplified": "npm run build && node scripts/check-simplified.mjs",
     "test:referrals": "npm run build && node scripts/check-referrals.mjs",
-    "test:tracker": "npm run build && node scripts/check-tracker.mjs"
+    "test:tracker": "npm run build && node scripts/check-tracker.mjs",
+    "setup:shared": "node scripts/setup-shared.mjs",
+    "test:shared": "npm run build && node scripts/check-shared.mjs",
+    "start:production": "node server.mjs"
   },
   "devDependencies": {
     "@tesseract.js-data/eng": "1.0.0",
@@ -22,6 +25,6 @@
     "tesseract.js": "6.0.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   }
 }

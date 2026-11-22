@@ -35,3 +35,9 @@ const trackerSources = await Promise.all([read('../referral-tracking.js'), read(
 const trackerScript = trackerSources.map(source => source.replace(/^export /gm, '').replace(/^import .* from '\.\/[\w-]+\.js';\n/gm, '')).join('\n');
 await writeFile(new URL('../vendor-tracker.html', import.meta.url), trackerTemplate.replace('<script type="module" src="vendor-tracker.js"></script>', () => `<script>\n(() => {\n${trackerScript}\n})();\n</script>`));
 console.log('Built standalone team referral tracker.');
+
+const vendorUpdateTemplate = await read('./vendor-update.template.html');
+const vendorUpdateSources = await Promise.all([read('../referral-tracking.js'), read('../vendor-update.js')]);
+const vendorUpdateScript = vendorUpdateSources.map(source => source.replace(/^export /gm, '').replace(/^import .* from '\.\/[\w-]+\.js';\n/gm, '')).join('\n');
+await writeFile(new URL('../vendor-update.html', import.meta.url), vendorUpdateTemplate.replace('<script type="module" src="vendor-update.js"></script>', () => `<script>\n(() => {\n${vendorUpdateScript}\n})();\n</script>`));
+console.log('Built standalone private vendor update page.');

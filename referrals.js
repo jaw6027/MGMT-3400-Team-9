@@ -78,6 +78,34 @@ export function setupReferrals({ directory, getContext }) {
   const service = document.querySelector('#referral-service');
   const list = document.querySelector('#referral-list');
   let options = [];
+  let sharedProviderIds = new Set();
+  if (['http:', 'https:'].includes(location.protocol)) fetch('/api/config').then(response => response.ok ? response.json() : null).then(config => {
+    if (config?.enabled) { sharedProviderIds = new Set(config.vendors.map(vendor => vendor.id)); showMatches(); }
+  }).catch(() => {});
+  function requestSharedReferral(vendor, selectedService) {
+    const dialog = document.createElement('dialog');
+    const title = document.createElement('h3'); title.textContent = `Request a referral to ${vendor.name}`;
+    const info = document.createElement('p'); info.textContent = 'Your email and selected service will be stored on the shared server and made available to this vendor through a private link. No bill images, monthly bills or home questionnaire answers are sent. No email is sent automatically and no appointment is booked.';
+    const form = document.createElement('form');
+    const emailLabel = document.createElement('label'); emailLabel.textContent = 'Contact email';
+    const email = document.createElement('input'); email.type = 'email'; email.required = true; email.maxLength = 254; email.autocomplete = 'email'; emailLabel.append(email);
+    const consentLabel = document.createElement('label'); const consent = document.createElement('input'); consent.type = 'checkbox'; consent.required = true;
+    consentLabel.append(consent, document.createTextNode(` I agree to share my contact email and service request with ${vendor.name} so they can contact me.`));
+    const submit = document.createElement('button'); submit.type = 'submit'; submit.textContent = 'Submit referral request';
+    const status = document.createElement('p'); status.setAttribute('role', 'status');
+    const close = document.createElement('button'); close.type = 'button'; close.textContent = 'Close'; close.addEventListener('click', () => dialog.close());
+    form.append(emailLabel, consentLabel, submit); dialog.append(title, info, form, status, close); document.body.append(dialog);
+    dialog.addEventListener('close', () => { email.value = ''; dialog.remove(); });
+    form.addEventListener('submit', async event => {
+      event.preventDefault(); if (!form.reportValidity()) return; submit.disabled = true;
+      try {
+        const response = await fetch('/api/public/referrals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ vendorId: vendor.id, area: area.value, service: selectedService, email: email.value, consent: consent.checked }) });
+        const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Referral could not be saved.');
+        email.value = ''; form.hidden = true; status.textContent = `Referral reference: ${result.id}. ${result.message}`;
+      } catch (error) { status.textContent = error.message; submit.disabled = false; }
+    });
+    dialog.showModal();
+  }
   function showMatches() {
     const selected = options.find(option => option.service === service.value);
     document.querySelector('#referral-reason').textContent = selected?.reason || '';
@@ -110,6 +138,11 @@ export function setupReferrals({ directory, getContext }) {
       const price = document.createElement('p');
       price.textContent = 'Price: request a written quote. We have no comparable price data to rate this provider as affordable.';
       card.append(heading, why, price, contacts);
+      if (sharedProviderIds.has(vendor.id) && !getContext().example) {
+        const request = document.createElement('button'); request.type = 'button'; request.textContent = 'Request a tracked referral';
+        const chosen = service.value;
+        request.addEventListener('click', () => requestSharedReferral(vendor, chosen)); card.append(request);
+      }
       return card;
     }));
   }

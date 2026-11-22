@@ -1,10 +1,17 @@
 # Helio Home — energy & solar advisor
 
+## Shared tracking is now available
+
+See [SHARED_SETUP.md](SHARED_SETUP.md) to run the new Node/SQLite server, set up team
+sign-in and private vendor update links, and deploy later. The local-mode instructions
+below still apply when using the standalone pages without shared configuration.
+No hosting is provisioned, no real vendors are preloaded, and no emails are sent.
+
 A class-project prototype for a connected-home and solar business. Compare a household's current electricity use with a scenario combining efficiency upgrades and solar. Adjust costs, verified incentives, export rates, maintenance, and subscription fees to prepare a printable customer report.
 
 ## Run
 
-Requires Python 3 to serve the application and Node.js 20+ to install, build, and test it. Pinned development dependencies supply the local OCR engine, English language data, and browser test runner. The committed standalone page supports manual entry without building; photo reading requires the full served app and generated OCR assets.
+Requires Node.js 22.13+ (Node 24 recommended) to serve, install, build, and test the application. Python 3 is only an optional static-server fallback without shared tracking. Pinned development dependencies supply the local OCR engine, English language data, and browser test runner. The committed standalone page supports manual entry without building; photo reading requires the full served app and generated OCR assets.
 
 ```sh
 cd /workspace/MGMT-3400-Team-9

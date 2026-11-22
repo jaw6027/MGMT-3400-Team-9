@@ -2,8 +2,12 @@ export const referralStages = { referred: 'Referred', contacted: 'Contacted', sc
 export const trackingServices = { assessment: 'Home energy assessment', solar: 'Rooftop solar', maintenance: 'Existing solar review', storage: 'Solar and battery', backup: 'Outage backup', community: 'Community solar eligibility' };
 export const trackingActions = { contact: 'Contact vendor', consultation: 'Confirm consultation', quote: 'Request written quote', review: 'Review quote with homeowner', installation: 'Confirm installation plans', feedback: 'Request customer feedback', verify: 'Verify project outcome' };
 export const trackingCloseReasons = { cost: 'Cost or financing', suitability: 'Home or roof unsuitable', declined: 'Homeowner declined', unresponsive: 'No response', unavailable: 'Vendor unavailable', alternative: 'Another option chosen', other: 'Other / discuss with team' };
-export function trackingToday() {
+export function trackingToday(timeZone) {
   const date = new Date();
+  if (timeZone) {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(date).map(part => [part.type, part.value]));
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  }
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 function trackingDate(value) {
@@ -98,9 +102,9 @@ export function referralAttention(record, today = trackingToday()) {
   return reasons;
 }
 
-export function recordReferralStage(next, previous, at = new Date().toISOString()) {
+export function recordReferralStage(next, previous, at = new Date().toISOString(), today = trackingToday()) {
   const history = previous?.history?.map(event => ({ ...event })) || [];
   if (!history.length) history.push({ stage: previous?.stage || next.stage, at, kind: previous ? 'baseline' : 'initial' });
   if (previous && previous.stage !== next.stage) history.push({ stage: next.stage, at, kind: 'change' });
-  return validateReferralRecord({ ...next, history });
+  return validateReferralRecord({ ...next, history }, today);
 }

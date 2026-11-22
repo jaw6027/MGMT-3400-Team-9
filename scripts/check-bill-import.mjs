@@ -1,23 +1,11 @@
 // Run after npm run build. Uses synthetic data only and serves on a temporary local port.
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
-import { readFile, access } from 'node:fs/promises';
-import { createServer } from 'node:http';
+import { access } from 'node:fs/promises';
+import { createSharedServer } from '../server/shared-server.mjs';
 import { once } from 'node:events';
-import { resolve, relative, extname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const root = fileURLToPath(new URL('..', import.meta.url));
-const server = createServer(async (request, response) => {
-  try {
-    const path = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    const file = resolve(root, '.' + (path === '/' ? '/index.html' : path));
-    if (relative(root, file).startsWith('..')) throw new Error('Outside test root');
-    const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
-    response.setHeader('Content-Type', types[extname(file)] || 'application/octet-stream');
-    response.end(await readFile(file));
-  } catch { response.writeHead(404); response.end(); }
-});
+const server = createSharedServer().server;
 server.listen(0, '127.0.0.1');
 await once(server, 'listening');
 const origin = `http://127.0.0.1:${server.address().port}/`;

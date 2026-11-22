@@ -18,8 +18,68 @@ function trackerShowFilter(value) {
   trackerFilter.value = value; trackerRender(); trackerFilter.scrollIntoView({ block: 'center' }); trackerFilter.focus();
 }
 document.querySelector('#tracker-show-all').addEventListener('click', () => trackerShowFilter('all'));
+let trackerShared = false;
+let trackerLocalRecords = null;
+let trackerEditingRevision = null;
+let trackerPolling = false;
+let trackerSharedEpoch = 0;
+let trackerSharedToday = null;
+const trackerSharedMessage = message => { document.querySelector('#tracker-shared-status').textContent = message; };
+async function trackerApi(path, method = 'GET', data) {
+  const response = await fetch(path, { method, credentials: 'same-origin', headers: data ? { 'Content-Type': 'application/json' } : {}, body: data ? JSON.stringify(data) : undefined });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error || 'Shared request failed.');
+  return result;
+}
+const trackerLocalSaveDescription = document.querySelector('#tracker-save-description').textContent;
+function trackerSharedControls() {
+  document.querySelector('#tracker-save-description').textContent = trackerShared ? 'Shared changes save automatically to the server. Device-copy controls are disabled to keep local and shared records separate. Download backup exports the anonymous tracking records, not contact emails or vendor access links. Sign out to return to your local copy.' : trackerLocalSaveDescription;
+  document.querySelector('#tracker-login').hidden = trackerShared;
+  document.querySelector('#tracker-logout').hidden = !trackerShared;
+  for (const id of ['tracker-save', 'tracker-load', 'tracker-import', 'tracker-clear']) document.getElementById(id).disabled = trackerShared;
+}
+function trackerEnterShared(records) {
+  if (!trackerShared) {
+    if (trackerRecords.length && !confirm('Switch to shared records? Your current local copy will stay in this tab and return when you sign out. Save or download it first if you need it after closing this page.')) return;
+    trackerLocalRecords = trackerRecords;
+  }
+  trackerSharedEpoch++; trackerShared = true; trackerRecords = records; trackerResetForm(); trackerRender(); trackerSharedControls();
+  trackerSharedMessage('Connected. Changes save to the shared server automatically.');
+  trackerStatus('Showing shared team records. Local records have not been uploaded.');
+}
+async function trackerRefreshShared() {
+  if (!trackerShared || trackerPolling) return;
+  trackerPolling = true; const epoch = trackerSharedEpoch;
+  try {
+    const result = await trackerApi('/api/referrals');
+    if (!trackerShared || epoch !== trackerSharedEpoch) return;
+    if (JSON.stringify(result.records) !== JSON.stringify(trackerRecords) || trackerSharedToday !== result.today) { trackerSharedToday = result.today; trackerRecords = result.records; trackerRender(); }
+    trackerSharedMessage('Connected. Shared records refresh every 10 seconds. Unsaved edits remain in the form.');
+  } catch (error) { trackerSharedMessage(`Refresh paused: ${error.message} Current records and any form edits are retained.`); }
+  finally { trackerPolling = false; }
+}
+document.querySelector('#tracker-login').addEventListener('submit', async event => {
+  event.preventDefault(); const form = event.currentTarget;
+  try { await trackerApi('/api/login', 'POST', { password: form.elements.password.value }); form.reset(); const result = await trackerApi('/api/referrals'); trackerSharedToday = result.today; trackerEnterShared(result.records); }
+  catch (error) { form.reset(); trackerSharedMessage(error.message); }
+});
+document.querySelector('#tracker-logout').addEventListener('click', async () => {
+  try { await trackerApi('/api/logout', 'POST', {}); trackerSharedEpoch++; trackerShared = false; trackerRecords = trackerLocalRecords || []; trackerLocalRecords = null; trackerResetForm(); trackerRender(); trackerSharedControls(); trackerSharedMessage('Signed out. Shared records are no longer displayed.'); trackerStatus('Local copy restored in this tab.'); }
+  catch (error) { trackerSharedMessage(error.message); }
+});
+document.querySelector('#tracker-link-close').addEventListener('click', () => document.querySelector('#tracker-link-dialog').close());
+document.querySelector('#tracker-link-dialog').addEventListener('close', () => { document.querySelector('#tracker-private-link').value = ''; });
+if (['http:', 'https:'].includes(location.protocol)) {
+  trackerApi('/api/config').then(async config => {
+    if (!config.enabled) return;
+    document.querySelector('#tracker-shared').hidden = false;
+    document.querySelector('#tracker-shared-unavailable').hidden = true;
+    try { const result = await trackerApi('/api/referrals'); trackerSharedToday = result.today; trackerEnterShared(result.records); } catch { /* Sign-in is shown without exposing data. */ }
+  }).catch(() => {});
+  setInterval(trackerRefreshShared, 10000);
+}
 function trackerResetForm() {
-  trackerEditing = null; trackerForm.reset(); trackerForm.elements.referred.value = trackingToday();
+  trackerEditing = null; trackerEditingRevision = null; trackerForm.reset(); trackerForm.elements.referred.value = trackerShared ? trackerSharedToday : trackingToday();
   document.querySelector('#tracker-form-title').textContent = 'Add a referral';
   trackerForm.querySelector('[type=submit]').textContent = 'Add referral';
   document.querySelector('#tracker-cancel').hidden = true;
@@ -60,20 +120,20 @@ function trackerRenderCharts(performance) {
 function trackerRender() {
   const visible = trackerRecords.filter(record => {
     const open = !['installed', 'closed'].includes(record.stage);
-    if (Object.hasOwn(referralAttentionLabels, trackerFilter.value)) return referralAttention(record).includes(trackerFilter.value);
+    if (Object.hasOwn(referralAttentionLabels, trackerFilter.value)) return referralAttention(record, trackerShared ? trackerSharedToday : undefined).includes(trackerFilter.value);
     if (trackerFilter.value === 'unplanned') return open && (!record.nextAction || !record.followup);
     return true;
   });
   document.querySelector('#tracker-count').textContent = `Showing ${visible.length} of ${trackerRecords.length} referrals. Vendor totals always include all records.`;
   document.querySelector('#tracker-attention').replaceChildren(...Object.entries(referralAttentionLabels).map(([key, label]) => {
-    const count = trackerRecords.filter(record => referralAttention(record).includes(key)).length;
+    const count = trackerRecords.filter(record => referralAttention(record, trackerShared ? trackerSharedToday : undefined).includes(key)).length;
     const button = document.createElement('button'); button.type = 'button'; button.dataset.attention = key;
     const number = document.createElement('strong'); number.textContent = count;
     button.append(number, document.createTextNode(label)); button.addEventListener('click', () => trackerShowFilter(key)); return button;
   }));
-  const attentionCount = trackerRecords.filter(record => referralAttention(record).length).length;
+  const attentionCount = trackerRecords.filter(record => referralAttention(record, trackerShared ? trackerSharedToday : undefined).length).length;
   document.querySelector('#tracker-attention-empty').textContent = !trackerRecords.length ? 'Add or load referrals to see what needs attention.' : attentionCount ? `${attentionCount} open referrals need attention based on recorded details.` : 'No open referrals are flagged by these checks.';
-  const performance = referralPerformance(trackerRecords);
+  const performance = referralPerformance(trackerRecords, trackerShared ? trackerSharedToday : undefined);
   trackerRenderCharts(performance);
   document.querySelector('#tracker-empty').hidden = trackerRecords.length > 0;
   document.querySelector('#tracker-vendor-totals').replaceChildren(...performance.map(row => {
@@ -117,7 +177,7 @@ function trackerRender() {
     const actions = document.createElement('td');
     const edit = document.createElement('button'); edit.textContent = 'Edit'; edit.setAttribute('aria-label', `Edit referral ${record.id}`);
     edit.addEventListener('click', () => {
-      trackerEditing = record.id;
+      trackerEditing = record.id; trackerEditingRevision = record.revision;
       for (const field of ['vendor', 'referred', 'stage', 'contacted', 'installed', 'followup', 'rating', 'service', 'owner', 'consultation', 'quoteDate', 'nextAction', 'closedDate', 'closeReason']) trackerForm.elements[field].value = record[field] ?? '';
       document.querySelector('#tracker-form-title').textContent = `Edit referral ${record.id}`;
       trackerForm.querySelector('[type=submit]').textContent = 'Update referral';
@@ -125,21 +185,44 @@ function trackerRender() {
       trackerForm.elements.vendor.focus();
     });
     const remove = document.createElement('button'); remove.textContent = 'Delete'; remove.setAttribute('aria-label', `Delete referral ${record.id}`);
-    remove.addEventListener('click', () => {
+    remove.addEventListener('click', async () => {
       if (!confirm('Delete this referral from this tab? Save again to update the device copy.')) return;
+      if (trackerShared) {
+        try { await trackerApi(`/api/referrals/${record.id}`, 'DELETE', { revision: record.revision }); if (trackerEditing === record.id) trackerResetForm(); await trackerRefreshShared(); trackerStatus('Deleted from shared records.'); } catch (error) { trackerStatus(error.message); }
+        return;
+      }
       trackerRecords = trackerRecords.filter(item => item.id !== record.id);
       if (trackerEditing === record.id) trackerResetForm();
       trackerRender(); trackerStatus('Referral deleted from this tab. Device copy unchanged until you save.');
     });
-    actions.append(edit, remove); tr.append(actions); return tr;
+    actions.append(edit, remove);
+    if (trackerShared) {
+      const link = document.createElement('button'); link.textContent = 'Vendor link';
+      link.addEventListener('click', async () => {
+        try { const result = await trackerApi(`/api/referrals/${record.id}/link`, 'POST', {}); document.querySelector('#tracker-private-link').value = result.url; document.querySelector('#tracker-link-expiry').textContent = `Expires ${new Date(result.expires).toLocaleString()}`; document.querySelector('#tracker-link-dialog').showModal(); }
+        catch (error) { trackerStatus(error.message); }
+      });
+      const revoke = document.createElement('button'); revoke.textContent = 'Revoke link';
+      revoke.addEventListener('click', async () => { try { await trackerApi(`/api/referrals/${record.id}/link`, 'DELETE', {}); trackerStatus('Vendor link and its active sessions revoked.'); } catch (error) { trackerStatus(error.message); } });
+      actions.append(link, revoke);
+    }
+    tr.append(actions); return tr;
   }));
 }
-trackerForm.addEventListener('submit', event => {
+trackerForm.addEventListener('submit', async event => {
   event.preventDefault();
   try {
     if (!trackerEditing && trackerRecords.length >= 1000) throw new Error('This prototype supports up to 1,000 referrals.');
     const raw = Object.fromEntries(new FormData(trackerForm));
     raw.id = trackerEditing || crypto.randomUUID(); raw.rating = raw.rating === '' ? null : Number(raw.rating);
+    if (trackerShared) {
+      const button = trackerForm.querySelector('[type=submit]'); button.disabled = true;
+      try {
+        await trackerApi(trackerEditing ? `/api/referrals/${trackerEditing}` : '/api/referrals', trackerEditing ? 'PUT' : 'POST', { record: validateReferralRecord(raw, trackerSharedToday), revision: trackerEditingRevision });
+        trackerResetForm(); await trackerRefreshShared(); trackerStatus('Saved to shared records.');
+      } finally { button.disabled = false; }
+      return;
+    }
     const record = recordReferralStage(validateReferralRecord(raw), trackerRecords.find(item => item.id === trackerEditing));
     const updated = trackerEditing ? trackerRecords.map(item => item.id === trackerEditing ? record : item) : [...trackerRecords, record];
     trackerBackupText(updated);
