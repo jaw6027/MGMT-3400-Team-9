@@ -167,7 +167,7 @@ remaining utility charges, with a link to California's CSLB license lookup.
 ### Team vendor performance tracker
 
 Open `vendor-tracker.html` for the separate internal class-project tracker. It is
-not linked from the customer journey and has no sign-in or shared database. Do not
+available through the customer website footer’s **Team tools: Needs attention** link and has no sign-in or shared database. Do not
 use it as a secure production CRM. Add business names and anonymous referrals only;
 there are no fields for homeowner contact details, bills, addresses or freeform notes.
 Clicking a provider link on the customer website does not create a referral.
@@ -275,3 +275,7 @@ stage events. Updates are checked against the 1 MB snapshot limit before replaci
 in-memory records, so a rejected oversized update retains the prior data. Download
 archives before removing older records if space is needed. Shared copies still do
 not synchronize or merge automatically.
+
+The footer team-tools link opens `vendor-tracker.html#needs-attention` directly.
+The dashboard remains on the separate team page; no internal referral records are
+embedded in the customer page or sent by clicking this link.

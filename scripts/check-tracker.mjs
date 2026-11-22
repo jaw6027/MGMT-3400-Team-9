@@ -26,7 +26,10 @@ try {
   browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
   const page = await browser.newPage();
   const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto(origin + 'vendor-tracker.html');
+  await page.goto(origin);
+  await page.locator('#team-attention-link').click();
+  await page.waitForURL('**/vendor-tracker.html#needs-attention');
+  assert.equal(await page.locator('#needs-attention').isVisible(), true);
   await page.evaluate(() => localStorage.setItem('helio-home:progress:v1', 'unrelated'));
   assert.equal(await page.locator('h1').textContent(), 'Vendor performance');
   assert.equal(await page.locator('#tracker-empty').isVisible(), true);
