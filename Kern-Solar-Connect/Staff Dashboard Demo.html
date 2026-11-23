@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#122f46"><title>Kern Solar Connect | Staff Demo</title><style>@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+:root{--navy:#122f46;--yellow:#f4c654;--paper:#fffdf8;--muted:#61727b;--line:#dde3de;--green:#edf1e8}*{box-sizing:border-box}body{margin:0;background:#f6f7f1;color:var(--navy);font:14px/1.65 'DM Sans',sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}h1,h2,h3{font-family:Manrope,sans-serif;line-height:1.25;letter-spacing:-.035em;margin:0 0 14px}p{margin:0 0 16px}[hidden]{display:none!important}:focus-visible{outline:3px solid #377c9d;outline-offset:4px}.demo-banner{background:var(--navy);color:#fff9e8;padding:10px 40px;display:flex;justify-content:space-between;font-size:10px;letter-spacing:.06em}.demo-banner span{color:#c9d5dd}.brand{display:flex;gap:12px;align-items:center;font-size:28px;color:#b78e30;line-height:1.3}.brand>span{font-size:14px;font-weight:700;color:var(--navy);letter-spacing:.08em}.brand small{font-size:9px;letter-spacing:.2em;display:block;margin-top:5px;font-weight:500}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;margin-bottom:17px}.login-shell{min-height:calc(100vh - 37px);display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:90px;width:min(1100px,calc(100% - 80px));margin:auto;padding:65px 0}.login-story>.brand{margin-bottom:70px}.login-story h1{font-size:46px;line-height:1.2}.login-story>p:not(.eyebrow){max-width:425px;color:var(--muted)}.story-steps{display:grid;gap:12px;font-size:12px;margin-top:32px;color:#4e6559}.login-card{background:var(--paper);border:1px solid var(--line);padding:38px;border-radius:10px;box-shadow:0 10px 35px #122f4606}.login-card h2{font-size:28px}.login-card>p:not(.eyebrow){font-size:13px;color:var(--muted)}label{display:block;font-size:11px;font-weight:600;margin-bottom:7px}input,select,textarea{display:block;width:100%;border:1px solid #cfd8d2;border-radius:5px;padding:11px;background:var(--paper);color:var(--navy);margin-top:7px;min-width:0;font-size:12px}textarea{resize:vertical}.button{display:flex;justify-content:space-between;gap:25px;align-items:center;border:0;background:var(--yellow);color:var(--navy);font-size:12px;font-weight:700;padding:14px 18px;border-radius:5px}.button:hover{background:#edbc3e}.login-card .button{margin-top:22px;width:100%}.notice{margin-top:27px;background:#f7f0dc;padding:17px;border-radius:5px;font-size:11px;line-height:1.8}.notice p{margin:6px 0 0;color:#6c6042}.topbar{padding:24px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--paper);border-bottom:1px solid var(--line)}.identity{display:flex;align-items:center;gap:20px;font-size:11px}.quiet{background:transparent;border:0;color:var(--navy);font-size:11px;text-decoration:underline;text-underline-offset:4px;padding:8px}.outline{background:transparent;border:1px solid #b8c5be;border-radius:5px;color:var(--navy);padding:10px 15px;font-size:11px;white-space:nowrap}.dashboard{width:min(1300px,calc(100% - 80px));margin:auto;padding:40px 0 55px}.page-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px}.page-heading h1{font-size:32px;margin-bottom:9px}.page-heading p:not(.eyebrow){color:var(--muted);font-size:13px;margin:0}.page-heading .eyebrow{margin-bottom:10px}.workspace-note{font-size:11px;padding:13px 17px;background:#eaf0e5;color:#45604e;border-radius:5px}.workspace-note strong{margin-right:5px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:25px 0}.metrics article{border:1px solid var(--line);border-radius:7px;background:var(--paper);padding:20px 22px}.metrics span,.metrics small{display:block;font-size:11px;color:var(--muted)}.metrics strong{display:block;font-size:32px;line-height:1.3;margin:8px 0}.metrics small{font-size:10px}.work-grid{display:grid;grid-template-columns:.85fr 1.4fr;gap:23px;align-items:start}.panel{border:1px solid var(--line);border-radius:8px;background:var(--paper);padding:25px;min-width:0}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}.panel h2{font-size:20px;margin-bottom:0}.sample-label{font-size:8px;letter-spacing:.09em;color:#857031;white-space:nowrap}.filters{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin:22px 0 8px}.filters label{min-width:0}.filters input,.filters select{padding:10px 9px}.muted{color:var(--muted)}.small{font-size:11px}.request-list{display:grid;gap:10px}.request-card{text-align:left;background:transparent;color:var(--navy);border:1px solid var(--line);border-radius:5px;padding:16px;width:100%;display:block}.request-card[aria-pressed="true"]{border-color:#b7953e;background:#faf4e1;box-shadow:inset 3px 0 #b7953e}.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.request-name{font-size:13px;font-weight:700}.request-meta{display:block;font-size:10px;color:var(--muted);margin:5px 0}.badge{font-size:9px;padding:3px 7px;border-radius:20px;font-weight:500;white-space:nowrap}.badge-new{background:#f9eabf;color:#775415}.badge-contacted{background:#e6edf2;color:#345568}.badge-scheduled{background:#e4eddf;color:#3d5b36}.detail-header{display:flex;align-items:start;justify-content:space-between;gap:20px}.detail-header h2{font-size:25px;margin-bottom:5px}.detail-header .eyebrow{margin-bottom:10px}.detail-header p{font-size:11px}.status-control{min-width:125px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0;padding:20px 0;border-block:1px solid var(--line)}.contact-grid dt{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}.contact-grid dd{font-size:12px;margin:4px 0 0;overflow-wrap:anywhere}.contact-grid .wide{grid-column:1/-1}.detail-section{margin-top:25px}.detail-section h3{font-size:16px;margin-bottom:12px}.customer-question{font-size:12px;background:#f1f3eb;padding:15px;border-radius:4px}.worksheet-totals{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.worksheet-totals>div{background:var(--green);padding:15px;border-radius:4px}.worksheet-totals span{font-size:10px;display:block}.worksheet-totals strong{font-size:22px;display:block;margin-top:4px}.coverage{font-size:11px;color:var(--muted)}.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:11px;text-align:left}caption{text-align:left;font-size:10px;color:var(--muted);margin-bottom:10px}th,td{padding:9px 7px;border-bottom:1px solid var(--line)}thead{background:#f0f2e9}th{font-weight:600}.missing-row td{color:#8b6522}.missing{font-size:10px;color:#8b6522;line-height:1.8;margin-top:10px}.note-form{margin-top:15px}.note-form .button{margin-top:10px;width:auto}.note-list{list-style:none;padding:0;margin:18px 0 0}.note-list li{padding:13px 0;border-top:1px solid var(--line)}.note-list strong{font-size:10px;color:var(--muted);font-weight:500}.note-list p{font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0 0}.empty{padding:25px 0;text-align:center;font-size:12px;color:var(--muted)}footer{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding:22px 40px;font-size:10px;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:1000px){.work-grid{grid-template-columns:1fr 1.4fr}.dashboard{width:calc(100% - 40px)}.panel{padding:20px}.filters{grid-template-columns:1fr}.login-shell{gap:40px}.login-story h1{font-size:36px}.login-card{padding:28px}.card-top{align-items:start;flex-direction:column}}@media(max-width:730px){.demo-banner{padding:10px 20px;font-size:8px;gap:20px}.demo-banner span{text-align:right;max-width:190px}.login-shell{grid-template-columns:1fr;width:calc(100% - 40px);padding:35px 0;gap:30px}.login-story>.brand{margin-bottom:35px}.login-story h1{font-size:35px}.story-steps{display:none}.login-card{padding:25px}.topbar{padding:20px;align-items:start}.topbar .brand>span{font-size:11px}.identity{align-items:end;flex-direction:column;gap:3px;text-align:right;font-size:9px}.identity .quiet{padding:2px;font-size:10px}.page-heading{align-items:start;flex-direction:column}.page-heading h1{font-size:28px}.dashboard{padding-top:30px}.metrics{grid-template-columns:1fr 1fr;gap:10px}.metrics article{padding:16px}.metrics small{font-size:9px}.work-grid{grid-template-columns:1fr}.filters{grid-template-columns:1.3fr 1fr}.card-top{flex-direction:row;align-items:center}.detail-header{gap:12px}.detail-header h2{font-size:22px}.status-control{min-width:110px}footer{padding:20px;flex-direction:column;gap:5px}.contact-grid{gap:12px}.worksheet-totals strong{font-size:21px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.commission-metrics{grid-template-columns:repeat(3,1fr)}.commission-metrics strong{font-size:29px;overflow-wrap:anywhere}.potential-card{background:#f8f0d9!important;border-color:#d7c387!important}.commission-explainer{font-size:11px;color:var(--muted);margin:-8px 0 25px;line-height:1.85}.sales-performance{margin-bottom:25px}.sales-performance table{margin-top:16px;min-width:660px}.sales-performance th:not(:first-child),.sales-performance td{text-align:right;white-space:nowrap}.sales-performance tbody th{min-width:170px}.crm-filters{grid-template-columns:1fr 1fr;gap:10px}.crm-filters>label:first-child{grid-column:1/-1}.crm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:17px 0}.crm-form-grid label{min-width:0}.crm-editor{padding:20px;background:#f6f7ee;border:1px solid var(--line);border-radius:6px}.crm-editor h3{font-size:17px}.crm-help{font-size:10px;color:#6b633e;background:#f7efd6;padding:12px;line-height:1.85}.crm-error{font-size:11px;color:#8a3d24;background:#fae8df;padding:12px}.deal-balances{display:grid;gap:5px;font-size:11px;padding-top:17px;margin-top:17px;border-top:1px solid var(--line);color:#435c47}.activity-history{margin-top:18px;font-size:11px}.activity-history summary{cursor:pointer;font-weight:600}.activity-history>p{margin:12px 0 0}.activity-item{padding:12px 0;border-bottom:1px solid var(--line)}.activity-item strong{font-size:9px;font-weight:500;color:var(--muted)}.activity-item p{margin:5px 0 0;font-size:11px;overflow-wrap:anywhere}.crm-saved{background:#e5efdf;color:#355138;font-size:12px;padding:12px;border-radius:4px;margin-bottom:15px}.request-meta.overdue{color:#9a4126;font-weight:600}.badge-lost{background:#eee8e4;color:#705c51}.request-card .badge{white-space:normal;max-width:150px}.request-card .card-top{align-items:start}.status-control{max-width:145px}.detail-header .status-control{font-size:10px}@media(max-width:1000px){.commission-metrics strong{font-size:25px}.sales-performance .panel-heading{align-items:start;flex-direction:column;gap:5px}.crm-editor{padding:16px}.crm-form-grid{grid-template-columns:1fr}}@media(max-width:730px){.commission-metrics{grid-template-columns:1fr 1fr}.commission-metrics strong{font-size:24px}.commission-metrics small{font-size:10px}.crm-form-grid{grid-template-columns:1fr 1fr}}@media(max-width:420px){.crm-form-grid{grid-template-columns:1fr}.commission-metrics strong{font-size:21px}.commission-metrics article{padding:15px 12px}.request-card .card-top{flex-direction:column;gap:7px}.sales-performance .sample-label{white-space:normal}}
+.heading-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.insights-panel{margin-bottom:25px}.insights-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:30px;margin-top:20px}.insights-grid h3{font-size:14px;margin:0 0 12px}.insight-list{padding-left:18px;font-size:12px;color:var(--muted)}.insight-list li{margin-bottom:8px}.insights-grid table{min-width:340px}.prospect-editor{margin-bottom:25px;background:#faf9ef}.prospect-editor h2{font-size:24px}.prospect-editor .crm-form-grid{grid-template-columns:repeat(3,1fr);margin-block:22px}.full-width{grid-column:1/-1}.profile-overview{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:20px 0}.profile-overview p{margin:0}.conversation-recap{background:#e9efe3;border-left:3px solid #819a6a;padding:16px;border-radius:4px;font-size:12px}.conversation-recap strong{display:block;font-size:12px;margin-bottom:8px}.conversation-recap p{font-size:11px;white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0}.tool-accordion{margin-top:18px;border:1px solid var(--line);border-radius:6px;min-width:0}.tool-accordion>summary{font-size:12px;font-weight:600;cursor:pointer;padding:16px;background:#f5f6ed;border-radius:6px;overflow-wrap:anywhere}.accordion-content{padding:18px;min-width:0}.accordion-content h3{font-size:16px;margin:25px 0 12px}.accordion-content .table-wrap table{min-width:370px}.accordion-content .crm-form-grid{grid-template-columns:1fr 1fr}.accordion-content .button{margin-top:15px}.accordion-content>p{font-size:11px}.prospect-tools{margin-bottom:22px}input:read-only{background:#edf0e9;color:#526657}#prospect-editor input:disabled{opacity:.5}.accordion-content form{min-width:0}.crm-editor .crm-form-grid input[type=text]{min-width:0}@media(max-width:1000px){.prospect-editor .crm-form-grid{grid-template-columns:1fr 1fr}.insights-grid{grid-template-columns:1fr;gap:20px}.accordion-content .crm-form-grid{grid-template-columns:1fr}.accordion-content{padding:15px}.profile-overview{align-items:start;flex-direction:column}.insights-panel .panel-heading{align-items:start;flex-direction:column}}@media(max-width:730px){.accordion-content .crm-form-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.accordion-content .crm-form-grid,.prospect-editor .crm-form-grid{grid-template-columns:1fr}.heading-actions{gap:8px}.heading-actions .button,.heading-actions .outline{font-size:10px;padding:11px 13px}.insights-panel .sample-label{white-space:normal}}
+.staff-pages{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:30px;flex-wrap:wrap}.staff-pages a{font-size:12px;font-weight:600;padding:11px 18px;border-radius:5px;color:var(--muted)}.staff-pages a[aria-current=page]{background:var(--navy);color:var(--paper)}.staff-pages a:hover{box-shadow:inset 0 0 0 1px #b6c3b9}.marketing-range{display:flex;gap:15px;align-items:end;flex-wrap:wrap;margin:25px 0 15px;padding:20px}.marketing-range>div{flex:1;min-width:140px}.marketing-range label{margin:0}.marketing-range .button,.marketing-range .outline{min-height:41px}.marketing-range>.crm-error{flex-basis:100%;margin:0}.marketing-metrics{grid-template-columns:repeat(4,1fr)}.marketing-metrics strong{font-size:28px;overflow-wrap:anywhere}.marketing-metrics small{line-height:1.8}.campaign-overview{margin:25px 0}.campaign-overview table{min-width:930px;margin-top:18px}.campaign-overview th,.campaign-overview td{vertical-align:middle}.campaign-overview tbody th{min-width:220px}.campaign-overview th strong{display:block;font-size:12px}.campaign-source{display:block;font-weight:400;font-size:10px;color:var(--muted);margin-top:3px}.campaign-overview td:not(:last-child){white-space:nowrap}.campaign-overview .outline{font-size:10px;padding:7px 12px}.campaign-editor{margin-bottom:25px;background:#faf9ef}.campaign-budget{display:flex;gap:18px;flex-wrap:wrap;padding:17px;background:#eef2e7;border-radius:5px;font-size:12px;margin:18px 0}.campaign-tactics{font-size:13px;line-height:1.9;color:#52695a;background:#f3f5eb;padding:17px;border-radius:5px;margin-top:18px;white-space:pre-wrap}.campaign-prospects{list-style:none;padding:0;margin:10px 0 25px}.campaign-prospects li{border-bottom:1px solid var(--line)}.campaign-prospects button{text-align:left;line-height:1.8}.campaign-prospects button:hover{color:#9b7115}#campaign-detail{margin-bottom:25px}#campaign-detail>.panel-heading{margin-bottom:15px}#campaign-detail>h3{font-size:17px;margin-top:26px}.campaign-editor h2{font-size:24px}.profile-overview{flex-wrap:wrap}.profile-overview>div{flex-basis:100%}.profile-overview>div p{margin:0}#marketing-view>.page-heading h1{font-size:33px}@media(max-width:1000px){.marketing-metrics{grid-template-columns:1fr 1fr}}@media(max-width:730px){.staff-pages{gap:5px;margin-bottom:24px}.staff-pages a{font-size:11px;padding:10px 13px}.marketing-range{gap:12px;padding:17px}.marketing-range>div{min-width:120px}.marketing-range .button,.marketing-range .outline{font-size:11px;padding:10px 13px}.marketing-metrics strong{font-size:25px}.campaign-budget{flex-direction:column;gap:8px}#campaign-detail>.panel-heading{align-items:start;flex-direction:column;gap:8px}#marketing-view>.page-heading h1{font-size:28px}.campaign-overview .panel-heading{align-items:start;flex-direction:column;gap:6px}}
+</style></head>
+<body>
+  <div class="demo-banner">MGMT 3400 · GROUP 9 <span>Staff dashboard demonstration · fictional data only</span></div>
+  <main id="sign-in" class="login-shell">
+    <div class="login-story"><a class="brand" href="#">☀ <span>KERN SOLAR<small>CONNECT / TEAM</small></span></a><p class="eyebrow">THE TEAM’S SIDE OF THE SUNSHINE</p><h1>Local connections.<br>A shared workspace.</h1><p>One place for Group 9 to explore consultation requests, review energy worksheets, and plan the next conversation.</p><div class="story-steps"><span>01 &nbsp; Review requests</span><span>02 &nbsp; Understand energy use</span><span>03 &nbsp; Keep the team in sync</span></div></div>
+    <form id="login-form" class="login-card"><p class="eyebrow">STAFF DEMO</p><h2>Welcome, Group 9.</h2><p>Choose a sample team identity to walk through the dashboard. Every team member has the same tools and access.</p><label for="team-member">Demo team member</label><select id="team-member" required><option value="">Choose a team member</option><option>Group 9 · Team member 1</option><option>Group 9 · Team member 2</option><option>Group 9 · Team member 3</option><option>Group 9 · Team member 4</option></select><button class="button" type="submit">Sign in to demo <span aria-hidden="true">↗</span></button><div class="notice"><strong>Simulated sign-in—not real security.</strong><p>Anyone with this demo can choose an identity. No account or password is needed. A live private dashboard would require server-enforced sign-in and an approved staff list.</p></div></form>
+  </main>
+  <div id="workspace" hidden>
+    <header class="topbar"><div class="brand">☀ <span>KERN SOLAR<small>CONNECT / TEAM</small></span></div><div class="identity"><span id="signed-in-as"></span><button id="sign-out" class="quiet" type="button">Sign out</button></div></header>
+    <main class="dashboard"><nav class="staff-pages" aria-label="Team pages"><a href="#overview" id="overview-page-link">Overview</a><a href="#sales" id="sales-page-link" aria-current="page">Sales CRM</a><a href="#marketing" id="marketing-page-link">Marketing &amp; Campaigns</a></nav><section id="overview-view" aria-labelledby="overview-title" hidden><div class="page-heading"><div><p class="eyebrow">TEAM OVERVIEW</p><h1 id="overview-title">The big picture, in one place.</h1><p>Pipeline totals, commissions, and salesperson performance across all prospects.</p></div><div class="heading-actions"><button id="overview-sales" class="button" type="button">Open sales CRM</button><button id="overview-reset" class="outline" type="button">Reset demo data</button></div></div><div class="workspace-note">Fictional classroom data. These totals update from prospect records in Sales CRM. All team members have the same access. Demo changes reset on reload or sign-out.</div>
+      <section class="metrics commission-metrics" aria-label="Pipeline and commission overview">
+        <article><span>Open deals</span><strong id="crm-open">0</strong><small>Excludes closed won and lost</small></article>
+        <article><span>Open pipeline estimate</span><strong id="crm-estimated">$0.00</strong><small>Unearned · not guaranteed</small></article>
+        <article><span>Earned commissions</span><strong id="crm-earned">$0.00</strong><small>Total earned, including paid amounts</small></article>
+        <article><span>Paid / received</span><strong id="crm-paid">$0.00</strong><small>Payments actually received</small></article>
+        <article><span>Earned, awaiting payment</span><strong id="crm-unpaid">$0.00</strong><small>Earned minus received</small></article>
+        <article class="potential-card"><span>Potential future receipts</span><strong id="crm-potential">$0.00</strong><small>Open estimate + earned unpaid</small></article>
+      </section>
+      <p class="commission-explainer">Amounts are fictional USD. Moving a deal’s stage does not automatically earn a commission or mark it paid. The open pipeline estimate excludes closed deals and subtracts amounts already earned on open deals, so they are not counted twice. Estimates are not received income.</p>
+      <section class="panel sales-performance" aria-labelledby="sales-title"><div class="panel-heading"><h2 id="sales-title">Salesperson overview</h2><span class="sample-label">ALL PROSPECTS · TOTALS IGNORE FILTERS</span></div><div class="table-wrap"><table><caption>Assignment and commissions by salesperson</caption><thead><tr><th scope="col">Salesperson</th><th scope="col">Open deals</th><th scope="col">Open estimate</th><th scope="col">Earned</th><th scope="col">Received</th><th scope="col">Awaiting payment</th></tr></thead><tbody id="sales-rollup"></tbody></table></div></section>
+</section><section id="sales-view" aria-label="Sales CRM"><div class="page-heading"><div><p class="eyebrow">SALES WORKSPACE</p><h1>Prospects. Progress. Next steps.</h1><p>Manage contacts, follow-ups, installer referrals, and individual commissions.</p></div><div class="heading-actions"><button id="create-prospect" class="button" type="button">+ Create prospect</button><button id="reset-demo" class="outline" type="button">Reset demo data</button></div></div>
+      <div class="workspace-note"><strong>Same access for every team member.</strong> Sample records are separate from the customer website. Changes stay in this page and reset when you reload or sign out.</div>
+      <section id="prospect-editor" class="panel prospect-editor" aria-labelledby="editor-title" hidden></section>
+      <div class="work-grid"><section class="panel requests-panel" aria-labelledby="requests-title"><div class="panel-heading"><h2 id="requests-title">Prospect pipeline</h2><span class="sample-label">SAMPLE DATA</span></div><div class="filters crm-filters"><label for="search">Find a request<input type="search" id="search" placeholder="Search by prospect name or ID"></label><label for="status-filter">Status<select id="status-filter"><option>All statuses</option><option>New</option><option>Contacted</option><option>Scheduled</option></select></label><label for="stage-filter">Pipeline stage<select id="stage-filter"></select></label><label for="salesperson-filter">Salesperson<select id="salesperson-filter"></select></label><label for="source-filter">Lead source<select id="source-filter"></select></label><label for="followup-filter">Follow-up<select id="followup-filter"><option>All follow-ups</option><option>Overdue</option><option>Due today</option><option>Upcoming</option><option>No date</option></select></label></div><p id="result-count" class="muted small" role="status"></p><div id="request-list" class="request-list"></div><p id="no-results" class="empty" hidden>No requests match. Try another name or status.</p></section>
+      <section class="panel detail-panel" id="request-detail" aria-labelledby="detail-title"><p class="empty">Choose a request to see its details.</p></section></div>
+      </section><section id="marketing-view" aria-labelledby="marketing-title" hidden>
+      <div class="page-heading"><div><p class="eyebrow">MARKETING WORKSPACE</p><h1 id="marketing-title">Find prospects. Learn what works.</h1><p>Campaign spending and prospect acquisition, separate from the sales pipeline.</p></div><div class="heading-actions"><button id="create-campaign" class="button" type="button">+ Create campaign</button><button id="marketing-reset" class="outline" type="button">Reset demo data</button></div></div>
+      <div class="workspace-note">Fictional campaign data. Link a prospect to one campaign in their prospect details. Counts update automatically; they are not manually entered. Demo changes reset on reload or sign-out.</div>
+      <form id="marketing-range" class="panel marketing-range"><div><label for="marketing-from">From<input id="marketing-from" type="date"></label></div><div><label for="marketing-to">Through<input id="marketing-to" type="date"></label></div><button class="button" type="submit">Apply dates</button><button id="marketing-all-time" class="outline" type="button">All time</button><p id="marketing-range-error" class="crm-error" role="alert" hidden></p></form>
+      <p id="marketing-period" class="muted small"></p>
+      <section class="metrics marketing-metrics" aria-label="Campaign acquisition overview"><article><span>Prospects acquired</span><strong id="marketing-prospects">0</strong><small>Linked to a campaign · selected period</small></article><article><span>Actual campaign spend</span><strong id="marketing-spend">$0.00</strong><small>Dated expenses · selected period</small></article><article><span>Cost per prospect</span><strong id="marketing-cpl">—</strong><small>Period spend ÷ period prospects</small></article><article><span>Prospect growth</span><strong id="marketing-growth">—</strong><small id="marketing-growth-note">Compared with the previous equal period</small></article></section>
+      <p id="marketing-unattributed" class="muted small"></p>
+      <section class="panel campaign-overview"><div class="panel-heading"><h2>Campaign performance</h2><span class="sample-label">SELECT A CAMPAIGN FOR DETAILS</span></div><div class="table-wrap"><table><caption>Spending and prospects for the selected reporting period; budgets are for the entire campaign</caption><thead><tr><th scope="col">Campaign / source</th><th scope="col">Status</th><th scope="col">Total budget</th><th scope="col">Period spend</th><th scope="col">New prospects</th><th scope="col">Cost / prospect</th><th scope="col">Details</th></tr></thead><tbody id="campaign-rows"></tbody></table></div></section>
+      <section id="campaign-editor" class="panel campaign-editor" aria-labelledby="campaign-editor-title" hidden></section>
+      <section id="campaign-detail" class="panel" aria-labelledby="campaign-detail-title"></section>
+      <section class="panel insights-panel" aria-labelledby="insights-title"><div class="panel-heading"><h2 id="insights-title">What’s working—and what to improve</h2><span class="sample-label">ALL PROSPECT HISTORY · NOT DATE-FILTERED</span></div><div class="insights-grid"><div class="table-wrap"><table><caption>Lead sources and outcomes</caption><thead><tr><th scope="col">Source</th><th scope="col">Prospects</th><th scope="col">Won</th><th scope="col">Lost</th></tr></thead><tbody id="source-insights"></tbody></table></div><div><h3>Why prospects were lost</h3><ul id="loss-insights" class="insight-list"></ul></div></div></section>
+      </section>
+      <p id="staff-status" class="sr-only" role="status" aria-live="polite"></p>
+    </main><footer>Group 9 · MGMT 3400 <span>Classroom prototype · simulated sign-in · no live customer records</span></footer>
+  </div>
+  <noscript><p class="notice">Enable JavaScript to use this staff dashboard demonstration.</p></noscript>
+<script>// Commission values are stored as integer cents. Estimates are never cash received.
+const CRM = (() => {
+  const stages = ['New lead', 'Contacted', 'Consultation scheduled', 'Referred to installer', 'Installation in progress', 'Closed won', 'Closed lost'];
+  const salespeople = ['Unassigned', ...[1,2,3,4].map(n => `Group 9 · Team member ${n}`)];
+  const leadSources = ['Unknown', 'Website', 'Friend / customer referral', 'Social media', 'Community event', 'Door-to-door', 'Other'];
+  const lostReasons = ['Price / financing', 'Not ready', 'Property / roof suitability', 'Chose another provider', 'Could not reach', 'Other'];
+  const isOpen = record => !['Closed won', 'Closed lost'].includes(record.stage);
+  const openEstimate = record => isOpen(record) ? Math.max(0, record.estimated - record.earned) : 0;
+  function summarize(records) {
+    const result = { deals: records.length, openDeals: 0, estimated: 0, earned: 0, paid: 0, unpaid: 0, potential: 0 };
+    for (const record of records) {
+      if (isOpen(record)) result.openDeals++;
+      result.estimated += openEstimate(record);
+      result.earned += record.earned;
+      result.paid += record.paid;
+    }
+    result.unpaid = result.earned - result.paid;
+    result.potential = result.estimated + result.unpaid;
+    return result;
+  }
+  function parseMoney(value) {
+    if (!/^\d+(\.\d{1,2})?$/.test(String(value)) || Number(value) > 1000000) return NaN;
+    return Math.round(Number(value) * 100);
+  }
+  function validate(record) {
+    if (!stages.includes(record.stage) || !salespeople.includes(record.salesperson)) return 'Choose a valid pipeline stage and salesperson.';
+    if ([record.estimated, record.earned, record.paid].some(value => !Number.isSafeInteger(value) || value < 0)) return 'Enter a nonnegative dollar amount with up to two decimal places in each commission field.';
+    if (record.paid > record.earned) return 'Paid commission cannot exceed earned commission. Update the earned amount first if needed.';
+    if (record.stage === 'Closed lost' && !lostReasons.includes(record.lostReason)) return 'Select a lost reason so the team can learn from this prospect.';
+    return '';
+  }
+  function validatePayment(payment, payments, earned, editId) {
+    if (!Number.isSafeInteger(payment.amount) || payment.amount <= 0) return 'Enter a payment greater than zero with up to two decimal places.';
+    if (!payment.date || !payment.payer.trim()) return 'Enter the received date and payer for this payment.';
+    const total = payments.filter(p => p.id !== editId).reduce((sum,p) => sum + p.amount, 0) + payment.amount;
+    return total > earned ? 'This payment would make total received exceed earned commission. Check the payment or update earned commission first.' : '';
+  }
+  return { stages, salespeople, leadSources, lostReasons, isOpen, openEstimate, summarize, parseMoney, validate, validatePayment };
+})();
+if (typeof module !== 'undefined') module.exports = CRM;
+
+const CampaignMath = (() => {
+  const within = (date, from, to) => !!date && (!from || date >= from) && (!to || date <= to);
+  function measure(campaign, prospects, from='', to='') {
+    const acquired = prospects.filter(p => p.campaignId === campaign.id && within(p.acquiredDate,from,to));
+    const spend = campaign.expenses.filter(e => within(e.date,from,to)).reduce((sum,e)=>sum+e.amount,0);
+    const lifetimeSpend = campaign.expenses.reduce((sum,e)=>sum+e.amount,0);
+    return {prospects:acquired.length, spend, lifetimeSpend, costPerProspect:acquired.length ? spend/acquired.length : null, remaining:campaign.budget-lifetimeSpend};
+  }
+  function previousPeriod(from,to) {
+    if(!from||!to||from>to)return null;
+    const day=86400000,start=Date.parse(from+'T00:00:00Z'),end=Date.parse(to+'T00:00:00Z');
+    const duration=end-start+day;
+    return {from:new Date(start-duration).toISOString().slice(0,10),to:new Date(start-day).toISOString().slice(0,10)};
+  }
+  function validateCampaign(campaign) {
+    if(!campaign.name.trim())return 'Enter a campaign name.';
+    if(!Number.isSafeInteger(campaign.budget)||campaign.budget<0)return 'Enter a nonnegative budget with up to two decimal places.';
+    if(!campaign.start)return 'Enter the campaign start date.';
+    if(campaign.end&&campaign.end<campaign.start)return 'The end date cannot be before the start date.';
+    return '';
+  }
+  return {within,measure,previousPeriod,validateCampaign};
+})();
+if(typeof module!=='undefined')module.exports=CampaignMath;
+
+const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const seed = [
+  {id:'DEMO-001', name:'Alex Rivera', email:'alex@example.com', phone:'(661) 555-0101', type:'Phone', status:'New', address:'Not needed for phone', question:'I would like to understand my summer electricity use and explore solar options.', usage:[620,590,610,650,780,990,1180,1130,910,720,null,null], costs:[145.20,138.40,142.10,151.30,181.50,230.60,275.80,264.20,212.70,168.30,null,null], notes:[]},
+  {id:'DEMO-002', name:'Jordan Lee', email:'jordan@example.com', phone:'(661) 555-0102', type:'In person', status:'Contacted', address:'123 Sample Lane, Bakersfield, CA 93301 (fictional)', question:'We are planning an electric vehicle and want to discuss what to ask an installer.', usage:[540,510,520,550,660,850,1010,980,790,620,560,580], costs:[126,119,121,128,154,198,235,228,184,144,130,135], notes:[{author:'Group 9 · Team member 2', text:'Sample note: initial conversation completed. Ask about expected home EV charging.'}]},
+  {id:'DEMO-003', name:'Taylor Morgan', email:'taylor@example.com', phone:'(661) 555-0103', type:'Phone', status:'Scheduled', address:'Not needed for phone', question:'I have a few months of bills and would like help understanding my options.', usage:[null,null,null,null,null,880,1040,1000,830,null,null,null], costs:[null,null,null,null,null,205.10,242.40,233.00,193.40,null,null,null], notes:[{author:'Group 9 · Team member 1', text:'Sample note: follow-up phone consultation arranged; bring available bills.'}]},
+  {id:'DEMO-004', name:'Casey Brooks', email:'casey@example.com', phone:'(661) 555-0104', type:'In person', status:'New', address:'456 Example Court, Bakersfield, CA 93309 (fictional)', question:'Can you help us prepare questions about our roof shade and electricity usage?', usage:[470,460,480,520,610,800,950,920,740,580,500,510], costs:[109.50,107.10,111.80,121.10,142.10,186.40,221.40,214.40,172.40,135.10,116.50,118.80], notes:[]}
+];
+// Fictional CRM amounts are cents; dates are relative to the present in Bakersfield.
+function todayKey() {
+  const parts = new Intl.DateTimeFormat('en-US', {timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const part = type => parts.find(p=>p.type===type).value;
+  return `${part('year')}-${part('month')}-${part('day')}`;
+}
+function dateOffset(days) { const date=new Date(todayKey()+'T12:00:00Z');date.setUTCDate(date.getUTCDate()+days);return date.toISOString().slice(0,10); }
+const crmSamples = [
+  {stage:'New lead',salesperson:'Unassigned',followUp:dateOffset(0),estimated:120000,earned:0,paid:0},
+  {stage:'Referred to installer',salesperson:CRM.salespeople[2],followUp:dateOffset(-2),estimated:180000,earned:0,paid:0},
+  {stage:'Closed won',salesperson:CRM.salespeople[1],followUp:dateOffset(3),estimated:150000,earned:150000,paid:75000},
+  {stage:'Closed lost',salesperson:CRM.salespeople[3],followUp:'',estimated:110000,earned:0,paid:0}
+];
+seed.forEach((r,i)=>Object.assign(r,crmSamples[i],{activity:[]}));
+seed.push({...structuredClone(seed[0]),id:'DEMO-005',name:'Quinn Parker',email:'quinn@example.com',phone:'(661) 555-0105',status:'Scheduled',stage:'Installation in progress',salesperson:CRM.salespeople[4],followUp:dateOffset(2),estimated:220000,earned:50000,paid:0,question:'I would like to review the next steps with the installer.',notes:[],activity:[]});
+let requests = structuredClone(seed);
+let selectedId = requests[0].id;
+let identity = '';
+const $ = selector => document.querySelector(selector);
+const money = value => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(value);
+const number = value => new Intl.NumberFormat('en-US',{maximumFractionDigits:2}).format(value);
+function totals(record){return {count:record.usage.filter(x=>x!==null).length, usage:record.usage.reduce((a,b)=>a+Math.round((b??0)*100),0)/100, cost:record.costs.reduce((a,b)=>a+Math.round((b??0)*100),0)/100};}
+function node(tag, text, className){const el=document.createElement(tag); if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
+function announce(text){$('#staff-status').textContent=text;}
+function renderList(){
+  renderOverview();
+  const query=$('#search').value.trim().toLowerCase(), filter=$('#status-filter').value;
+  const stage=$('#stage-filter').value, salesperson=$('#salesperson-filter').value, followUp=$('#followup-filter').value;
+  const filtered=requests.filter(r=>(r.name+' '+r.id).toLowerCase().includes(query)
+    &&(filter==='All statuses'||r.status===filter)
+    &&(stage==='All stages'||r.stage===stage)
+    &&(salesperson==='All salespeople'||r.salesperson===salesperson)
+    &&($('#source-filter').value==='All sources'||r.leadSource===$('#source-filter').value)
+    &&(followUp==='All follow-ups'||followUpState(r.followUp)===followUp));
+  if(!filtered.some(r=>r.id===selectedId)) selectedId=filtered[0]?.id??null;
+  $('#result-count').textContent=`${filtered.length} of ${requests.length} sample prospects`;
+  $('#no-results').hidden=filtered.length>0;
+  $('#request-list').replaceChildren(...filtered.map(r=>{
+    const button=node('button',undefined,'request-card');button.type='button';button.setAttribute('aria-pressed',String(r.id===selectedId));button.setAttribute('aria-label',`View ${r.name}, ${r.id}`);
+    const top=node('span',undefined,'card-top');top.append(node('span',r.name,'request-name'),node('span',r.stage,'badge '+(r.stage==='Closed lost'?'badge-lost':r.stage==='Closed won'?'badge-scheduled':'badge-contacted')));
+    button.append(top,node('span',`${r.id} · ${r.type}`,'request-meta'),node('span',r.salesperson,'request-meta'),node('span',`Follow-up: ${formatFollowUp(r.followUp)}`,'request-meta '+(followUpState(r.followUp)==='Overdue'?'overdue':'')),node('span',`Expected commission: ${money(r.estimated/100)} · ${totals(r).count}/12 months`,'request-meta'));
+    button.addEventListener('click',()=>{selectedId=r.id;renderList();renderDetail();});return button;
+  }));
+}
+function renderDetail(){
+  const panel=$('#request-detail');panel.replaceChildren();const r=requests.find(r=>r.id===selectedId);
+  if(!r){const heading=node('h2','Request details');heading.id='detail-title';panel.append(heading,node('p','Select a matching request to see its details.','empty'));return;}
+  const header=node('div',undefined,'detail-header'), title=node('div');title.append(node('p',r.id+' / FICTIONAL CUSTOMER','eyebrow'));const h=node('h2',r.name);h.id='detail-title';title.append(h,node('p',r.type+' consultation','muted'));
+  const statusLabel=node('label','Consultation status','status-control'), status=node('select');status.id='request-status';
+  ['New','Contacted','Scheduled'].forEach(s=>{const option=node('option',s);option.value=s;status.append(option);});status.value=r.status;statusLabel.append(status);
+  status.addEventListener('change',()=>{r.status=status.value;renderList();if(selectedId!==r.id)renderDetail();announce(`${r.name} updated to ${r.status}. Demo change only.`);});header.append(title,statusLabel);panel.append(header);
+  const contact=node('dl',undefined,'contact-grid');for(const [label,value] of [['Email',r.email],['Phone',r.phone],['Meeting address',r.address]]){const group=node('div');if(label==='Meeting address')group.className='wide';group.append(node('dt',label),node('dd',value));contact.append(group);}panel.append(contact);panel.append(renderProspectTools(r));panel.append(renderCrmForm(r));panel.append(renderReferral(r));panel.append(renderPayments(r));
+  const question=node('section',undefined,'detail-section');question.append(node('h3','What they’d like to discuss'),node('p',r.question,'customer-question'));panel.append(question);
+  const energy=node('section',undefined,'detail-section');const t=totals(r);energy.append(node('h3','Home energy worksheet'),node('p',`${t.count} of 12 months entered · totals cover entered months only`,'coverage'));
+  const cards=node('div',undefined,'worksheet-totals');for(const [label,value] of [['Total usage',number(t.usage)+' kWh'],['Total cost',money(t.cost)]]){const card=node('div');card.append(node('span',label),node('strong',value));cards.append(card);}energy.append(cards);
+  const tableWrap=node('div',undefined,'table-wrap'), table=node('table');table.append(node('caption','Fictional monthly electricity bills'));const head=node('thead'),hr=node('tr');['Month','Usage (kWh)','Cost (USD)'].forEach(s=>{const th=node('th',s);th.scope='col';hr.append(th);});head.append(hr);table.append(head);const body=node('tbody');
+  monthNames.forEach((month,i)=>{const row=node('tr'),missing=r.usage[i]===null;const th=node('th',month);th.scope='row';row.append(th,node('td',missing?'⚑ Missing':number(r.usage[i])),node('td',missing?'Not provided':money(r.costs[i])));if(missing)row.className='missing-row';body.append(row);});table.append(body);tableWrap.append(table);energy.append(tableWrap,node('p',t.count===12?'All 12 months are included.':`Missing: ${monthNames.filter((m,i)=>r.usage[i]===null).join(', ')}. Blank months are not counted as zero.`,'missing'));panel.append(energy);
+  const notes=node('section',undefined,'detail-section');notes.append(node('h3','Internal team notes'),node('p','Visible in this staff demo only. Use fictional information.','muted small'));
+  const noteForm=node('form',undefined,'note-form'),label=node('label','Add a note'),textarea=node('textarea');textarea.id='new-note';textarea.rows=3;textarea.maxLength=1500;textarea.required=true;textarea.placeholder='Next steps, questions, or follow-up details…';label.htmlFor='new-note';noteForm.append(label,textarea);const save=node('button','Save demo note','button');save.type='submit';noteForm.append(save);notes.append(noteForm);
+  const noteList=node('ul',undefined,'note-list');if(!r.notes.length)notes.append(node('p','No notes yet. Add the team’s first next step.','muted small'));
+  r.notes.forEach(note=>{const item=node('li');item.append(node('strong',note.author),node('p',note.text));noteList.append(item);});notes.append(noteList);panel.append(notes);
+  noteForm.addEventListener('submit',event=>{event.preventDefault();const text=textarea.value.trim();if(!text){textarea.setCustomValidity('Enter a note before saving.');textarea.reportValidity();return;}r.notes.unshift({author:identity,text});renderDetail();$('#new-note').focus({preventScroll:true});announce(`Note saved for ${r.name}. This change lasts until reload or sign-out.`);});textarea.addEventListener('input',()=>textarea.setCustomValidity(''));
+}
+$('#login-form').addEventListener('submit',event=>{event.preventDefault();if(!$('#login-form').reportValidity())return;identity=$('#team-member').value;$('#signed-in-as').textContent=identity;$('#sign-in').hidden=true;$('#workspace').hidden=false;renderList();renderDetail();window.scrollTo(0,0);showStaffPage(staffPageFromHash(),false);});
+for(const event of ['input','change'])$('#search').addEventListener(event,()=>{renderList();renderDetail();});
+for(const id of ['status-filter','stage-filter','salesperson-filter','followup-filter','source-filter']) $('#'+id).addEventListener('change',()=>{renderList();renderDetail();});
+function resetData(){resetMarketingData();requests=structuredClone(seed);selectedId=requests[0].id;$('#search').value='';$('#status-filter').value='All statuses';$('#stage-filter').value='All stages';$('#salesperson-filter').value='All salespeople';$('#followup-filter').value='All follow-ups';$('#source-filter').value='All sources';$('#prospect-editor').hidden=true;}
+$('#reset-demo').addEventListener('click',()=>{resetData();renderList();renderDetail();announce('Sample records, statuses, and notes restored.');});
+$('#sign-out').addEventListener('click',()=>{resetData();identity='';$('#workspace').hidden=true;$('#sign-in').hidden=false;$('#login-form').reset();$('#request-list').replaceChildren();$('#request-detail').replaceChildren();$('#signed-in-as').textContent='';window.scrollTo(0,0);$('#team-member').focus();});
+
+function followUpState(date) {
+  if (!date) return 'No date';
+  const today=todayKey();
+  return date<today?'Overdue':date===today?'Due today':'Upcoming';
+}
+function formatFollowUp(date) {
+  if (!date) return 'No date set';
+  const formatted=new Intl.DateTimeFormat('en-US',{timeZone:'UTC',month:'short',day:'numeric',year:'numeric'}).format(new Date(date+'T12:00:00Z'));
+  return `${formatted} · ${followUpState(date)}`;
+}
+function renderOverview() {
+  renderLearningInsights();renderMarketing();
+  const summary=CRM.summarize(requests);
+  for(const key of ['estimated','earned','paid','unpaid','potential']) $('#crm-'+key).textContent=money(summary[key]/100);
+  $('#crm-open').textContent=summary.openDeals;
+  $('#sales-rollup').replaceChildren(...CRM.salespeople.map(person=>{
+    const totals=CRM.summarize(requests.filter(r=>r.salesperson===person));
+    const row=node('tr'),name=node('th',person);name.scope='row';
+    row.append(name,node('td',String(totals.openDeals)),...['estimated','earned','paid','unpaid'].map(key=>node('td',money(totals[key]/100))));return row;
+  }));
+}
+function fillOptions(select, options, current) {
+  options.forEach(value=>{const option=node('option',value);option.value=value;select.append(option);});
+  if(current!==undefined)select.value=current;
+}
+fillOptions($('#stage-filter'),['All stages',...CRM.stages]);
+fillOptions($('#salesperson-filter'),['All salespeople',...CRM.salespeople]);
+
+function renderCrmForm(record) {
+  const section=node('section',undefined,'crm-editor detail-section');
+  section.append(node('h3','Sales progress & commissions'),node('p','Save changes to update this prospect and the team totals. All amounts are fictional USD.','muted small'));
+  const edit=node('form'),grid=node('div',undefined,'crm-form-grid');edit.id='crm-form';
+  function control(text,id,type,value,options) {
+    const label=node('label',text),input=node(options?'select':'input');label.htmlFor=id;input.id=id;input.name=id;
+    if(options)fillOptions(input,options,value);
+    else {input.type=type;input.value=value;if(type==='number'){input.min='0';input.max='1000000';input.step='0.01';input.required=true;input.inputMode='decimal';}}
+    label.append(input);grid.append(label);return input;
+  }
+  const stage=control('Pipeline stage','deal-stage',null,record.stage,CRM.stages);
+  const salesperson=control('Assigned salesperson','deal-salesperson',null,record.salesperson,CRM.salespeople);
+  const followUp=control('Next follow-up date','deal-followup','date',record.followUp);followUp.min='2000-01-01';followUp.max='2100-12-31';
+  const estimated=control('Estimated total commission ($)','deal-estimated','number',(record.estimated/100).toFixed(2));
+  const earned=control('Earned commission to date ($)','deal-earned','number',(record.earned/100).toFixed(2));
+  const paid=control('Paid / received—payment ledger ($)','deal-paid','number',(record.paid/100).toFixed(2));paid.readOnly=true;
+  const lossReason=control('Lost reason (required for closed lost)','deal-loss-reason',null,record.lostReason,['',...CRM.lostReasons]);
+  lossReason.options[0].textContent='Select a lost reason';
+  const lossDetail=control('Lost reason details (optional)','deal-loss-detail','text',record.lostDetail||'');lossDetail.maxLength=500;
+  function toggleLoss(){lossReason.required=stage.value==='Closed lost';}
+  stage.addEventListener('change',toggleLoss);toggleLoss();
+  edit.append(grid,node('p','Earned is the amount confirmed as owed, including payments already received. Paid is calculated from the payment ledger below and cannot exceed earned. Leave follow-up blank if not arranged.','muted small'));
+  const explanation=node('p',record.stage==='Closed lost'?'Closed lost: unearned estimates are excluded from the open pipeline. Previously earned and paid amounts remain in the totals.':'Pipeline stages and commissions are tracked independently. Set earned and paid amounts only when their milestones actually occur.','crm-help');edit.append(explanation);
+  const problem=node('p',undefined,'crm-error');problem.id='crm-error';problem.setAttribute('role','alert');problem.hidden=true;edit.append(problem);
+  const save=node('button','Save prospect updates','button');save.type='submit';edit.append(save);section.append(edit);
+  const balances=node('div',undefined,'deal-balances');balances.append(node('span',`Open estimate, not yet earned: ${money(CRM.openEstimate(record)/100)}`),node('span',`Earned, awaiting payment: ${money((record.earned-record.paid)/100)}`));section.append(balances);
+  const history=node('details',undefined,'activity-history'),summary=node('summary',`Progress history (${record.activity.length})`);history.append(summary);
+  if(!record.activity.length)history.append(node('p','No progress updates yet. Save a change to add an entry.','muted small'));
+  record.activity.forEach(entry=>{const item=node('div',undefined,'activity-item');item.append(node('strong',entry.author+' · '+entry.time),node('p',entry.text));history.append(item);});section.append(history);
+  edit.addEventListener('submit',event=>{
+    event.preventDefault();if(!edit.reportValidity())return;
+    const next={stage:stage.value,salesperson:salesperson.value,followUp:followUp.value,estimated:CRM.parseMoney(estimated.value),earned:CRM.parseMoney(earned.value),paid:record.payments.reduce((total,payment)=>total+payment.amount,0),lostReason:lossReason.value,lostDetail:lossDetail.value.trim()};
+    const error=CRM.validate(next);
+    if(error){problem.textContent=error;problem.hidden=false;paid.focus();return;}
+    const changes=[];
+    for(const key of ['stage','salesperson','followUp','estimated','earned','paid','lostReason','lostDetail']) {
+      if(record[key]===next[key])continue;
+      const labels={stage:'Stage',salesperson:'Salesperson',followUp:'Follow-up',estimated:'Estimated',earned:'Earned',paid:'Received',lostReason:'Lost reason',lostDetail:'Lost details'};
+      const display=value=>['estimated','earned','paid'].includes(key)?money(value/100):(value||'not set');
+      changes.push(`${labels[key]}: ${display(record[key])} → ${display(next[key])}`);
+    }
+    if(changes.length) {
+      record.activity.unshift({author:identity,time:new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date()),text:changes.join('; ')});
+      Object.assign(record,next);
+    }
+    renderList();renderDetail();announce(`${record.name}: ${changes.length?'progress saved and totals updated':'no changes to save'}. Demo only.`);
+    const confirmation=node('p',changes.length?'Prospect updated. Team totals have been recalculated.':'No changes to save.','crm-saved');confirmation.setAttribute('role','status');
+    $('#request-detail').prepend(confirmation);
+  });
+  edit.addEventListener('input',()=>{problem.hidden=true;});
+  return section;
+}
+
+// All records below are fictional and remain in memory for the classroom demo.
+const referralStatuses = ['Not referred', 'Sent', 'Accepted', 'Assessment scheduled', 'Quote provided', 'Installed', 'Declined'];
+let prospectSequence = 5;
+function emptyKnowledge() {
+  return {ownership:'',homeSize:'',household:'',utility:'',ratePlan:'',heatingCooling:'',waterHeating:'',evPool:'',existingSolar:'',roofShade:'',goals:'',timeline:'',decisionMakers:'',contactMethod:'',bestTime:'',nextAction:'',appointment:'',otherAnswers:''};
+}
+seed.forEach((r,i)=>{
+  r.leadSource=['Website','Friend / customer referral','Community event','Social media','Website'][i];
+  r.sourceDetail=i===1?'Fictional neighbor referral':'';
+  r.lostReason=r.stage==='Closed lost'?'Property / roof suitability':'';
+  r.lostDetail=r.stage==='Closed lost'?'Sample outcome: roof shading concerns; prospect chose not to proceed.':'';
+  r.referral={installer:i===0?'':'Sample Solar Installer (fictional)',contact:'',email:'',phone:'',date:i===0?'':dateOffset(-12),status:['Not referred','Accepted','Installed','Declined','Quote provided'][i],notes:''};
+  r.commission={payer:i===0?'':'Sample Solar Installer (fictional)',trigger:'Sample agreement only: confirm referral milestone with installer.',earnedDate:r.earned?dateOffset(-5):'',dueDate:r.earned?dateOffset(i===2?-1:7):''};
+  r.payments=r.paid?[{id:'PAY-SAMPLE-001',amount:r.paid,date:dateOffset(-3),payer:r.commission.payer,reference:'SAMPLE-PARTIAL-001',note:'Fictional partial commission payment.'}]:[];
+  r.knowledge=emptyKnowledge();
+  r.knowledge.goals=r.question;
+  r.knowledge.contactMethod=r.type;
+  r.knowledge.nextAction=['Review available bills with prospect.','Check whether the installer has arranged an assessment.','Check expected commission payment date.','No further sales follow-up planned.','Confirm installer’s next milestone.'][i];
+  r.knowledgeUpdated='';r.contacts=[];
+  if(i===1){
+    Object.assign(r.knowledge,{ownership:'Own',homeSize:'1900',evPool:'Planning an EV; charging routine not yet discussed.',timeline:'Exploring options this year.'});
+    r.contacts.push({date:dateOffset(-4),method:'Phone',outcome:'Spoke with prospect',summary:'Sample conversation: confirmed homeowner and EV plans. Installer assessment still to be arranged.',nextAction:r.knowledge.nextAction,author:'Group 9 · Team member 2'});
+  }
+  if(i===3)r.knowledge.roofShade='Prospect reported shading concerns; technical suitability was not verified.';
+});
+requests=structuredClone(seed);
+fillOptions($('#source-filter'),['All sources',...CRM.leadSources]);
+
+function logProgress(record,text) {
+  record.activity.unshift({author:identity,time:new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date()),text});
+}
+function refreshProspect(message) {
+  renderList();renderDetail();announce(message);
+  const notice=node('p',message,'crm-saved');notice.setAttribute('role','status');$('#request-detail').prepend(notice);
+}
+function inputField(grid,prefix,label,key,type,value,options) {
+  const wrapper=node('label',label),input=node(options?'select':type==='textarea'?'textarea':'input');
+  input.id=prefix+'-'+key;input.name=key;wrapper.htmlFor=input.id;
+  if(options)fillOptions(input,options,value||'');
+  else if(type==='textarea'){input.rows=3;input.maxLength=2000;input.value=value||'';wrapper.classList.add('full-width');}
+  else {input.type=type||'text';input.value=value??'';if(type==='date'){input.min='2000-01-01';input.max='2100-12-31';}if(!['date','datetime-local'].includes(type))input.maxLength=500;}
+  wrapper.append(input);grid.append(wrapper);return input;
+}
+function accordion(title,id,open=false) {
+  const details=node('details',undefined,'tool-accordion');details.id=id;details.open=open;
+  details.append(node('summary',title));const content=node('div',undefined,'accordion-content');details.append(content);return {details,content};
+}
+function saveButton(form,text) {const button=node('button',text,'button');button.type='submit';form.append(button);return button;}
+function formError(form) {const error=node('p',undefined,'crm-error');error.setAttribute('role','alert');error.hidden=true;form.append(error);form.addEventListener('input',()=>error.hidden=true);return error;}
+function reportError(error,text) {error.textContent=text;error.hidden=false;error.tabIndex=-1;error.focus();}
+function resetFilters() {$('#search').value='';$('#status-filter').value='All statuses';$('#stage-filter').value='All stages';$('#salesperson-filter').value='All salespeople';$('#followup-filter').value='All follow-ups';$('#source-filter').value='All sources';}
+
+$('#create-prospect').addEventListener('click',()=>openProspectEditor());
+function openProspectEditor(record) {
+  const section=$('#prospect-editor');section.replaceChildren();section.hidden=false;
+  const title=node('h2',record?'Edit prospect':'Create a prospect');title.id='editor-title';
+  section.append(title,node('p','Class demo only: use fictional contact details. New prospects can be added before their energy worksheet is available.','muted small'));
+  const form=node('form');form.id='prospect-form';const grid=node('div',undefined,'crm-form-grid');
+  const name=inputField(grid,'prospect','Full name','name','text',record?.name);name.required=true;
+  const email=inputField(grid,'prospect','Email','email','email',record?.email);
+  const phone=inputField(grid,'prospect','Phone','phone','tel',record?.phone);
+  const type=inputField(grid,'prospect','Consultation preference','type',null,record?.type||'Phone',['Phone','In person']);
+  const address=inputField(grid,'prospect','Meeting address (in person)','address','text',record?.type==='In person'?record.address:'');
+  function syncAddress(){address.required=type.value==='In person';address.disabled=type.value!=='In person';}
+  type.addEventListener('change',syncAddress);syncAddress();
+  const source=inputField(grid,'prospect','Lead source','leadSource',null,record?.leadSource||'Unknown',CRM.leadSources);
+  const campaign=inputField(grid,'prospect','Acquisition campaign','campaignId',null,record?.campaignId||'', ['',...campaigns.map(c=>c.id)]);
+  [...campaign.options].forEach(option=>option.textContent=option.value?campaigns.find(c=>c.id===option.value).name:'No campaign / organic / unattributed');
+  function syncSource(){const selected=campaigns.find(c=>c.id===campaign.value);if(selected)source.value=selected.source;source.disabled=!!selected;}
+  campaign.addEventListener('change',syncSource);syncSource();
+  const acquired=inputField(grid,'prospect','Date first acquired','acquiredDate','date',record?.acquiredDate||todayKey());acquired.required=true;acquired.max=todayKey();
+  const sourceDetail=inputField(grid,'prospect','Campaign / referral details (optional)','sourceDetail','text',record?.sourceDetail);
+  const question=inputField(grid,'prospect','Customer’s questions / initial goals','question','textarea',record?.question);
+  form.append(grid);const error=formError(form);const actions=node('div',undefined,'heading-actions');const save=node('button',record?'Save prospect details':'Create prospect','button');save.type='submit';const cancel=node('button','Cancel','outline');cancel.type='button';cancel.addEventListener('click',()=>section.hidden=true);actions.append(save,cancel);form.append(actions);section.append(form);
+  form.addEventListener('submit',event=>{
+    event.preventDefault();if(!form.reportValidity())return;
+    if(!name.value.trim())return reportError(error,'Enter the prospect’s name.');
+    if(!email.value.trim()&&!phone.value.trim())return reportError(error,'Enter an email address or phone number so the team can follow up.');
+    if(type.value==='In person'&&!address.value.trim())return reportError(error,'Enter the fictional meeting address for an in-person consultation.');
+    const normalizedPhone=phone.value.replace(/\D/g,'');
+    const duplicate=requests.find(r=>r.id!==record?.id&&((email.value.trim()&&r.email.toLowerCase()===email.value.trim().toLowerCase())||(normalizedPhone&&r.phone.replace(/\D/g,'')===normalizedPhone)));
+    if(duplicate)return reportError(error,`These contact details match ${duplicate.name} (${duplicate.id}). Edit that prospect instead to avoid a duplicate conversation.`);
+    const next={campaignId:campaign.value,acquiredDate:acquired.value,name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),type:type.value,address:type.value==='In person'?address.value.trim():'Not needed for phone',leadSource:source.value,sourceDetail:sourceDetail.value.trim(),question:question.value.trim()};
+    let target=record;
+    if(!target){target={id:'DEMO-'+String(++prospectSequence).padStart(3,'0'),status:'New',stage:'New lead',salesperson:'Unassigned',followUp:'',estimated:0,earned:0,paid:0,usage:Array(12).fill(null),costs:Array(12).fill(null),notes:[],activity:[],lostReason:'',lostDetail:'',referral:{installer:'',contact:'',email:'',phone:'',date:'',status:'Not referred',notes:''},commission:{payer:'',trigger:'',earnedDate:'',dueDate:''},payments:[],knowledge:emptyKnowledge(),knowledgeUpdated:'',contacts:[]};requests.push(target);}
+    Object.assign(target,next);if(!record)target.knowledge.goals=next.question;
+    logProgress(target,record?'Updated prospect contact details, consultation preference, or lead source.':'Created prospect with source '+target.leadSource+'.');
+    selectedId=target.id;resetFilters();section.hidden=true;refreshProspect(`${target.name}: ${record?'details updated':'prospect created'}. Demo only.`);
+    $('#detail-title').tabIndex=-1;$('#detail-title').focus();
+  });
+  section.scrollIntoView({behavior:'instant',block:'start'});name.focus({preventScroll:true});
+}
+
+function renderProspectTools(record) {
+  const wrapper=node('div',undefined,'prospect-tools');
+  const top=node('div',undefined,'profile-overview'),edit=node('button','Edit prospect','outline');edit.type='button';edit.addEventListener('click',()=>openProspectEditor(record));
+  const attribution=node('div');attribution.append(node('p',`Campaign: ${campaigns.find(c=>c.id===record.campaignId)?.name||'Unattributed / organic'} · Acquired: ${record.acquiredDate}`,'muted small'));top.append(attribution);
+  top.append(node('p',`Lead source: ${record.leadSource}${record.sourceDetail?' · '+record.sourceDetail:''}`,'muted small'),edit);wrapper.append(top);
+  const recap=node('div',undefined,'conversation-recap');recap.append(node('strong','Read before contacting this prospect'),node('p',`Next action: ${record.knowledge.nextAction||'Not yet recorded'}`));
+  if(record.contacts.length){const latest=record.contacts[0];recap.append(node('p',`Last conversation: ${latest.date} · ${latest.method} · ${latest.outcome}`),node('p',latest.summary));}
+  else recap.append(node('p','No conversation has been logged yet. Check known answers below before asking questions.'));
+  if(record.knowledge.appointment)recap.append(node('p','Consultation appointment: '+record.knowledge.appointment.replace('T',' at ')+' · Bakersfield time (demo only)'));
+  wrapper.append(recap,renderKnowledge(record),renderContacts(record));return wrapper;
+}
+
+const discoveryFields=[
+  ['ownership','Own or rent?',null,['','Own','Rent','Other']],['homeSize','Approximate home size (sq ft)','number'],['household','Household size','number'],
+  ['utility','Electricity provider','text'],['ratePlan','Electricity rate plan','text'],['heatingCooling','Heating / cooling type','text'],['waterHeating','Water heating fuel / type','text'],
+  ['evPool','EV charging, pool, or other major loads','text'],['existingSolar','Existing solar?',null,['','Yes','No']],['roofShade','Known roof age, shade, or roof concerns','textarea'],
+  ['goals','Goals and priorities already shared','textarea'],['timeline','Desired timeline','text'],['decisionMakers','Decision-makers / owner permission status','text'],
+  ['contactMethod','Preferred contact method',null,['','Phone','Email','Text','In person']],['bestTime','Preferred contact times','text'],['nextAction','Next action for the team','textarea'],
+  ['appointment','Consultation appointment (Bakersfield time)','datetime-local'],['otherAnswers','Other questions already answered / important notes','textarea']
+];
+function renderKnowledge(record) {
+  const known=Object.values(record.knowledge).filter(Boolean).length;
+  const {details,content}=accordion(`Known information · ${known}/${discoveryFields.length} fields recorded`,'known-information');
+  content.append(node('p','Check these answers before calling. Blank fields mean “Not yet asked / unknown.” Enter “None” or “Not applicable” where the prospect has confirmed it. No credit, banking, or utility account numbers.','muted small'));
+  if(record.knowledgeUpdated)content.append(node('p','Last reviewed: '+record.knowledgeUpdated,'muted small'));
+  const form=node('form'),grid=node('div',undefined,'crm-form-grid'),controls={};form.id='knowledge-form';
+  discoveryFields.forEach(([key,label,type,options])=>{const control=inputField(grid,'known',label,key,type,record.knowledge[key],options);if(options)control.options[0].textContent='Not yet asked / unknown';if(type==='number'){control.min='1';control.max=key==='household'?'100':'1000000';control.step='1';}controls[key]=control;});
+  form.append(grid,node('p','Appointment time is a recorded plan for the demo; it does not book a calendar event or send reminders.','muted small'));saveButton(form,'Save known information');content.append(form);
+  form.addEventListener('submit',event=>{event.preventDefault();if(!form.reportValidity())return;Object.entries(controls).forEach(([key,input])=>record.knowledge[key]=input.value.trim());record.knowledgeUpdated=identity+' · '+todayKey();logProgress(record,'Reviewed and updated known answers, contact preferences, and next steps.');refreshProspect('Known information updated—review it before the next conversation.');$('#known-information').open=true;});return details;
+}
+function renderContacts(record) {
+  const {details,content}=accordion(`Conversation history · ${record.contacts.length} logged`,'contact-history');
+  content.append(node('p','Record what was discussed and the agreed next step so another teammate can pick up the conversation.','muted small'));
+  const form=node('form'),grid=node('div',undefined,'crm-form-grid');form.id='contact-log-form';
+  const date=inputField(grid,'contact','Contact date','date','date',todayKey());date.required=true;date.max=todayKey();
+  const method=inputField(grid,'contact','Contact method','method',null,'Phone',['Phone','In person','Email','Text','Other']);
+  const outcome=inputField(grid,'contact','Outcome','outcome',null,'Spoke with prospect',['Spoke with prospect','Left message','No answer','Information sent','Meeting completed']);
+  const summary=inputField(grid,'contact','What was discussed / answers confirmed','summary','textarea','');summary.required=true;
+  const next=inputField(grid,'contact','Agreed next action','nextAction','textarea',record.knowledge.nextAction);
+  form.append(grid);const error=formError(form);saveButton(form,'Log conversation');content.append(form);
+  const list=node('ul',undefined,'note-list');record.contacts.forEach(entry=>{const item=node('li');item.append(node('strong',`${entry.date} · ${entry.method} · ${entry.author}`),node('p',entry.outcome+': '+entry.summary),node('p','Next action: '+(entry.nextAction||'Not recorded')));list.append(item);});content.append(list);
+  form.addEventListener('submit',event=>{event.preventDefault();if(!form.reportValidity())return;if(!summary.value.trim())return reportError(error,'Enter what was discussed or what contact was attempted.');record.contacts.unshift({date:date.value,method:method.value,outcome:outcome.value,summary:summary.value.trim(),nextAction:next.value.trim(),author:identity});record.contacts.sort((a,b)=>b.date.localeCompare(a.date));record.knowledge.nextAction=next.value.trim();logProgress(record,'Logged contact: '+outcome.value+'.');refreshProspect('Conversation logged. The shared recap is updated.');$('#contact-history').open=true;});return details;
+}
+
+function renderReferral(record) {
+  const r=record.referral,{details,content}=accordion(`Installer referral · ${r.status}`,'installer-referral');
+  content.append(node('p','Track the installer handoff here. Saving does not send a referral or change the pipeline stage automatically. Installer names and contacts must be fictional in this demo.','muted small'));
+  const form=node('form'),grid=node('div',undefined,'crm-form-grid');form.id='referral-form';
+  const installer=inputField(grid,'referral','Installer / company','installer','text',r.installer);
+  const contact=inputField(grid,'referral','Installer contact person','contact','text',r.contact);
+  const email=inputField(grid,'referral','Installer email','email','email',r.email);
+  const phone=inputField(grid,'referral','Installer phone','phone','tel',r.phone);
+  const date=inputField(grid,'referral','Date referred','date','date',r.date);date.max=todayKey();
+  const status=inputField(grid,'referral','Referral status','status',null,r.status,referralStatuses);
+  const notes=inputField(grid,'referral','Referral details / installer response','notes','textarea',r.notes);
+  function required(){installer.required=status.value!=='Not referred';date.required=status.value!=='Not referred';}required();status.addEventListener('change',required);
+  form.append(grid);const error=formError(form);saveButton(form,'Save referral details');content.append(form);
+  form.addEventListener('submit',event=>{event.preventDefault();if(!form.reportValidity())return;if(status.value!=='Not referred'&&!installer.value.trim())return reportError(error,'Enter the installer receiving this referral.');record.referral={installer:installer.value.trim(),contact:contact.value.trim(),email:email.value.trim(),phone:phone.value.trim(),date:date.value,status:status.value,notes:notes.value.trim()};logProgress(record,`Referral updated: ${status.value}${installer.value.trim()?' · '+installer.value.trim():''}.`);refreshProspect('Installer referral details updated.');$('#installer-referral').open=true;});return details;
+}
+
+function renderPayments(record) {
+  const outstanding=record.earned-record.paid;
+  const overdue=outstanding>0&&record.commission.dueDate&&record.commission.dueDate<todayKey();
+  const {details,content}=accordion(`Commission details & payments · ${money(outstanding/100)} awaiting payment${overdue?' · overdue':''}`,'commission-payments');
+  content.append(node('p','Track who owes the commission, its earning milestone, and each payment actually received. Received totals are calculated from this ledger.','muted small'));
+  const metadata=node('form'),grid=node('div',undefined,'crm-form-grid');metadata.id='commission-details-form';
+  const payer=inputField(grid,'commission','Commission payer / installer','payer','text',record.commission.payer);
+  const trigger=inputField(grid,'commission','Agreed earning milestone / terms','trigger','textarea',record.commission.trigger);
+  const earnedDate=inputField(grid,'commission','Date commission earned','earnedDate','date',record.commission.earnedDate);earnedDate.max=todayKey();
+  const dueDate=inputField(grid,'commission','Expected payment date','dueDate','date',record.commission.dueDate);
+  metadata.append(grid);saveButton(metadata,'Save commission details');content.append(metadata);
+  if(overdue)content.append(node('p',`Payment overdue: ${money(outstanding/100)} outstanding; expected ${record.commission.dueDate}.`,'crm-error'));
+  metadata.addEventListener('submit',event=>{event.preventDefault();if(!metadata.reportValidity())return;record.commission={payer:payer.value.trim(),trigger:trigger.value.trim(),earnedDate:earnedDate.value,dueDate:dueDate.value};logProgress(record,'Updated commission payer, earning terms, or expected payment date.');refreshProspect('Commission payment details updated.');$('#commission-payments').open=true;});
+  content.append(node('h3','Payments received'));
+  const tableWrap=node('div',undefined,'table-wrap'),table=node('table'),head=node('thead'),tr=node('tr');['Received','Payer / reference','Amount','Action'].forEach(text=>{const th=node('th',text);th.scope='col';tr.append(th);});head.append(tr);table.append(head);const body=node('tbody');
+  let editingId=null;
+  record.payments.forEach(payment=>{const row=node('tr'),action=node('td'),edit=node('button','Edit','quiet');edit.type='button';edit.setAttribute('aria-label','Edit payment '+payment.reference+' '+payment.date);edit.addEventListener('click',()=>{editingId=payment.id;payDate.value=payment.date;payAmount.value=(payment.amount/100).toFixed(2);payPayer.value=payment.payer;reference.value=payment.reference;note.value=payment.note;save.textContent='Save payment changes';cancel.hidden=false;payAmount.focus();});action.append(edit);row.append(node('td',payment.date),node('td',payment.payer+(payment.reference?' · '+payment.reference:'')),node('td',money(payment.amount/100)),action);body.append(row);});table.append(body);tableWrap.append(table);content.append(tableWrap);
+  if(!record.payments.length)content.append(node('p','No payments received yet.','muted small'));
+  const form=node('form'),payGrid=node('div',undefined,'crm-form-grid');form.id='payment-form';
+  const payDate=inputField(payGrid,'payment','Received date','date','date',todayKey());payDate.required=true;payDate.max=todayKey();
+  const payAmount=inputField(payGrid,'payment','Payment amount ($)','amount','number','');payAmount.min='0.01';payAmount.max='1000000';payAmount.step='0.01';payAmount.required=true;
+  const payPayer=inputField(payGrid,'payment','Payment received from','payer','text',record.commission.payer);payPayer.required=true;
+  const reference=inputField(payGrid,'payment','Payment reference (optional)','reference','text','');
+  const note=inputField(payGrid,'payment','Payment note (optional)','note','textarea','');
+  form.append(payGrid);const error=formError(form),save=saveButton(form,'Record payment');
+  const cancel=node('button','Cancel payment edit','quiet');cancel.type='button';cancel.hidden=true;cancel.addEventListener('click',()=>{editingId=null;form.reset();payDate.value=todayKey();payPayer.value=record.commission.payer;save.textContent='Record payment';cancel.hidden=true;error.hidden=true;});form.append(cancel);content.append(form);
+  form.addEventListener('submit',event=>{
+    event.preventDefault();if(!form.reportValidity())return;
+    const payment={id:editingId||'PAY-'+crypto.randomUUID(),date:payDate.value,amount:CRM.parseMoney(payAmount.value),payer:payPayer.value.trim(),reference:reference.value.trim(),note:note.value.trim()};
+    const problem=CRM.validatePayment(payment,record.payments,record.earned,editingId);if(problem)return reportError(error,problem);
+    const duplicate=record.payments.find(p=>p.id!==editingId&&payment.reference&&p.reference.toLowerCase()===payment.reference.toLowerCase()&&p.payer.toLowerCase()===payment.payer.toLowerCase());
+    if(duplicate)return reportError(error,'This payer and payment reference are already recorded. Edit the existing payment instead.');
+    if(editingId)record.payments=record.payments.map(p=>p.id===editingId?payment:p);else record.payments.push(payment);
+    record.paid=record.payments.reduce((sum,p)=>sum+p.amount,0);
+    logProgress(record,`${editingId?'Edited':'Recorded'} payment ${money(payment.amount/100)} from ${payment.payer} on ${payment.date}.`);
+    refreshProspect('Payment ledger and received commission totals updated.');$('#commission-payments').open=true;
+  });return details;
+}
+
+function renderLearningInsights() {
+  $('#source-insights').replaceChildren(...CRM.leadSources.filter(source=>requests.some(r=>r.leadSource===source)).map(source=>{const records=requests.filter(r=>r.leadSource===source),row=node('tr'),th=node('th',source);th.scope='row';row.append(th,node('td',String(records.length)),node('td',String(records.filter(r=>r.stage==='Closed won').length)),node('td',String(records.filter(r=>r.stage==='Closed lost').length)));return row;}));
+  const lost=requests.filter(r=>r.stage==='Closed lost'),reasons=[...new Set(lost.map(r=>r.lostReason||'Not recorded'))];
+  $('#loss-insights').replaceChildren(...(reasons.length?reasons.map(reason=>node('li',`${reason}: ${lost.filter(r=>(r.lostReason||'Not recorded')===reason).length}`)):[node('li','No closed-lost prospects yet.')]));
+}
+
+// Separate staff page, shared in-memory prospects; no live advertising integrations.
+const campaignSeed = [
+  {id:'CAMP-001',name:'Neighborhood solar search ads',source:'Website',status:'Active',owner:CRM.salespeople[1],start:dateOffset(-30),end:'',budget:100000,tactics:'Fictional search ads directing interested homeowners to the energy worksheet.',expenses:[{id:'EXP-001',date:dateOffset(-17),amount:30000,description:'Sample search advertising'},{id:'EXP-002',date:dateOffset(-4),amount:15000,description:'Sample search advertising'}]},
+  {id:'CAMP-002',name:'Neighbors connect referral drive',source:'Friend / customer referral',status:'Active',owner:CRM.salespeople[2],start:dateOffset(-45),end:'',budget:20000,tactics:'Fictional neighborhood outreach encouraging homeowners to refer friends.',expenses:[{id:'EXP-003',date:dateOffset(-16),amount:7500,description:'Sample printed referral cards'}]},
+  {id:'CAMP-003',name:'Community energy booth',source:'Community event',status:'Completed',owner:CRM.salespeople[3],start:dateOffset(-60),end:dateOffset(-35),budget:35000,tactics:'Fictional community booth offering information and free consultation sign-ups.',expenses:[{id:'EXP-004',date:dateOffset(-41),amount:25000,description:'Sample booth and handout costs'}]},
+  {id:'CAMP-004',name:'Solar questions social campaign',source:'Social media',status:'Active',owner:CRM.salespeople[4],start:dateOffset(-20),end:'',budget:50000,tactics:'Fictional social posts and ads inviting residents to ask questions about solar.',expenses:[{id:'EXP-005',date:dateOffset(-10),amount:18000,description:'Sample social advertising'}]}
+];
+seed.forEach((record,i)=>{record.campaignId=['CAMP-001','CAMP-002','CAMP-003','CAMP-004','CAMP-001'][i];record.acquiredDate=dateOffset([-3,-15,-40,-8,-20][i]);});
+requests=structuredClone(seed);
+let campaigns=structuredClone(campaignSeed);
+let selectedCampaign=campaigns[0].id;
+let reportFrom=todayKey().slice(0,8)+'01';
+let reportTo=todayKey();
+$('#marketing-from').value=reportFrom;$('#marketing-to').value=reportTo;
+
+function staffPageFromHash() {
+  const page=location.hash.slice(1);
+  return ['overview','sales','marketing'].includes(page)?page:'overview';
+}
+function showStaffPage(page,updateHash=true) {
+  const selected=['overview','sales','marketing'].includes(page)?page:'overview';
+  for(const name of ['overview','sales','marketing']) {
+    $('#'+name+'-view').hidden=name!==selected;
+    const link=$('#'+name+'-page-link');
+    if(name===selected)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+  }
+  if(updateHash)history.replaceState(null,'','#'+selected);
+  if(selected==='marketing')renderMarketing();
+  if(selected==='overview')renderOverview();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+for(const page of ['overview','sales','marketing'])$('#'+page+'-page-link').addEventListener('click',event=>{event.preventDefault();showStaffPage(page);});
+window.addEventListener('hashchange',()=>{if(!$('#workspace').hidden)showStaffPage(staffPageFromHash(),false);});
+$('#overview-sales').addEventListener('click',()=>showStaffPage('sales'));
+$('#overview-reset').addEventListener('click',()=>$('#reset-demo').click());
+$('#marketing-reset').addEventListener('click',()=>$('#reset-demo').click());
+$('#create-campaign').addEventListener('click',()=>openCampaignEditor());
+$('#marketing-range').addEventListener('submit',event=>{
+  event.preventDefault();if(!$('#marketing-range').reportValidity())return;
+  const from=$('#marketing-from').value,to=$('#marketing-to').value,error=$('#marketing-range-error');
+  if(from&&to&&from>to){error.textContent='Choose an end date on or after the start date.';error.hidden=false;return;}
+  error.hidden=true;reportFrom=from;reportTo=to;renderMarketing();
+});
+$('#marketing-all-time').addEventListener('click',()=>{reportFrom='';reportTo='';$('#marketing-from').value='';$('#marketing-to').value='';$('#marketing-range-error').hidden=true;renderMarketing();});
+function resetMarketingData() {
+  campaigns=structuredClone(campaignSeed);selectedCampaign=campaigns[0].id;
+  reportFrom=todayKey().slice(0,8)+'01';reportTo=todayKey();
+  $('#marketing-from').value=reportFrom;$('#marketing-to').value=reportTo;
+  $('#marketing-range-error').hidden=true;$('#campaign-editor').hidden=true;
+}
+function campaignMessage(text) {
+  renderList();renderDetail();announce(text);
+  const message=node('p',text,'crm-saved');message.setAttribute('role','status');$('#campaign-detail').prepend(message);
+}
+function renderMarketing() {
+  const results=campaigns.map(campaign=>({campaign,...CampaignMath.measure(campaign,requests,reportFrom,reportTo)}));
+  const acquired=results.reduce((sum,row)=>sum+row.prospects,0),spent=results.reduce((sum,row)=>sum+row.spend,0);
+  $('#marketing-prospects').textContent=String(acquired);$('#marketing-spend').textContent=money(spent/100);
+  $('#marketing-cpl').textContent=acquired?money(spent/100/acquired):'—';
+  $('#marketing-period').textContent=`Reporting period: ${reportFrom||'earliest date'} through ${reportTo||'latest date'} (inclusive). Expenses use their spend date; prospects use their first-acquired date.`;
+  const previous=CampaignMath.previousPeriod(reportFrom,reportTo);
+  if(previous) {
+    const prior=campaigns.reduce((sum,c)=>sum+CampaignMath.measure(c,requests,previous.from,previous.to).prospects,0),delta=acquired-prior;
+    $('#marketing-growth').textContent=(delta>0?'+':'')+delta;
+    $('#marketing-growth-note').textContent=`${acquired} vs ${prior} prospects · previous period ${previous.from}–${previous.to}${prior?' · '+number(delta/prior*100)+'% change':''}`;
+  }else{$('#marketing-growth').textContent='—';$('#marketing-growth-note').textContent='Set both dates to compare equal-length periods.';}
+  const unattributed=requests.filter(r=>!campaigns.some(c=>c.id===r.campaignId)&&CampaignMath.within(r.acquiredDate,reportFrom,reportTo)).length;
+  $('#marketing-unattributed').textContent=`${unattributed} prospect(s) in this period have no campaign attribution and are excluded from campaign counts and cost per prospect. Cost per prospect is a period comparison, not a lifetime conversion or profit measure.`;
+  $('#campaign-rows').replaceChildren(...results.map(row=>{
+    const tr=node('tr'),name=node('th');name.scope='row';name.append(node('strong',row.campaign.name),node('small',row.campaign.source,'campaign-source'));
+    tr.append(name,node('td',row.campaign.status),node('td',money(row.campaign.budget/100)),node('td',money(row.spend/100)),node('td',String(row.prospects)),node('td',row.costPerProspect===null?'—':money(row.costPerProspect/100)));
+    const cell=node('td'),button=node('button','View','outline');button.type='button';button.setAttribute('aria-label','View campaign '+row.campaign.name);button.addEventListener('click',()=>{selectedCampaign=row.campaign.id;renderCampaignDetail();$('#campaign-detail-title').tabIndex=-1;$('#campaign-detail-title').focus();});cell.append(button);tr.append(cell);return tr;
+  }));
+  renderCampaignDetail();
+}
+function openCampaignEditor(campaign) {
+  const section=$('#campaign-editor');section.hidden=false;section.replaceChildren();
+  const title=node('h2',campaign?'Edit campaign':'Create a campaign');title.id='campaign-editor-title';section.append(title,node('p','Describe how the team plans to find new prospects. Budget is planned spending; add actual dated expenses separately. Fictional demo only.','muted small'));
+  const form=node('form'),grid=node('div',undefined,'crm-form-grid');form.id='campaign-form';
+  const name=inputField(grid,'campaign','Campaign name','name','text',campaign?.name);name.required=true;
+  const source=inputField(grid,'campaign','Acquisition source / channel','source',null,campaign?.source||'Website',CRM.leadSources);
+  const status=inputField(grid,'campaign','Campaign status','status',null,campaign?.status||'Planned',['Planned','Active','Completed','Paused']);
+  const owner=inputField(grid,'campaign','Team owner','owner',null,campaign?.owner||'Unassigned',CRM.salespeople);
+  const start=inputField(grid,'campaign','Start date','start','date',campaign?.start||todayKey());start.required=true;
+  const end=inputField(grid,'campaign','End date (optional)','end','date',campaign?.end||'');
+  const budget=inputField(grid,'campaign','Total planned budget ($)','budget','number',((campaign?.budget||0)/100).toFixed(2));budget.min='0';budget.max='1000000';budget.step='0.01';budget.required=true;
+  const tactics=inputField(grid,'campaign','How we find prospects / outreach approach','tactics','textarea',campaign?.tactics||'');tactics.required=true;
+  form.append(grid);const error=formError(form);saveButton(form,campaign?'Save campaign':'Create campaign');const cancel=node('button','Cancel','quiet');cancel.type='button';cancel.addEventListener('click',()=>section.hidden=true);form.append(cancel);section.append(form);
+  form.addEventListener('submit',event=>{
+    event.preventDefault();if(!form.reportValidity())return;
+    const values={name:name.value.trim(),source:source.value,status:status.value,owner:owner.value,start:start.value,end:end.value,budget:CRM.parseMoney(budget.value),tactics:tactics.value.trim()};
+    const validation=CampaignMath.validateCampaign(values);if(validation)return reportError(error,validation);
+    if(!values.tactics)return reportError(error,'Describe the outreach approach for this campaign.');
+    if(campaigns.some(c=>c.id!==campaign?.id&&c.name.toLowerCase()===values.name.toLowerCase()))return reportError(error,'A campaign already has this name. Use a distinct name or edit the existing one.');
+    let target=campaign;
+    if(!target){target={id:'CAMP-'+crypto.randomUUID(),expenses:[]};campaigns.push(target);}
+    Object.assign(target,values);
+    requests.filter(r=>r.campaignId===target.id).forEach(r=>{if(r.leadSource!==target.source){r.leadSource=target.source;logProgress(r,'Campaign channel updated to '+target.source+'.');}});
+    selectedCampaign=target.id;section.hidden=true;campaignMessage(`${target.name}: campaign ${campaign?'updated':'created'}.`);
+    $('#campaign-detail-title').tabIndex=-1;$('#campaign-detail-title').focus();
+  });
+  section.scrollIntoView({behavior:'instant',block:'start'});name.focus({preventScroll:true});
+}
+function renderCampaignDetail() {
+  const panel=$('#campaign-detail');panel.replaceChildren();const campaign=campaigns.find(c=>c.id===selectedCampaign)||campaigns[0];
+  if(!campaign)return;
+  const heading=node('div',undefined,'panel-heading'),title=node('h2',campaign.name);title.id='campaign-detail-title';
+  const edit=node('button','Edit campaign','outline');edit.type='button';edit.addEventListener('click',()=>openCampaignEditor(campaign));heading.append(title,edit);panel.append(heading);
+  panel.append(node('p',`${campaign.source} · ${campaign.status} · ${campaign.owner} · ${campaign.start} through ${campaign.end||'ongoing'}`,'muted small'),node('p',campaign.tactics,'campaign-tactics'));
+  const lifetime=CampaignMath.measure(campaign,requests),period=CampaignMath.measure(campaign,requests,reportFrom,reportTo),summary=node('div',undefined,'campaign-budget');
+  summary.append(node('span','Total budget: '+money(campaign.budget/100)),node('span','Lifetime spend: '+money(lifetime.lifetimeSpend/100)),node('strong',lifetime.remaining<0?'Over budget by '+money(-lifetime.remaining/100):'Budget remaining: '+money(lifetime.remaining/100)));
+  panel.append(summary,node('p',`Selected period: ${period.prospects} acquired prospect(s) · ${money(period.spend/100)} spent. Linked prospects below include all dates.`,'muted small'));
+  const linked=requests.filter(r=>r.campaignId===campaign.id),prospectList=node('ul',undefined,'campaign-prospects');
+  linked.forEach(r=>{const item=node('li'),button=node('button',r.name+' · '+r.acquiredDate+' · '+r.stage,'quiet');button.type='button';button.addEventListener('click',()=>{selectedId=r.id;resetFilters();renderList();renderDetail();showStaffPage('sales');$('#detail-title').tabIndex=-1;$('#detail-title').focus();});item.append(button);prospectList.append(item);});
+  panel.append(node('h3','Linked prospects'),linked.length?prospectList:node('p','No prospects linked yet. Use Create/Edit prospect in Sales CRM to assign this campaign.','muted small'));
+  const details=accordion('Actual spend log · '+campaign.expenses.length+' expense(s)','campaign-expenses',true);panel.append(details.details);
+  details.content.append(node('p','Record actual marketing expenses, not the planned budget. Changes update spend and cost-per-prospect calculations.','muted small'));
+  const tableWrap=node('div',undefined,'table-wrap'),table=node('table'),head=node('thead'),hr=node('tr');['Spend date','Expense','Amount','Action'].forEach(text=>{const th=node('th',text);th.scope='col';hr.append(th);});head.append(hr);table.append(head);const body=node('tbody');let editingId=null;
+  campaign.expenses.forEach(expense=>{const tr=node('tr'),action=node('td'),button=node('button','Edit','quiet');button.type='button';button.setAttribute('aria-label','Edit expense '+expense.description);button.addEventListener('click',()=>{editingId=expense.id;date.value=expense.date;amount.value=(expense.amount/100).toFixed(2);description.value=expense.description;save.textContent='Save expense changes';cancel.hidden=false;amount.focus();});action.append(button);tr.append(node('td',expense.date),node('td',expense.description),node('td',money(expense.amount/100)),action);body.append(tr);});table.append(body);tableWrap.append(table);details.content.append(tableWrap);
+  const form=node('form'),grid=node('div',undefined,'crm-form-grid');form.id='expense-form';
+  const date=inputField(grid,'expense','Spend date','date','date',todayKey());date.required=true;date.max=todayKey();
+  const amount=inputField(grid,'expense','Actual expense amount ($)','amount','number','');amount.required=true;amount.min='0.01';amount.max='1000000';amount.step='0.01';
+  const description=inputField(grid,'expense','Expense description','description','text','');description.required=true;
+  form.append(grid);const error=formError(form),save=saveButton(form,'Record expense');
+  const cancel=node('button','Cancel expense edit','quiet');cancel.type='button';cancel.hidden=true;cancel.addEventListener('click',()=>{editingId=null;date.value=todayKey();amount.value='';description.value='';save.textContent='Record expense';cancel.hidden=true;error.hidden=true;});form.append(cancel);details.content.append(form);
+  form.addEventListener('submit',event=>{
+    event.preventDefault();if(!form.reportValidity())return;
+    const expense={id:editingId||'EXP-'+crypto.randomUUID(),date:date.value,amount:CRM.parseMoney(amount.value),description:description.value.trim()};
+    if(!expense.description)return reportError(error,'Describe what the campaign expense was for.');
+    if(!Number.isSafeInteger(expense.amount)||expense.amount<=0)return reportError(error,'Enter an expense greater than zero, with up to two decimal places.');
+    if(editingId)campaign.expenses=campaign.expenses.map(e=>e.id===editingId?expense:e);else campaign.expenses.push(expense);
+    campaignMessage('Campaign expense saved. Spending and acquisition costs have been recalculated.');
+  });
+}
+</script></body></html>

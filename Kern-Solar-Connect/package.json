@@ -1,0 +1,8 @@
+{
+  "name": "kern-solar-connect-demo",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/crm.test.cjs tests/campaigns.test.cjs tests/languages.test.cjs"
+  }
+}
